@@ -1,5 +1,6 @@
 package com.ya.pf.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.transaction.TransactionEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class ProductEntity {
     @Column(name = "price")
     private Double price;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity")
     private Set<TransactionEntity> transactions = new LinkedHashSet<>();
 

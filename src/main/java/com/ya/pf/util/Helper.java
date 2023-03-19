@@ -6,6 +6,11 @@ import org.springframework.data.domain.Sort;
 
 public class Helper {
 
+    public static Pageable preparePageable(int pageNo, int pageSize) {
+
+        return preparePageable(pageNo, pageSize, "id", "desc");
+    }
+
     public static Pageable preparePageable(int pageNo, int pageSize, String sortBy, String order) {
 
         if (order.equalsIgnoreCase("asc")) {

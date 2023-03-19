@@ -56,4 +56,16 @@ public class TransactionController {
         return ResponseEntity.ok().body("deleted");
     }
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<String> getCustomerReport(@PathVariable long id,
+                                                    @RequestParam(defaultValue = "0") int pageNo,
+                                                    @RequestParam(defaultValue = "10") int pageSize) {
+
+        try {
+            return ResponseEntity.ok().body(transactionService.getCustomerReport(id, pageNo, pageSize));
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

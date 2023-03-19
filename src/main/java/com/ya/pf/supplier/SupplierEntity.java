@@ -1,5 +1,6 @@
 package com.ya.pf.supplier;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.transaction.TransactionEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class SupplierEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "supplierEntity")
     private Set<TransactionEntity> transactions = new LinkedHashSet<>();
 
