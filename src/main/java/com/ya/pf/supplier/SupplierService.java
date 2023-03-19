@@ -10,6 +10,6 @@ public interface SupplierService {
 
     SupplierEntity updateSupplier(SupplierEntity supplierEntity);
 
-    void deleteSupplier(Long id);
+    void deleteSupplier(long id);
 
 }

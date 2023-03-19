@@ -10,6 +10,6 @@ public interface TransactionService {
 
     void updateTransaction(TransactionEntity transactionEntity);
 
-    void deleteTransactionById(Long id);
+    void deleteTransactionById(long id);
 
 }

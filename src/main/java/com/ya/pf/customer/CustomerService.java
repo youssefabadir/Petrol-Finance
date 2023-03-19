@@ -10,6 +10,6 @@ public interface CustomerService {
 
     CustomerEntity updateCustomer(CustomerEntity customerEntity);
 
-    void deleteCustomer(Long id);
+    void deleteCustomer(long id);
 
 }
