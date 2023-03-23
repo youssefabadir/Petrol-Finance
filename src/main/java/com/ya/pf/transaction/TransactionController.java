@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/transaction")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TransactionController {
@@ -50,10 +51,10 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTransaction(@PathVariable long id) {
+    public ResponseEntity<Void> deleteTransaction(@PathVariable long id) {
 
         transactionService.deleteTransactionById(id);
-        return ResponseEntity.ok().body("deleted");
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/customer/{id}")

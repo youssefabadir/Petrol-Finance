@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/supplier")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SupplierController {
@@ -49,10 +50,10 @@ public class SupplierController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSupplier(@PathVariable long id) {
+    public ResponseEntity<Void> deleteSupplier(@PathVariable long id) {
 
         supplierService.deleteSupplier(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
 }

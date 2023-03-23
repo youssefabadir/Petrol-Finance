@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/customer")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController {
@@ -49,10 +50,10 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable long id) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
 
         customerService.deleteCustomer(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
 }
