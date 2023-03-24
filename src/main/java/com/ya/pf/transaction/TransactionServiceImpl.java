@@ -70,7 +70,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize);
         Page<TransactionEntity> page = transactionRepository.findAll(pageable);
-        StringBuilder result = new StringBuilder();
+        String result = null;
         if (page.hasContent()) {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(objectMapper.writeValueAsString(page));
@@ -80,9 +80,9 @@ public class TransactionServiceImpl implements TransactionService {
 
             ((ObjectNode) jsonNode).put("totalDueMoney", totalDueMoney);
             ((ObjectNode) jsonNode).put("totalPaidMoney", totalPaidMoney);
-            result.append(objectMapper.writeValueAsString(jsonNode));
+            result = objectMapper.writeValueAsString(jsonNode);
         }
-        return result.toString();
+        return result;
     }
 
     @Transactional
