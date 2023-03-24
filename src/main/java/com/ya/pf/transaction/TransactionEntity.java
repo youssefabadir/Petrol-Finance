@@ -47,7 +47,6 @@ public class TransactionEntity {
     @Column(name = "receipt_no")
     private int receiptNumber;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "transaction_date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date transactionDate;

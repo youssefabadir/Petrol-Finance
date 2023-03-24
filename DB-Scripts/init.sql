@@ -27,7 +27,7 @@ CREATE TABLE [transaction]
     receipt_no       VARCHAR(255),
     due_money        DECIMAL(18, 2),
     paid_money       DECIMAL(18, 2),
-    transaction_date DATE,
+    transaction_date DATETIME,
     CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
     CONSTRAINT FK_TRANSACTION_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_TRANSACTION_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
