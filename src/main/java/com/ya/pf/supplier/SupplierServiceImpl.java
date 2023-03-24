@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SupplierServiceImpl implements SupplierService {
@@ -42,6 +44,12 @@ public class SupplierServiceImpl implements SupplierService {
     public void deleteSupplier(long id) {
 
         supplierRepository.deleteById(id);
+    }
+
+    @Override
+    public List<SupplierEntity> searchSupplier(String name) {
+
+        return supplierRepository.findByNameContaining(name);
     }
 
 }

@@ -2,6 +2,8 @@ package com.ya.pf.product;
 
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface ProductService {
 
     Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order);
@@ -11,5 +13,7 @@ public interface ProductService {
     ProductEntity updateProduct(ProductEntity productEntity);
 
     void deleteProduct(long id);
+
+    List<ProductEntity> searchProduct(String name);
 
 }

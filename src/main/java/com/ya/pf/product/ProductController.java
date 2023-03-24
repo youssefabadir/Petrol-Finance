@@ -1,5 +1,7 @@
 package com.ya.pf.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductEntity>> getProducts(@RequestParam(defaultValue = "") String name,
-                                                           @RequestParam(defaultValue = "0") int pageNo,
-                                                           @RequestParam(defaultValue = "10") int pageSize,
-                                                           @RequestParam(defaultValue = "id") String sortBy,
-                                                           @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<ProductEntity>> getProducts(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "asc") String order) {
 
         Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
 
@@ -48,6 +46,15 @@ public class ProductController {
 
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<String> searchProduct(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+
+        if (name.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(new ObjectMapper().writeValueAsString(productService.searchProduct(name)));
     }
 
 }

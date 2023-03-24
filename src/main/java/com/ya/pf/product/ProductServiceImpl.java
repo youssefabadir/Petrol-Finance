@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductServiceImpl implements ProductService {
@@ -41,6 +43,12 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(long id) {
 
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProductEntity> searchProduct(String name) {
+
+        return productRepository.findByNameContaining(name);
     }
 
 }

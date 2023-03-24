@@ -1,5 +1,7 @@
 package com.ya.pf.supplier;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +50,15 @@ public class SupplierController {
 
         supplierService.deleteSupplier(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<String> searchSupplier(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+
+        if (name.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(new ObjectMapper().writeValueAsString(supplierService.searchSupplier(name)));
     }
 
 }

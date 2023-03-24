@@ -1,13 +1,13 @@
 package com.ya.pf.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -53,10 +53,12 @@ public class CustomerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CustomerEntity>> searchCustomer(@RequestParam(defaultValue = "") String name) {
+    public ResponseEntity<String> searchCustomer(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
 
-        return ResponseEntity.ok(customerService.searchCustomer(name));
-
+        if (name.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(new ObjectMapper().writeValueAsString(customerService.searchCustomer(name)));
     }
 
 }
