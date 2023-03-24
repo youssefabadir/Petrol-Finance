@@ -47,12 +47,8 @@ public class TransactionEntity {
     private int receiptNumber;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
-    private Date createdDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_modified_date")
-    private Date lastModifiedDate;
+    @Column(name = "transaction_date")
+    private Date transactionDate;
 
     @Override
     public boolean equals(Object o) {
@@ -73,8 +69,17 @@ public class TransactionEntity {
     @Override
     public String toString() {
 
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "supplier id = " + supplierEntity.getId() + ", " + "customer id = " + customerEntity.getId() + ", " + "product id = " + productEntity.getId() + ", " + "amount = " + amount +
-                ", " + "due money = " + dueMoney + ", " + "paid money = " + paidMoney + ", " + "receipt no = " + receiptNumber + ", " + "created date = " + createdDate + ", " + "last modified date = " + lastModifiedDate + ", " + ")";
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "supplier id = " + supplierEntity.getId() + ", " +
+                "customer id = " + customerEntity.getId() + ", " +
+                "product id = " + productEntity.getId() + ", " +
+                "amount = " + amount + ", " +
+                "due money = " + dueMoney + ", " +
+                "paid money = " + paidMoney + ", " +
+                "receipt no = " + receiptNumber + ", " +
+                "transaction date = " + transactionDate +
+                ")";
     }
 
     @Override

@@ -19,7 +19,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -45,15 +44,12 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
 
-        transactionEntity.setCreatedDate(new Date());
-        transactionEntity.setLastModifiedDate(new Date());
         return transactionRepository.save(transactionEntity);
     }
 
     @Override
     public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
 
-        transactionEntity.setLastModifiedDate(new Date());
         return transactionRepository.save(transactionEntity);
     }
 
