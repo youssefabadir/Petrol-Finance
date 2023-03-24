@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.ya.pf.product.ProductService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
@@ -28,6 +29,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final SessionFactory sessionFactory;
 
+    private final ProductService productService;
+
     @Override
     public Page<TransactionEntity> getTransactions(int receiptNumber, int pageNo, int pageSize,
                                                    String sortBy, String order) {
@@ -43,6 +46,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
+
+        double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
+        transactionEntity.setDueMoney(price * transactionEntity.getAmount());
 
         return transactionRepository.save(transactionEntity);
     }

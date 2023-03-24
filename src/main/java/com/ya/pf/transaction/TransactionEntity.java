@@ -1,5 +1,6 @@
 package com.ya.pf.transaction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.customer.CustomerEntity;
 import com.ya.pf.product.ProductEntity;
 import com.ya.pf.supplier.SupplierEntity;
@@ -48,6 +49,7 @@ public class TransactionEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "transaction_date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date transactionDate;
 
     @Override
