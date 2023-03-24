@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/customer")
@@ -48,6 +50,13 @@ public class CustomerController {
 
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CustomerEntity>> searchCustomer(@RequestParam(defaultValue = "") String name) {
+
+        return ResponseEntity.ok(customerService.searchCustomer(name));
+
     }
 
 }

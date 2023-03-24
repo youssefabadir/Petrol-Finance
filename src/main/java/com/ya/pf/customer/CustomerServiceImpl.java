@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerServiceImpl implements CustomerService {
@@ -42,6 +44,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(long id) {
 
         customerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CustomerEntity> searchCustomer(String name) {
+
+        return customerRepository.findByNameContaining(name);
     }
 
 }
