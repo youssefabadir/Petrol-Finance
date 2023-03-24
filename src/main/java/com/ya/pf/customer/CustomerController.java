@@ -1,7 +1,5 @@
 package com.ya.pf.customer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,20 +16,16 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping
-    public ResponseEntity<String> getCustomers(@RequestParam(defaultValue = "") String name,
-                                               @RequestParam(defaultValue = "0") int pageNo,
-                                               @RequestParam(defaultValue = "10") int pageSize,
-                                               @RequestParam(defaultValue = "id") String sortBy,
-                                               @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<CustomerEntity>> getCustomers(@RequestParam(defaultValue = "") String name,
+                                                             @RequestParam(defaultValue = "0") int pageNo,
+                                                             @RequestParam(defaultValue = "10") int pageSize,
+                                                             @RequestParam(defaultValue = "id") String sortBy,
+                                                             @RequestParam(defaultValue = "asc") String order) {
 
         Page<CustomerEntity> customerEntities = customerService.getCustomers(name, pageNo, pageSize, sortBy, order);
 
         if (customerEntities.hasContent()) {
-            try {
-                return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString(customerEntities));
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+            return ResponseEntity.ok(customerEntities);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -46,7 +40,7 @@ public class CustomerController {
     @PutMapping
     public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customer) {
 
-        return ResponseEntity.ok().body(customerService.updateCustomer(customer));
+        return ResponseEntity.ok(customerService.updateCustomer(customer));
     }
 
     @DeleteMapping("/{id}")

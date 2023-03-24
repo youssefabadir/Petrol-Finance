@@ -1,7 +1,5 @@
 package com.ya.pf.product;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,20 +16,16 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<String> getProducts(@RequestParam(defaultValue = "") String name,
-                                              @RequestParam(defaultValue = "0") int pageNo,
-                                              @RequestParam(defaultValue = "10") int pageSize,
-                                              @RequestParam(defaultValue = "id") String sortBy,
-                                              @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<ProductEntity>> getProducts(@RequestParam(defaultValue = "") String name,
+                                                           @RequestParam(defaultValue = "0") int pageNo,
+                                                           @RequestParam(defaultValue = "10") int pageSize,
+                                                           @RequestParam(defaultValue = "id") String sortBy,
+                                                           @RequestParam(defaultValue = "asc") String order) {
 
         Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
 
         if (productEntities.hasContent()) {
-            try {
-                return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString(productEntities));
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+            return ResponseEntity.ok(productEntities);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -46,7 +40,7 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<ProductEntity> updateProduct(@RequestBody ProductEntity product) {
 
-        return ResponseEntity.ok().body(productService.updateProduct(product));
+        return ResponseEntity.ok(productService.updateProduct(product));
     }
 
     @DeleteMapping("/{id}")

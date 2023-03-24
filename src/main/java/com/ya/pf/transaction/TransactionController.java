@@ -1,7 +1,6 @@
 package com.ya.pf.transaction;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,36 +17,31 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<String> getTransactions(@RequestParam(defaultValue = "-1") int receiptNumber,
-                                                  @RequestParam(defaultValue = "0") int pageNo,
-                                                  @RequestParam(defaultValue = "10") int pageSize,
-                                                  @RequestParam(defaultValue = "id") String sortBy,
-                                                  @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<TransactionEntity>> getTransactions(@RequestParam(defaultValue = "-1") int receiptNumber,
+                                                                   @RequestParam(defaultValue = "0") int pageNo,
+                                                                   @RequestParam(defaultValue = "10") int pageSize,
+                                                                   @RequestParam(defaultValue = "id") String sortBy,
+                                                                   @RequestParam(defaultValue = "asc") String order) {
 
         Page<TransactionEntity> transactionEntities = transactionService.getTransactions(receiptNumber, pageNo, pageSize, sortBy, order);
 
         if (transactionEntities.hasContent()) {
-            try {
-                return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString(transactionEntities));
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+            return ResponseEntity.ok(transactionEntities);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<String> createTransaction(@RequestBody TransactionEntity transaction) {
+    public ResponseEntity<TransactionEntity> createTransaction(@RequestBody TransactionEntity transaction) {
 
-        return ResponseEntity.ok().body(transactionService.createTransaction(transaction).toString());
+        return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
 
     @PutMapping
-    public ResponseEntity<String> updateTransaction(@RequestBody TransactionEntity transaction) {
+    public ResponseEntity<TransactionEntity> updateTransaction(@RequestBody TransactionEntity transaction) {
 
-        transactionService.updateTransaction(transaction);
-        return ResponseEntity.ok().body("updated");
+        return ResponseEntity.ok(transactionService.updateTransaction(transaction));
     }
 
     @DeleteMapping("/{id}")

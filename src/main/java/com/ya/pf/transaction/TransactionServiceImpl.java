@@ -51,10 +51,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void updateTransaction(TransactionEntity transactionEntity) {
+    public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
 
         transactionEntity.setLastModifiedDate(new Date());
-        transactionRepository.save(transactionEntity);
+        return transactionRepository.save(transactionEntity);
     }
 
     @Override

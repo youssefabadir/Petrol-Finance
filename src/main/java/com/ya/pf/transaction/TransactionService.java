@@ -9,7 +9,7 @@ public interface TransactionService {
 
     TransactionEntity createTransaction(TransactionEntity transactionEntity);
 
-    void updateTransaction(TransactionEntity transactionEntity);
+    TransactionEntity updateTransaction(TransactionEntity transactionEntity);
 
     void deleteTransactionById(long id);
 

@@ -1,7 +1,5 @@
 package com.ya.pf.supplier;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,20 +16,16 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     @GetMapping
-    public ResponseEntity<String> getSuppliers(@RequestParam(defaultValue = "") String name,
-                                               @RequestParam(defaultValue = "0") int pageNo,
-                                               @RequestParam(defaultValue = "10") int pageSize,
-                                               @RequestParam(defaultValue = "id") String sortBy,
-                                               @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<SupplierEntity>> getSuppliers(@RequestParam(defaultValue = "") String name,
+                                                             @RequestParam(defaultValue = "0") int pageNo,
+                                                             @RequestParam(defaultValue = "10") int pageSize,
+                                                             @RequestParam(defaultValue = "id") String sortBy,
+                                                             @RequestParam(defaultValue = "asc") String order) {
 
         Page<SupplierEntity> supplierEntities = supplierService.getSuppliers(name, pageNo, pageSize, sortBy, order);
 
         if (supplierEntities.hasContent()) {
-            try {
-                return ResponseEntity.ok().body(new ObjectMapper().writeValueAsString(supplierEntities));
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+            return ResponseEntity.ok(supplierEntities);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -46,7 +40,7 @@ public class SupplierController {
     @PutMapping
     public ResponseEntity<SupplierEntity> updateSupplier(@RequestBody SupplierEntity supplier) {
 
-        return ResponseEntity.ok().body(supplierService.updateSupplier(supplier));
+        return ResponseEntity.ok(supplierService.updateSupplier(supplier));
     }
 
     @DeleteMapping("/{id}")
