@@ -59,7 +59,12 @@ public class TransactionController {
                                                     @RequestParam(defaultValue = "asc") String order) {
 
         try {
-            return ResponseEntity.ok().body(transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order));
+            String data = transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order);
+            if (data == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            } else {
+                return ResponseEntity.ok(data);
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

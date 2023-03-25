@@ -8,6 +8,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     Page<TransactionEntity> findByReceiptNumberContaining(String receiptNumber, Pageable pageable);
 
-    Page<TransactionEntity> findByCustomerEntity_Id(long id, Pageable pageable);
+    Page<TransactionEntity> findByCustomerEntity_IdAndReceiptNumberContaining(long id, String receiptNumber, Pageable pageable);
 
 }

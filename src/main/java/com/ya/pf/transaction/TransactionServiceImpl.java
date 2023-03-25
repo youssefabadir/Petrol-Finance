@@ -73,7 +73,7 @@ public class TransactionServiceImpl implements TransactionService {
     public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize);
-        Page<TransactionEntity> page = transactionRepository.findByCustomerEntity_Id(id, pageable);
+        Page<TransactionEntity> page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
         String result = null;
         if (page.hasContent()) {
             ObjectMapper objectMapper = new ObjectMapper();
