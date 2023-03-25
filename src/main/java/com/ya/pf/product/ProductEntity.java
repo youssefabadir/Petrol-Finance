@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.transaction.TransactionEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "product")
+@Accessors(chain = true)
 public class ProductEntity {
 
     @Id

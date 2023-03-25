@@ -15,9 +15,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Accessors(chain = true)
 @Entity
 @Table(name = "customer")
+@Accessors(chain = true)
 public class CustomerEntity {
 
     @Id

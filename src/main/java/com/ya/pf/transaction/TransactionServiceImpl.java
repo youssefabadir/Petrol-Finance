@@ -56,6 +56,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
 
+        double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
+        transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+
         return transactionRepository.save(transactionEntity);
     }
 

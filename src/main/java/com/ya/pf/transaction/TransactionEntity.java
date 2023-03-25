@@ -6,6 +6,7 @@ import com.ya.pf.product.ProductEntity;
 import com.ya.pf.supplier.SupplierEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @Table(name = "\"transaction\"")
+@Accessors(chain = true)
 public class TransactionEntity {
 
     @Id
