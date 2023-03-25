@@ -1,6 +1,5 @@
 package com.ya.pf.transaction;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
 
 public interface TransactionService {
@@ -13,7 +12,7 @@ public interface TransactionService {
 
     void deleteTransactionById(long id);
 
-    String getCustomerReport(long id, int pageNo, int pageSize) throws JsonProcessingException;
+    String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order);
 
     Double getColumnSum(long id, String columnName);
 

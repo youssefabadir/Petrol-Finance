@@ -1,12 +1,12 @@
 package com.ya.pf.transaction;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ya.pf.product.ProductService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -69,10 +69,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public String getCustomerReport(long id, int pageNo, int pageSize) throws JsonProcessingException {
+    @SneakyThrows
+    public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize);
-        Page<TransactionEntity> page = transactionRepository.findAll(pageable);
+        Page<TransactionEntity> page = transactionRepository.findByCustomerEntity_Id(id, pageable);
         String result = null;
         if (page.hasContent()) {
             ObjectMapper objectMapper = new ObjectMapper();

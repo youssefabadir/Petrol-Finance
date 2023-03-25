@@ -1,6 +1,5 @@
 package com.ya.pf.transaction;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,12 +52,15 @@ public class TransactionController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<String> getCustomerReport(@PathVariable long id,
+                                                    @RequestParam(defaultValue = "") String receiptNumber,
                                                     @RequestParam(defaultValue = "0") int pageNo,
-                                                    @RequestParam(defaultValue = "10") int pageSize) {
+                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                    @RequestParam(defaultValue = "id") String sortBy,
+                                                    @RequestParam(defaultValue = "asc") String order) {
 
         try {
-            return ResponseEntity.ok().body(transactionService.getCustomerReport(id, pageNo, pageSize));
-        } catch (JsonProcessingException e) {
+            return ResponseEntity.ok().body(transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
