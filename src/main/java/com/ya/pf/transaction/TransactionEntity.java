@@ -47,7 +47,7 @@ public class TransactionEntity {
     private Double paidMoney;
 
     @Column(name = "receipt_no")
-    private int receiptNumber;
+    private String receiptNumber;
 
     @Column(name = "transaction_date")
     @JsonFormat(pattern = "dd-MM-yyyy")

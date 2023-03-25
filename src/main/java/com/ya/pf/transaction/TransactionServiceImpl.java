@@ -32,12 +32,12 @@ public class TransactionServiceImpl implements TransactionService {
     private final ProductService productService;
 
     @Override
-    public Page<TransactionEntity> getTransactions(int receiptNumber, int pageNo, int pageSize,
+    public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize,
                                                    String sortBy, String order) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (receiptNumber == -1) {
+        if (receiptNumber.isEmpty()) {
             return transactionRepository.findAll(pageable);
         } else {
             return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);

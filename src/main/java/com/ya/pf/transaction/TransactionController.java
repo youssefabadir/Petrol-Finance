@@ -17,7 +17,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<Page<TransactionEntity>> getTransactions(@RequestParam(defaultValue = "-1") int receiptNumber,
+    public ResponseEntity<Page<TransactionEntity>> getTransactions(@RequestParam(defaultValue = "") String receiptNumber,
                                                                    @RequestParam(defaultValue = "0") int pageNo,
                                                                    @RequestParam(defaultValue = "10") int pageSize,
                                                                    @RequestParam(defaultValue = "id") String sortBy,

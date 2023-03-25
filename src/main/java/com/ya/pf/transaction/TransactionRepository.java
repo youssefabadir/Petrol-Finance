@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
-    Page<TransactionEntity> findByReceiptNumberContaining(int receiptNumber, Pageable pageable);
+    Page<TransactionEntity> findByReceiptNumberContaining(String receiptNumber, Pageable pageable);
 
 }

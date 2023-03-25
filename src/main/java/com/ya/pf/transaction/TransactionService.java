@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 
 public interface TransactionService {
 
-    Page<TransactionEntity> getTransactions(int receiptNumber, int pageNo, int pageSize, String sortBy, String order);
+    Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy, String order);
 
     TransactionEntity createTransaction(TransactionEntity transactionEntity);
 
