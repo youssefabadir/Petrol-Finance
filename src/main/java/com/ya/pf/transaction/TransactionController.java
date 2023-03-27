@@ -3,9 +3,12 @@ package com.ya.pf.transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -20,9 +23,11 @@ public class TransactionController {
                                                                    @RequestParam(defaultValue = "0") int pageNo,
                                                                    @RequestParam(defaultValue = "10") int pageSize,
                                                                    @RequestParam(defaultValue = "id") String sortBy,
-                                                                   @RequestParam(defaultValue = "asc") String order) {
+                                                                   @RequestParam(defaultValue = "asc") String order,
+                                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
+                                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
 
-        Page<TransactionEntity> transactionEntities = transactionService.getTransactions(receiptNumber, pageNo, pageSize, sortBy, order);
+        Page<TransactionEntity> transactionEntities = transactionService.getTransactions(receiptNumber, pageNo, pageSize, sortBy, order, start, end);
 
         if (transactionEntities.hasContent()) {
             return ResponseEntity.ok(transactionEntities);
@@ -56,10 +61,12 @@ public class TransactionController {
                                                     @RequestParam(defaultValue = "0") int pageNo,
                                                     @RequestParam(defaultValue = "10") int pageSize,
                                                     @RequestParam(defaultValue = "id") String sortBy,
-                                                    @RequestParam(defaultValue = "asc") String order) {
+                                                    @RequestParam(defaultValue = "asc") String order,
+                                                    @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
+                                                    @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
 
         try {
-            String data = transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order);
+            String data = transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order, start, end);
             if (data == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             } else {

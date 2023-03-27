@@ -20,6 +20,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -32,15 +34,19 @@ public class TransactionServiceImpl implements TransactionService {
     private final ProductService productService;
 
     @Override
-    public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize,
-                                                   String sortBy, String order) {
+    public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy,
+                                                   String order, LocalDate start, LocalDate end) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (receiptNumber.isEmpty()) {
-            return transactionRepository.findAll(pageable);
-        } else {
+        if (!receiptNumber.isEmpty() && start != null && end != null) {
+            return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+        } else if (receiptNumber.isEmpty() && start != null && end != null) {
+            return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+        } else if (!receiptNumber.isEmpty() && start == null && end == null) {
             return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+        } else {
+            return transactionRepository.findAll(pageable);
         }
     }
 
@@ -70,10 +76,31 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @SneakyThrows
-    public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order) {
+    public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
+                                    String sortBy, String order, LocalDate start, LocalDate end) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize);
-        Page<TransactionEntity> page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+        Page<TransactionEntity> page;
+
+        if (receiptNumber.isEmpty()) {
+            if (start == null || end == null) {
+                page = transactionRepository.findByCustomerEntity_Id(id, pageable);
+            } else {
+                page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
+                        Date.valueOf(start),
+                        Date.valueOf(end), pageable);
+            }
+        } else {
+            if (start == null || end == null) {
+                page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+            } else {
+                page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
+                        receiptNumber,
+                        Date.valueOf(start),
+                        Date.valueOf(end), pageable);
+            }
+        }
+
         String result = null;
         if (page.hasContent()) {
             ObjectMapper objectMapper = new ObjectMapper();
