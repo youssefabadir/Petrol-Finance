@@ -27,114 +27,122 @@ import java.time.LocalDate;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository transactionRepository;
+	private final TransactionRepository transactionRepository;
 
-    private final SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
 
-    private final ProductService productService;
+	private final ProductService productService;
 
-    @Override
-    public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy,
-                                                   String order, LocalDate start, LocalDate end) {
+	@Override
+	public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy,
+	                                               String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (!receiptNumber.isEmpty() && start != null && end != null) {
-            return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
-        } else if (receiptNumber.isEmpty() && start != null && end != null) {
-            return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
-        } else if (!receiptNumber.isEmpty() && start == null && end == null) {
-            return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
-        } else {
-            return transactionRepository.findAll(pageable);
-        }
-    }
+		if (!receiptNumber.isEmpty() && start != null && end != null) {
+			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+		} else if (receiptNumber.isEmpty() && start != null && end != null) {
+			return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
+			return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+		} else {
+			return transactionRepository.findAll(pageable);
+		}
+	}
 
-    @Override
-    public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
+	@Override
+	public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
 
-        double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
-        transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+		double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
+		transactionEntity.setDueMoney(price * transactionEntity.getAmount());
 
-        return transactionRepository.save(transactionEntity);
-    }
+		return transactionRepository.save(transactionEntity);
+	}
 
-    @Override
-    public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
+	@Override
+	public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
 
-        double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
-        transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+		double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
+		transactionEntity.setDueMoney(price * transactionEntity.getAmount());
 
-        return transactionRepository.save(transactionEntity);
-    }
+		return transactionRepository.save(transactionEntity);
+	}
 
-    @Override
-    public void deleteTransactionById(long id) {
+	@Override
+	public void deleteTransactionById(long id) {
 
-        transactionRepository.deleteById(id);
-    }
+		transactionRepository.deleteById(id);
+	}
 
-    @Override
-    @SneakyThrows
-    public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
-                                    String sortBy, String order, LocalDate start, LocalDate end) {
+	@Override
+	@SneakyThrows
+	public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
+	                                String sortBy, String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize);
-        Page<TransactionEntity> page;
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize);
+		Page<TransactionEntity> page;
 
-        if (receiptNumber.isEmpty()) {
-            if (start == null || end == null) {
-                page = transactionRepository.findByCustomerEntity_Id(id, pageable);
-            } else {
-                page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
-                        Date.valueOf(start),
-                        Date.valueOf(end), pageable);
-            }
-        } else {
-            if (start == null || end == null) {
-                page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
-            } else {
-                page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
-                        receiptNumber,
-                        Date.valueOf(start),
-                        Date.valueOf(end), pageable);
-            }
-        }
+		if (receiptNumber.isEmpty()) {
+			if (start == null || end == null) {
+				page = transactionRepository.findByCustomerEntity_Id(id, pageable);
+			} else {
+				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
+						Date.valueOf(start),
+						Date.valueOf(end), pageable);
+			}
+		} else {
+			if (start == null || end == null) {
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+			} else {
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
+						receiptNumber,
+						Date.valueOf(start),
+						Date.valueOf(end), pageable);
+			}
+		}
 
-        String result = null;
-        if (page.hasContent()) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(objectMapper.writeValueAsString(page));
+		String result = null;
+		if (page.hasContent()) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode jsonNode = objectMapper.readTree(objectMapper.writeValueAsString(page));
 
-            Double totalDueMoney = getColumnSum(id, "dueMoney");
-            Double totalPaidMoney = getColumnSum(id, "paidMoney");
+			double totalDueMoney = getColumnSum(id, "dueMoney", start, end);
+			double totalPaidMoney = getColumnSum(id, "paidMoney", start, end);
 
-            ((ObjectNode) jsonNode).put("totalDueMoney", totalDueMoney);
-            ((ObjectNode) jsonNode).put("totalPaidMoney", totalPaidMoney);
-            result = objectMapper.writeValueAsString(jsonNode);
-        }
-        return result;
-    }
+			((ObjectNode) jsonNode).put("totalDueMoney", totalDueMoney);
+			((ObjectNode) jsonNode).put("totalPaidMoney", totalPaidMoney);
+			result = objectMapper.writeValueAsString(jsonNode);
+		}
+		return result;
+	}
 
-    @Transactional
-    public Double getColumnSum(long id, String columnName) {
+	@Transactional
+	@SneakyThrows
+	public Double getColumnSum(long id, String columnName, LocalDate start, LocalDate end) {
 
-        Session session;
-        try {
-            session = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            session = sessionFactory.openSession();
-        }
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Double> criteria = builder.createQuery(Double.class);
-        Root<TransactionEntity> root = criteria.from(TransactionEntity.class);
-        criteria.select(builder.sum(root.get(columnName)));
-        criteria.where(builder.equal(root.get("customerEntity"), id));
-        TypedQuery<Double> query = session.createQuery(criteria);
-        Double result = query.getSingleResult();
-        session.close();
+		Session session;
+		try {
+			session = sessionFactory.getCurrentSession();
+		} catch (HibernateException e) {
+			session = sessionFactory.openSession();
+		}
 
-        return result;
-    }
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Double> criteria = builder.createQuery(Double.class);
+		Root<TransactionEntity> root = criteria.from(TransactionEntity.class);
+
+		criteria.select(builder.sum(root.get(columnName)));
+		criteria.where(builder.equal(root.get("customerEntity"), id));
+		if (start != null && end != null) {
+			criteria.where(builder.and(
+					criteria.getRestriction(),
+					builder.between(root.get("transactionDate"), Date.valueOf(start), Date.valueOf(end))));
+		}
+
+		TypedQuery<Double> query = session.createQuery(criteria);
+		Double result = query.getSingleResult();
+		session.close();
+		return result;
+	}
 
 }
