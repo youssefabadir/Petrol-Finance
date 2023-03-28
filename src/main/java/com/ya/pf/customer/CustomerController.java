@@ -15,50 +15,50 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController {
 
-    private final CustomerService customerService;
+	private final CustomerService customerService;
 
-    @GetMapping
-    public ResponseEntity<Page<CustomerEntity>> getCustomers(@RequestParam(defaultValue = "") String name,
-                                                             @RequestParam(defaultValue = "0") int pageNo,
-                                                             @RequestParam(defaultValue = "10") int pageSize,
-                                                             @RequestParam(defaultValue = "id") String sortBy,
-                                                             @RequestParam(defaultValue = "asc") String order) {
+	@GetMapping
+	public ResponseEntity<Page<CustomerEntity>> getCustomers(@RequestParam(defaultValue = "") String name,
+	                                                         @RequestParam(defaultValue = "0") int pageNo,
+	                                                         @RequestParam(defaultValue = "10") int pageSize,
+	                                                         @RequestParam(defaultValue = "id") String sortBy,
+	                                                         @RequestParam(defaultValue = "asc") String order) {
 
-        Page<CustomerEntity> customerEntities = customerService.getCustomers(name, pageNo, pageSize, sortBy, order);
+		Page<CustomerEntity> customerEntities = customerService.getCustomers(name, pageNo, pageSize, sortBy, order);
 
-        if (customerEntities.hasContent()) {
-            return ResponseEntity.ok(customerEntities);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+		if (customerEntities.hasContent()) {
+			return ResponseEntity.ok(customerEntities);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
-    @PostMapping
-    public ResponseEntity<CustomerEntity> createCustomer(@RequestBody CustomerEntity customer) {
+	@PostMapping
+	public ResponseEntity<CustomerEntity> createCustomer(@RequestBody CustomerEntity customer) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
+	}
 
-    @PutMapping
-    public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customer) {
+	@PutMapping
+	public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customer) {
 
-        return ResponseEntity.ok(customerService.updateCustomer(customer));
-    }
+		return ResponseEntity.ok(customerService.updateCustomer(customer));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
 
-        customerService.deleteCustomer(id);
-        return ResponseEntity.noContent().build();
-    }
+		customerService.deleteCustomer(id);
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping("/search")
-    public ResponseEntity<String> searchCustomer(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+	@GetMapping("/search")
+	public ResponseEntity<String> searchCustomer(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
 
-        if (name.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(new ObjectMapper().writeValueAsString(customerService.searchCustomer(name)));
-    }
+		if (name.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity.ok(new ObjectMapper().writeValueAsString(customerService.searchCustomer(name)));
+	}
 
 }

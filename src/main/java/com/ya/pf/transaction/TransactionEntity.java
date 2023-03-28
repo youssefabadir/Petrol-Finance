@@ -20,75 +20,75 @@ import java.util.Objects;
 @Accessors(chain = true)
 public class TransactionEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private SupplierEntity supplierEntity;
+	@ManyToOne
+	@JoinColumn(name = "supplier_id")
+	private SupplierEntity supplierEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customerEntity;
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private CustomerEntity customerEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private ProductEntity productEntity;
 
-    @Column(name = "amount")
-    private float amount;
+	@Column(name = "amount")
+	private float amount;
 
-    @Column(name = "due_money")
-    private Double dueMoney;
+	@Column(name = "due_money")
+	private Double dueMoney;
 
-    @Column(name = "paid_money")
-    private Double paidMoney;
+	@Column(name = "paid_money")
+	private Double paidMoney;
 
-    @Column(name = "receipt_no")
-    private String receiptNumber;
+	@Column(name = "receipt_no")
+	private String receiptNumber;
 
-    @Column(name = "transaction_date")
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date transactionDate;
+	@Column(name = "transaction_date")
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Date transactionDate;
 
-    @Override
-    public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
 
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-        if (this == o) {
-            return true;
-        }
-        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-            return false;
-        }
-        TransactionEntity transactionEntity = (TransactionEntity) o;
-        return id != null && Objects.equals(id, transactionEntity.id);
-    }
+		if (getClass() != o.getClass()) {
+			return false;
+		}
+		if (this == o) {
+			return true;
+		}
+		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+			return false;
+		}
+		TransactionEntity transactionEntity = (TransactionEntity) o;
+		return id != null && Objects.equals(id, transactionEntity.id);
+	}
 
-    @Override
-    public String toString() {
+	@Override
+	public String toString() {
 
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "supplier id = " + supplierEntity.getId() + ", " +
-                "customer id = " + customerEntity.getId() + ", " +
-                "product id = " + productEntity.getId() + ", " +
-                "amount = " + amount + ", " +
-                "due money = " + dueMoney + ", " +
-                "paid money = " + paidMoney + ", " +
-                "receipt no = " + receiptNumber + ", " +
-                "transaction date = " + transactionDate +
-                ")";
-    }
+		return getClass().getSimpleName() + "(" +
+				"id = " + id + ", " +
+				"supplier id = " + supplierEntity.getId() + ", " +
+				"customer id = " + customerEntity.getId() + ", " +
+				"product id = " + productEntity.getId() + ", " +
+				"amount = " + amount + ", " +
+				"due money = " + dueMoney + ", " +
+				"paid money = " + paidMoney + ", " +
+				"receipt no = " + receiptNumber + ", " +
+				"transaction date = " + transactionDate +
+				")";
+	}
 
-    @Override
-    public int hashCode() {
+	@Override
+	public int hashCode() {
 
-        return getClass().hashCode();
-    }
+		return getClass().hashCode();
+	}
 
 }

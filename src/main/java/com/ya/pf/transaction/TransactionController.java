@@ -16,65 +16,65 @@ import java.time.LocalDate;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TransactionController {
 
-    private final TransactionService transactionService;
+	private final TransactionService transactionService;
 
-    @GetMapping
-    public ResponseEntity<Page<TransactionEntity>> getTransactions(@RequestParam(defaultValue = "") String receiptNumber,
-                                                                   @RequestParam(defaultValue = "0") int pageNo,
-                                                                   @RequestParam(defaultValue = "10") int pageSize,
-                                                                   @RequestParam(defaultValue = "id") String sortBy,
-                                                                   @RequestParam(defaultValue = "asc") String order,
-                                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
-                                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
+	@GetMapping
+	public ResponseEntity<Page<TransactionEntity>> getTransactions(@RequestParam(defaultValue = "") String receiptNumber,
+	                                                               @RequestParam(defaultValue = "0") int pageNo,
+	                                                               @RequestParam(defaultValue = "10") int pageSize,
+	                                                               @RequestParam(defaultValue = "id") String sortBy,
+	                                                               @RequestParam(defaultValue = "asc") String order,
+	                                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
+	                                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
 
-        Page<TransactionEntity> transactionEntities = transactionService.getTransactions(receiptNumber, pageNo, pageSize, sortBy, order, start, end);
+		Page<TransactionEntity> transactionEntities = transactionService.getTransactions(receiptNumber, pageNo, pageSize, sortBy, order, start, end);
 
-        if (transactionEntities.hasContent()) {
-            return ResponseEntity.ok(transactionEntities);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+		if (transactionEntities.hasContent()) {
+			return ResponseEntity.ok(transactionEntities);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
-    @PostMapping
-    public ResponseEntity<TransactionEntity> createTransaction(@RequestBody TransactionEntity transaction) {
+	@PostMapping
+	public ResponseEntity<TransactionEntity> createTransaction(@RequestBody TransactionEntity transaction) {
 
-        return ResponseEntity.ok(transactionService.createTransaction(transaction));
-    }
+		return ResponseEntity.ok(transactionService.createTransaction(transaction));
+	}
 
-    @PutMapping
-    public ResponseEntity<TransactionEntity> updateTransaction(@RequestBody TransactionEntity transaction) {
+	@PutMapping
+	public ResponseEntity<TransactionEntity> updateTransaction(@RequestBody TransactionEntity transaction) {
 
-        return ResponseEntity.ok(transactionService.updateTransaction(transaction));
-    }
+		return ResponseEntity.ok(transactionService.updateTransaction(transaction));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteTransaction(@PathVariable long id) {
 
-        transactionService.deleteTransactionById(id);
-        return ResponseEntity.noContent().build();
-    }
+		transactionService.deleteTransactionById(id);
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<String> getCustomerReport(@PathVariable long id,
-                                                    @RequestParam(defaultValue = "") String receiptNumber,
-                                                    @RequestParam(defaultValue = "0") int pageNo,
-                                                    @RequestParam(defaultValue = "10") int pageSize,
-                                                    @RequestParam(defaultValue = "id") String sortBy,
-                                                    @RequestParam(defaultValue = "asc") String order,
-                                                    @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
-                                                    @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
+	@GetMapping("/customer/{id}")
+	public ResponseEntity<String> getCustomerReport(@PathVariable long id,
+	                                                @RequestParam(defaultValue = "") String receiptNumber,
+	                                                @RequestParam(defaultValue = "0") int pageNo,
+	                                                @RequestParam(defaultValue = "10") int pageSize,
+	                                                @RequestParam(defaultValue = "id") String sortBy,
+	                                                @RequestParam(defaultValue = "asc") String order,
+	                                                @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
+	                                                @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
 
-        try {
-            String data = transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order, start, end);
-            if (data == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else {
-                return ResponseEntity.ok(data);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+		try {
+			String data = transactionService.getCustomerReport(id, receiptNumber, pageNo, pageSize, sortBy, order, start, end);
+			if (data == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			} else {
+				return ResponseEntity.ok(data);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 
 }

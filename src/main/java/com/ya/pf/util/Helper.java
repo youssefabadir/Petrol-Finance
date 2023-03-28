@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 
 public class Helper {
 
-    public static Pageable preparePageable(int pageNo, int pageSize) {
+	public static Pageable preparePageable(int pageNo, int pageSize) {
 
         return preparePageable(pageNo, pageSize, "id", "desc");
     }

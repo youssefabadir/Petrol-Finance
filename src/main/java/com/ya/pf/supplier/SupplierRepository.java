@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<SupplierEntity, Long> {
 
-    Page<SupplierEntity> findByNameContaining(String name, Pageable pageable);
+	Page<SupplierEntity> findByNameContaining(String name, Pageable pageable);
 
-    List<SupplierEntity> findByNameContaining(String name);
+	List<SupplierEntity> findByNameContaining(String name);
 
 }

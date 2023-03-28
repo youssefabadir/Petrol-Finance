@@ -6,15 +6,16 @@ import java.util.List;
 
 public interface ProductService {
 
-    Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order);
+	Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order);
 
-    ProductEntity createProduct(ProductEntity productEntity);
+	ProductEntity createProduct(ProductEntity productEntity);
 
-    ProductEntity updateProduct(ProductEntity productEntity);
+	ProductEntity updateProduct(ProductEntity productEntity);
 
-    void deleteProduct(long id);
+	void deleteProduct(long id);
 
-    List<ProductEntity> searchProduct(String name);
+	List<ProductEntity> searchProduct(String name);
 
-    double getProductPrice(long id);
+	double getProductPrice(long id);
+
 }

@@ -15,46 +15,46 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductController {
 
-    private final ProductService productService;
+	private final ProductService productService;
 
-    @GetMapping
-    public ResponseEntity<Page<ProductEntity>> getProducts(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "asc") String order) {
+	@GetMapping
+	public ResponseEntity<Page<ProductEntity>> getProducts(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "asc") String order) {
 
-        Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
+		Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
 
-        if (productEntities.hasContent()) {
-            return ResponseEntity.ok(productEntities);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+		if (productEntities.hasContent()) {
+			return ResponseEntity.ok(productEntities);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
-    @PostMapping
-    public ResponseEntity<ProductEntity> createProduct(@RequestBody ProductEntity product) {
+	@PostMapping
+	public ResponseEntity<ProductEntity> createProduct(@RequestBody ProductEntity product) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
-    }
+		return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
+	}
 
-    @PutMapping
-    public ResponseEntity<ProductEntity> updateProduct(@RequestBody ProductEntity product) {
+	@PutMapping
+	public ResponseEntity<ProductEntity> updateProduct(@RequestBody ProductEntity product) {
 
-        return ResponseEntity.ok(productService.updateProduct(product));
-    }
+		return ResponseEntity.ok(productService.updateProduct(product));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
 
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
-    }
+		productService.deleteProduct(id);
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping("/search")
-    public ResponseEntity<String> searchProduct(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+	@GetMapping("/search")
+	public ResponseEntity<String> searchProduct(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
 
-        if (name.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(new ObjectMapper().writeValueAsString(productService.searchProduct(name)));
-    }
+		if (name.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity.ok(new ObjectMapper().writeValueAsString(productService.searchProduct(name)));
+	}
 
 }

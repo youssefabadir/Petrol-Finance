@@ -6,16 +6,16 @@ import java.time.LocalDate;
 
 public interface TransactionService {
 
-    Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+	Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
 
-    TransactionEntity createTransaction(TransactionEntity transactionEntity);
+	TransactionEntity createTransaction(TransactionEntity transactionEntity);
 
-    TransactionEntity updateTransaction(TransactionEntity transactionEntity);
+	TransactionEntity updateTransaction(TransactionEntity transactionEntity);
 
-    void deleteTransactionById(long id);
+	void deleteTransactionById(long id);
 
-    String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+	String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
 
-    Double getColumnSum(long id, String columnName, LocalDate start, LocalDate end);
+	Double getColumnSum(long id, String columnName, LocalDate start, LocalDate end);
 
 }

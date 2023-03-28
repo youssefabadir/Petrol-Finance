@@ -13,49 +13,49 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-    @Override
-    public Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order) {
+	@Override
+	public Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (name.isEmpty()) {
-            return productRepository.findAll(pageable);
-        } else {
-            return productRepository.findByNameContaining(name, pageable);
-        }
-    }
+		if (name.isEmpty()) {
+			return productRepository.findAll(pageable);
+		} else {
+			return productRepository.findByNameContaining(name, pageable);
+		}
+	}
 
-    @Override
-    public ProductEntity createProduct(ProductEntity productEntity) {
+	@Override
+	public ProductEntity createProduct(ProductEntity productEntity) {
 
-        return productRepository.save(productEntity);
-    }
+		return productRepository.save(productEntity);
+	}
 
-    @Override
-    public ProductEntity updateProduct(ProductEntity productEntity) {
+	@Override
+	public ProductEntity updateProduct(ProductEntity productEntity) {
 
-        return productRepository.save(productEntity);
-    }
+		return productRepository.save(productEntity);
+	}
 
-    @Override
-    public void deleteProduct(long id) {
+	@Override
+	public void deleteProduct(long id) {
 
-        productRepository.deleteById(id);
-    }
+		productRepository.deleteById(id);
+	}
 
-    @Override
-    public List<ProductEntity> searchProduct(String name) {
+	@Override
+	public List<ProductEntity> searchProduct(String name) {
 
-        return productRepository.findByNameContaining(name);
-    }
+		return productRepository.findByNameContaining(name);
+	}
 
-    @Override
-    public double getProductPrice(long id) {
+	@Override
+	public double getProductPrice(long id) {
 
-        ProductEntity product = productRepository.getReferenceById(id);
-        return product.getPrice();
-    }
+		ProductEntity product = productRepository.getReferenceById(id);
+		return product.getPrice();
+	}
 
 }

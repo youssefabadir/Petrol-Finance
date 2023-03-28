@@ -13,43 +13,43 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SupplierServiceImpl implements SupplierService {
 
-    private final SupplierRepository supplierRepository;
+	private final SupplierRepository supplierRepository;
 
-    @Override
-    public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize,
-                                             String sortBy, String order) {
+	@Override
+	public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize,
+	                                         String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (name.isEmpty()) {
-            return supplierRepository.findAll(pageable);
-        } else {
-            return supplierRepository.findByNameContaining(name, pageable);
-        }
-    }
+		if (name.isEmpty()) {
+			return supplierRepository.findAll(pageable);
+		} else {
+			return supplierRepository.findByNameContaining(name, pageable);
+		}
+	}
 
-    @Override
-    public SupplierEntity createSupplier(SupplierEntity supplierEntity) {
+	@Override
+	public SupplierEntity createSupplier(SupplierEntity supplierEntity) {
 
-        return supplierRepository.save(supplierEntity);
-    }
+		return supplierRepository.save(supplierEntity);
+	}
 
-    @Override
-    public SupplierEntity updateSupplier(SupplierEntity supplierEntity) {
+	@Override
+	public SupplierEntity updateSupplier(SupplierEntity supplierEntity) {
 
-        return supplierRepository.save(supplierEntity);
-    }
+		return supplierRepository.save(supplierEntity);
+	}
 
-    @Override
-    public void deleteSupplier(long id) {
+	@Override
+	public void deleteSupplier(long id) {
 
-        supplierRepository.deleteById(id);
-    }
+		supplierRepository.deleteById(id);
+	}
 
-    @Override
-    public List<SupplierEntity> searchSupplier(String name) {
+	@Override
+	public List<SupplierEntity> searchSupplier(String name) {
 
-        return supplierRepository.findByNameContaining(name);
-    }
+		return supplierRepository.findByNameContaining(name);
+	}
 
 }

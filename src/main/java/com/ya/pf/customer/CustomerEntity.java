@@ -20,48 +20,48 @@ import java.util.Set;
 @Accessors(chain = true)
 public class CustomerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @NonNull
-    @Column(name = "name", nullable = false)
-    private String name;
+	@NonNull
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "customerEntity")
-    private Set<TransactionEntity> transactions = new LinkedHashSet<>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "customerEntity")
+	private Set<TransactionEntity> transactions = new LinkedHashSet<>();
 
-    @Override
-    public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
 
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-        if (this == o) {
-            return true;
-        }
-        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-            return false;
-        }
-        CustomerEntity customerEntity = (CustomerEntity) o;
-        return id != null && Objects.equals(id, customerEntity.id);
-    }
+		if (getClass() != o.getClass()) {
+			return false;
+		}
+		if (this == o) {
+			return true;
+		}
+		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+			return false;
+		}
+		CustomerEntity customerEntity = (CustomerEntity) o;
+		return id != null && Objects.equals(id, customerEntity.id);
+	}
 
-    @Override
-    public String toString() {
+	@Override
+	public String toString() {
 
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                ")";
-    }
+		return getClass().getSimpleName() + "(" +
+				"id = " + id + ", " +
+				"name = " + name + ", " +
+				")";
+	}
 
-    @Override
-    public int hashCode() {
+	@Override
+	public int hashCode() {
 
-        return getClass().hashCode();
-    }
+		return getClass().hashCode();
+	}
 
 }

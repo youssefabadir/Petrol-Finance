@@ -13,43 +13,43 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
 
-    @Override
-    public Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize,
-                                             String sortBy, String order) {
+	@Override
+	public Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize,
+	                                         String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-        if (name.isEmpty()) {
-            return customerRepository.findAll(pageable);
-        } else {
-            return customerRepository.findByNameContaining(name, pageable);
-        }
-    }
+		if (name.isEmpty()) {
+			return customerRepository.findAll(pageable);
+		} else {
+			return customerRepository.findByNameContaining(name, pageable);
+		}
+	}
 
-    @Override
-    public CustomerEntity createCustomer(CustomerEntity customerEntity) {
+	@Override
+	public CustomerEntity createCustomer(CustomerEntity customerEntity) {
 
-        return customerRepository.save(customerEntity);
-    }
+		return customerRepository.save(customerEntity);
+	}
 
-    @Override
-    public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
+	@Override
+	public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
 
-        return customerRepository.save(customerEntity);
-    }
+		return customerRepository.save(customerEntity);
+	}
 
-    @Override
-    public void deleteCustomer(long id) {
+	@Override
+	public void deleteCustomer(long id) {
 
-        customerRepository.deleteById(id);
-    }
+		customerRepository.deleteById(id);
+	}
 
-    @Override
-    public List<CustomerEntity> searchCustomer(String name) {
+	@Override
+	public List<CustomerEntity> searchCustomer(String name) {
 
-        return customerRepository.findByNameContaining(name);
-    }
+		return customerRepository.findByNameContaining(name);
+	}
 
 }
