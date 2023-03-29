@@ -79,7 +79,7 @@ public class TransactionServiceImpl implements TransactionService {
 	public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
 	                                String sortBy, String order, LocalDate start, LocalDate end) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize);
+		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 		Page<TransactionEntity> page;
 
 		if (receiptNumber.isEmpty()) {
