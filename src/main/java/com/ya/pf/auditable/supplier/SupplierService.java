@@ -1,8 +1,6 @@
-package com.ya.pf.supplier;
+package com.ya.pf.auditable.supplier;
 
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface SupplierService {
 
@@ -13,7 +11,5 @@ public interface SupplierService {
 	SupplierEntity updateSupplier(SupplierEntity supplierEntity);
 
 	void deleteSupplier(long id);
-
-	List<SupplierEntity> searchSupplier(String name);
 
 }

@@ -1,4 +1,4 @@
-package com.ya.pf.supplier;
+package com.ya.pf.auditable.supplier;
 
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -21,10 +21,10 @@ public class SupplierServiceImpl implements SupplierService {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.isEmpty()) {
-			return supplierRepository.findAll(pageable);
+		if (name.trim().isEmpty()) {
+			return supplierRepository.findByIsDeletedFalse(pageable);
 		} else {
-			return supplierRepository.findByNameContaining(name, pageable);
+			return supplierRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
 		}
 	}
 
@@ -37,19 +37,19 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public SupplierEntity updateSupplier(SupplierEntity supplierEntity) {
 
-		return supplierRepository.save(supplierEntity);
+		if (supplierRepository.existsById(supplierEntity.getId())) {
+			return supplierRepository.save(supplierEntity);
+		} else {
+			throw new EntityNotFoundException("Supplier with ID " + supplierEntity.getId() + " not found");
+		}
 	}
 
 	@Override
 	public void deleteSupplier(long id) {
 
-		supplierRepository.deleteById(id);
-	}
-
-	@Override
-	public List<SupplierEntity> searchSupplier(String name) {
-
-		return supplierRepository.findByNameContaining(name);
+		SupplierEntity supplierEntity = supplierRepository.getReferenceById(id);
+		supplierEntity.setDeleted(true);
+		supplierRepository.save(supplierEntity);
 	}
 
 }
