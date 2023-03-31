@@ -1,7 +1,8 @@
-package com.ya.pf.customer;
+package com.ya.pf.auditable.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ya.pf.transaction.TransactionEntity;
+import com.ya.pf.auditable.Auditable;
+import com.ya.pf.auditable.transaction.TransactionEntity;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "customer")
 @Accessors(chain = true)
-public class CustomerEntity {
+public class CustomerEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,10 @@ public class CustomerEntity {
 	@NonNull
 	@Column(name = "name", nullable = false)
 	private String name;
+
+	@NonNull
+	@Column(name = "is_deleted", nullable = false)
+	private boolean isDeleted;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "customerEntity")
@@ -55,6 +60,9 @@ public class CustomerEntity {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
+				"isDeleted = " + isDeleted +
+				"createdDate = " + createdDate +
+				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}
 

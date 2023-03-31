@@ -1,4 +1,4 @@
-package com.ya.pf.customer;
+package com.ya.pf.auditable.customer;
 
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,34 +23,41 @@ public class CustomerServiceImpl implements CustomerService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (name.isEmpty()) {
-			return customerRepository.findAll(pageable);
+			return customerRepository.findByIsDeletedFalse(pageable);
 		} else {
-			return customerRepository.findByNameContaining(name, pageable);
+			return customerRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
 		}
 	}
 
 	@Override
 	public CustomerEntity createCustomer(CustomerEntity customerEntity) {
 
+		Date date = new Date();
+		customerEntity.setCreatedDate(date);
+		customerEntity.setLastModifiedDate(date);
 		return customerRepository.save(customerEntity);
 	}
 
 	@Override
 	public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
 
-		return customerRepository.save(customerEntity);
+		if (customerRepository.existsById(customerEntity.getId())) {
+			return customerRepository.save(customerEntity);
+		} else {
+			throw new EntityNotFoundException("Customer with ID " + customerEntity.getId() + " not found");
+		}
 	}
 
 	@Override
 	public void deleteCustomer(long id) {
 
-		customerRepository.deleteById(id);
-	}
-
-	@Override
-	public List<CustomerEntity> searchCustomer(String name) {
-
-		return customerRepository.findByNameContaining(name);
+		CustomerEntity customerEntity = customerRepository.getReferenceById(id);
+		if (customerEntity.getId() != null) {
+			customerEntity.setDeleted(true);
+			customerRepository.save(customerEntity);
+		} else {
+			throw new EntityNotFoundException("Customer with ID " + id + " not found");
+		}
 	}
 
 }

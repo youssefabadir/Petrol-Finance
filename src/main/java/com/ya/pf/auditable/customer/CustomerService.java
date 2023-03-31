@@ -1,8 +1,6 @@
-package com.ya.pf.customer;
+package com.ya.pf.auditable.customer;
 
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface CustomerService {
 
@@ -13,7 +11,5 @@ public interface CustomerService {
 	CustomerEntity updateCustomer(CustomerEntity customerEntity);
 
 	void deleteCustomer(long id);
-
-	List<CustomerEntity> searchCustomer(String name);
 
 }

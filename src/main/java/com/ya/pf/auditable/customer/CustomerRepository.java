@@ -1,4 +1,4 @@
-package com.ya.pf.customer;
+package com.ya.pf.auditable.customer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,8 +8,10 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
-	Page<CustomerEntity> findByNameContaining(String name, Pageable pageable);
+	Page<CustomerEntity> findByIsDeletedFalse(Pageable pageable);
 
-	List<CustomerEntity> findByNameContaining(String name);
+	Page<CustomerEntity> findByNameContainingAndIsDeletedFalse(String name, Pageable pageable);
+
+	List<CustomerEntity> findByNameContainingAndIsDeletedFalse(String name);
 
 }
