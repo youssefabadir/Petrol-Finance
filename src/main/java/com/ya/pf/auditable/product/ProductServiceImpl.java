@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -31,9 +30,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductEntity createProduct(ProductEntity productEntity) {
 
-		Date date = new Date();
-		productEntity.setCreatedDate(date);
-		productEntity.setLastModifiedDate(date);
 		return productRepository.save(productEntity);
 	}
 
