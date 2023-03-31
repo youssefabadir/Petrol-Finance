@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.isEmpty()) {
+		if (name.trim().isEmpty()) {
 			return customerRepository.findByIsDeletedFalse(pageable);
 		} else {
 			return customerRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
