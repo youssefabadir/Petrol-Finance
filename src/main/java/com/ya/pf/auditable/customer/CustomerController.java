@@ -37,7 +37,8 @@ public class CustomerController {
 	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerEntity customer) {
 
 		CustomerEntity customerEntity = customerService.createCustomer(customer);
-		return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOMapper.apply(customerEntity));
+		CustomerDTO customerDTO = customerDTOMapper.apply(customerEntity);
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerDTO);
 	}
 
 	@PutMapping
@@ -45,7 +46,8 @@ public class CustomerController {
 
 		try {
 			CustomerEntity customerEntity = customerService.updateCustomer(customer);
-			return ResponseEntity.ok(customerDTOMapper.apply(customerEntity));
+			CustomerDTO customerDTO = customerDTOMapper.apply(customerEntity);
+			return ResponseEntity.ok(customerDTO);
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (Exception e) {
