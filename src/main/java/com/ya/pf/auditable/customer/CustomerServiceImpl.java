@@ -52,12 +52,8 @@ public class CustomerServiceImpl implements CustomerService {
 	public void deleteCustomer(long id) {
 
 		CustomerEntity customerEntity = customerRepository.getReferenceById(id);
-		if (customerEntity.getId() != null) {
-			customerEntity.setDeleted(true);
-			customerRepository.save(customerEntity);
-		} else {
-			throw new EntityNotFoundException("Customer with ID " + id + " not found");
-		}
+		customerEntity.setDeleted(true);
+		customerRepository.save(customerEntity);
 	}
 
 }
