@@ -1,8 +1,10 @@
-package com.ya.pf.product;
+package com.ya.pf.auditable.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ya.pf.transaction.TransactionEntity;
+import com.ya.pf.auditable.Auditable;
+import com.ya.pf.auditable.transaction.TransactionEntity;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
@@ -17,18 +19,24 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 @Accessors(chain = true)
-public class ProductEntity {
+public class ProductEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name")
+	@NonNull
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "price")
+	@NonNull
+	@Column(name = "price", nullable = false)
 	private Double price;
+
+	@NonNull
+	@Column(name = "is_deleted", nullable = false)
+	private boolean isDeleted;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "productEntity")
@@ -57,6 +65,9 @@ public class ProductEntity {
 				"id = " + id + ", " +
 				"name = " + name + ", " +
 				"price = " + price +
+				"isDeleted = " + isDeleted +
+				"createdDate = " + createdDate +
+				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}
 

@@ -1,4 +1,4 @@
-package com.ya.pf.product;
+package com.ya.pf.auditable.product;
 
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,35 +21,38 @@ public class ProductServiceImpl implements ProductService {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.isEmpty()) {
-			return productRepository.findAll(pageable);
+		if (name.trim().isEmpty()) {
+			return productRepository.findByIsDeletedFalse(pageable);
 		} else {
-			return productRepository.findByNameContaining(name, pageable);
+			return productRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
 		}
 	}
 
 	@Override
 	public ProductEntity createProduct(ProductEntity productEntity) {
 
+		Date date = new Date();
+		productEntity.setCreatedDate(date);
+		productEntity.setLastModifiedDate(date);
 		return productRepository.save(productEntity);
 	}
 
 	@Override
 	public ProductEntity updateProduct(ProductEntity productEntity) {
 
-		return productRepository.save(productEntity);
+		if (productRepository.existsById(productEntity.getId())) {
+			return productRepository.save(productEntity);
+		} else {
+			throw new EntityNotFoundException("Product with ID " + productEntity.getId() + " not found");
+		}
 	}
 
 	@Override
 	public void deleteProduct(long id) {
 
-		productRepository.deleteById(id);
-	}
-
-	@Override
-	public List<ProductEntity> searchProduct(String name) {
-
-		return productRepository.findByNameContaining(name);
+		ProductEntity product = productRepository.getReferenceById(id);
+		product.setDeleted(true);
+		productRepository.save(product);
 	}
 
 	@Override

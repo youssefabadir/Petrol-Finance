@@ -1,8 +1,6 @@
-package com.ya.pf.product;
+package com.ya.pf.auditable.product;
 
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface ProductService {
 
@@ -13,8 +11,6 @@ public interface ProductService {
 	ProductEntity updateProduct(ProductEntity productEntity);
 
 	void deleteProduct(long id);
-
-	List<ProductEntity> searchProduct(String name);
 
 	double getProductPrice(long id);
 

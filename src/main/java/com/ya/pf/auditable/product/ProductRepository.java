@@ -1,15 +1,13 @@
-package com.ya.pf.product;
+package com.ya.pf.auditable.product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
-	Page<ProductEntity> findByNameContaining(String name, Pageable pageable);
+	Page<ProductEntity> findByIsDeletedFalse(Pageable pageable);
 
-	List<ProductEntity> findByNameContaining(String name);
+	Page<ProductEntity> findByNameContainingAndIsDeletedFalse(String name, Pageable pageable);
 
 }
