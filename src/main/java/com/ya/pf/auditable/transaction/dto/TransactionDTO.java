@@ -1,5 +1,6 @@
 package com.ya.pf.auditable.transaction.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.product.ProductEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
@@ -15,6 +16,8 @@ public record TransactionDTO(
 		double amount,
 		double dueMoney,
 		double paidMoney,
-		Date transactionDate) {
+		@JsonFormat(pattern = "dd-MM-yyyy")
+		Date transactionDate
+) {
 
 }

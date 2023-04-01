@@ -47,7 +47,6 @@ public class TransactionEntity extends Auditable {
 	@Column(name = "amount")
 	private double amount;
 
-	@NonNull
 	@Column(name = "due_money")
 	private double dueMoney;
 
@@ -60,7 +59,6 @@ public class TransactionEntity extends Auditable {
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date transactionDate;
 
-	@NonNull
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
 

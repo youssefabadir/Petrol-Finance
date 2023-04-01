@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.transaction.TransactionEntity;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
@@ -26,15 +25,12 @@ public class ProductEntity extends Auditable {
 	@Column(name = "id")
 	private Long id;
 
-	@NonNull
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@NonNull
 	@Column(name = "price", nullable = false)
 	private Double price;
 
-	@NonNull
 	@Column(name = "is_deleted", nullable = false)
 	private boolean isDeleted;
 
