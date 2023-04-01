@@ -8,6 +8,8 @@ import java.util.Date;
 
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
+	Page<TransactionEntity> findByIsDeletedFalse(Pageable pageable);
+
 	Page<TransactionEntity> findByReceiptNumberContainingAndIsDeletedFalse(String receiptNumber, Pageable pageable);
 
 	Page<TransactionEntity> findByCustomerEntity_IdAndIsDeletedFalse(long id, Pageable pageable);

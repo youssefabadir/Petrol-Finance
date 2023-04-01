@@ -44,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
 			return transactionRepository.findByReceiptNumberContainingAndIsDeletedFalse(receiptNumber, pageable);
 		} else {
-			return transactionRepository.findAll(pageable);
+			return transactionRepository.findByIsDeletedFalse(pageable);
 		}
 	}
 
