@@ -1,5 +1,6 @@
 package com.ya.pf.auditable.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ya.pf.auditable.customer.dto.CustomerDTO;
 import com.ya.pf.auditable.customer.dto.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -66,6 +68,15 @@ public class CustomerController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<CustomerEntity>> searchCustomer(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+
+		if (name.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity.ok(customerService.searchCustomer(name));
 	}
 
 }
