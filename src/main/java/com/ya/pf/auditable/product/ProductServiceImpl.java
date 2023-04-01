@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -56,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
 
 		ProductEntity product = productRepository.getReferenceById(id);
 		return product.getPrice();
+	}
+
+	@Override
+	public List<ProductEntity> searchProduct(String name) {
+
+		return productRepository.findByNameContainingAndIsDeletedFalse(name);
 	}
 
 }

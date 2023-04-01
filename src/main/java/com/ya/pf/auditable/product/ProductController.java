@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -66,6 +67,17 @@ public class ProductController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<ProductDTO>> searchCustomer(@RequestParam(defaultValue = "") String name) {
+
+		if (name.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		List<ProductEntity> productEntities = productService.searchProduct(name);
+		List<ProductDTO> productDTOS = productEntities.stream().map(productDTOMapper).toList();
+		return ResponseEntity.ok(productDTOS);
 	}
 
 }
