@@ -1,10 +1,12 @@
-package com.ya.pf.transaction;
+package com.ya.pf.auditable.transaction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ya.pf.customer.CustomerEntity;
-import com.ya.pf.product.ProductEntity;
-import com.ya.pf.supplier.SupplierEntity;
+import com.ya.pf.auditable.Auditable;
+import com.ya.pf.auditable.customer.CustomerEntity;
+import com.ya.pf.auditable.product.ProductEntity;
+import com.ya.pf.auditable.supplier.SupplierEntity;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
@@ -18,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "\"transaction\"")
 @Accessors(chain = true)
-public class TransactionEntity {
+public class TransactionEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,21 +39,30 @@ public class TransactionEntity {
 	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
-	@Column(name = "amount")
-	private float amount;
-
-	@Column(name = "due_money")
-	private Double dueMoney;
-
-	@Column(name = "paid_money")
-	private Double paidMoney;
-
+	@NonNull
 	@Column(name = "receipt_no")
 	private String receiptNumber;
 
+	@NonNull
+	@Column(name = "amount")
+	private double amount;
+
+	@NonNull
+	@Column(name = "due_money")
+	private double dueMoney;
+
+	@NonNull
+	@Column(name = "paid_money")
+	private double paidMoney;
+
+	@NonNull
 	@Column(name = "transaction_date")
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date transactionDate;
+
+	@NonNull
+	@Column(name = "is_deleted", nullable = false)
+	private boolean isDeleted;
 
 	@Override
 	public boolean equals(Object o) {
@@ -77,11 +88,14 @@ public class TransactionEntity {
 				"supplier id = " + supplierEntity.getId() + ", " +
 				"customer id = " + customerEntity.getId() + ", " +
 				"product id = " + productEntity.getId() + ", " +
+				"receipt no = " + receiptNumber + ", " +
 				"amount = " + amount + ", " +
 				"due money = " + dueMoney + ", " +
 				"paid money = " + paidMoney + ", " +
-				"receipt no = " + receiptNumber + ", " +
 				"transaction date = " + transactionDate +
+				"isDeleted = " + isDeleted +
+				"createdDate = " + createdDate +
+				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}
 

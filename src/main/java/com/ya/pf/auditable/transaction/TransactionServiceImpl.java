@@ -1,9 +1,6 @@
-package com.ya.pf.transaction;
+package com.ya.pf.auditable.transaction;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ya.pf.product.ProductService;
+import com.ya.pf.auditable.product.ProductService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -40,11 +38,11 @@ public class TransactionServiceImpl implements TransactionService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+			return transactionRepository.findByTransactionDateBetweenAndIsDeletedFalse(Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
-			return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+			return transactionRepository.findByReceiptNumberContainingAndIsDeletedFalse(receiptNumber, pageable);
 		} else {
 			return transactionRepository.findAll(pageable);
 		}
@@ -62,58 +60,58 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
 
-		double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
-		transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+		if (transactionRepository.existsById(transactionEntity.getId())) {
 
-		return transactionRepository.save(transactionEntity);
+			double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
+			transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+			return transactionRepository.save(transactionEntity);
+		} else {
+			throw new EntityNotFoundException("Transaction with ID " + transactionEntity.getId() + " not found");
+		}
 	}
 
 	@Override
 	public void deleteTransactionById(long id) {
 
-		transactionRepository.deleteById(id);
+		TransactionEntity transactionEntity = transactionRepository.getReferenceById(id);
+		transactionEntity.setDeleted(true);
+		transactionRepository.save(transactionEntity);
 	}
 
 	@Override
 	@SneakyThrows
-	public String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
-	                                String sortBy, String order, LocalDate start, LocalDate end) {
+	public CustomerReport getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize,
+	                                        String sortBy, String order, LocalDate start, LocalDate end) {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 		Page<TransactionEntity> page;
 
 		if (receiptNumber.isEmpty()) {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_Id(id, pageable);
+				page = transactionRepository.findByCustomerEntity_IdAndIsDeletedFalse(id, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
+				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetweenAndIsDeletedFalse(id,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
 		} else {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndIsDeletedFalse(id, receiptNumber, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(id,
 						receiptNumber,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
 		}
-
-		String result = null;
+		double totalDueMoney = -1;
+		double totalPaidMoney = -1;
 		if (page.hasContent()) {
-			ObjectMapper objectMapper = new ObjectMapper();
-			JsonNode jsonNode = objectMapper.readTree(objectMapper.writeValueAsString(page));
+			totalDueMoney = getColumnSum(id, "dueMoney", start, end);
+			totalPaidMoney = getColumnSum(id, "paidMoney", start, end);
 
-			double totalDueMoney = getColumnSum(id, "dueMoney", start, end);
-			double totalPaidMoney = getColumnSum(id, "paidMoney", start, end);
-
-			((ObjectNode) jsonNode).put("totalDueMoney", totalDueMoney);
-			((ObjectNode) jsonNode).put("totalPaidMoney", totalPaidMoney);
-			result = objectMapper.writeValueAsString(jsonNode);
 		}
-		return result;
+		return new CustomerReport(page, totalDueMoney, totalPaidMoney);
 	}
 
 	@Transactional

@@ -1,4 +1,4 @@
-package com.ya.pf.transaction;
+package com.ya.pf.auditable.transaction;
 
 import org.springframework.data.domain.Page;
 
@@ -14,7 +14,7 @@ public interface TransactionService {
 
 	void deleteTransactionById(long id);
 
-	String getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+	CustomerReport getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
 
 	Double getColumnSum(long id, String columnName, LocalDate start, LocalDate end);
 
