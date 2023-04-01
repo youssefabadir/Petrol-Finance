@@ -17,4 +17,5 @@ public interface ProductService {
 	double getProductPrice(long id);
 
 	List<ProductEntity> searchProduct(String name);
+
 }

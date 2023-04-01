@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -50,6 +51,12 @@ public class SupplierServiceImpl implements SupplierService {
 		SupplierEntity supplierEntity = supplierRepository.getReferenceById(id);
 		supplierEntity.setDeleted(true);
 		supplierRepository.save(supplierEntity);
+	}
+
+	@Override
+	public List<SupplierEntity> searchSupplier(String name) {
+
+		return supplierRepository.findByNameContainingAndIsDeletedFalse(name);
 	}
 
 }
