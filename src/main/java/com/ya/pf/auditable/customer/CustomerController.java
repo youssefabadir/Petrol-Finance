@@ -1,6 +1,5 @@
 package com.ya.pf.auditable.customer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ya.pf.auditable.customer.dto.CustomerDTO;
 import com.ya.pf.auditable.customer.dto.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -71,12 +70,14 @@ public class CustomerController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<CustomerEntity>> searchCustomer(@RequestParam(defaultValue = "") String name) throws JsonProcessingException {
+	public ResponseEntity<List<CustomerDTO>> searchCustomer(@RequestParam(defaultValue = "") String name) {
 
 		if (name.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		return ResponseEntity.ok(customerService.searchCustomer(name));
+		List<CustomerEntity> customerEntities = customerService.searchCustomer(name);
+		List<CustomerDTO> customerDTOS = customerEntities.stream().map(customerDTOMapper).toList();
+		return ResponseEntity.ok(customerDTOS);
 	}
 
 }
