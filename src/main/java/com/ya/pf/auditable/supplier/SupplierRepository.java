@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<SupplierEntity, Long> {
 
-	Page<SupplierEntity> findByIsDeletedFalse(Pageable pageable);
+	Page<SupplierEntity> findByNameContaining(String name, Pageable pageable);
 
-	Page<SupplierEntity> findByNameContainingAndIsDeletedFalse(String name, Pageable pageable);
-
-	List<SupplierEntity> findByNameContainingAndIsDeletedFalse(String name);
+	List<SupplierEntity> findByNameContaining(String name);
 
 }

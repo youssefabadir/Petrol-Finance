@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
-	Page<CustomerEntity> findByIsDeletedFalse(Pageable pageable);
+	Page<CustomerEntity> findByNameContaining(String name, Pageable pageable);
 
-	Page<CustomerEntity> findByNameContainingAndIsDeletedFalse(String name, Pageable pageable);
-
-	List<CustomerEntity> findByNameContainingAndIsDeletedFalse(String name);
+	List<CustomerEntity> findByNameContaining(String name);
 
 }

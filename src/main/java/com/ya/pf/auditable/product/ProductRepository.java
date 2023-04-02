@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
-	Page<ProductEntity> findByIsDeletedFalse(Pageable pageable);
+	Page<ProductEntity> findByNameContaining(String name, Pageable pageable);
 
-	Page<ProductEntity> findByNameContainingAndIsDeletedFalse(String name, Pageable pageable);
-
-	List<ProductEntity> findByNameContainingAndIsDeletedFalse(String name);
+	List<ProductEntity> findByNameContaining(String name);
 
 }

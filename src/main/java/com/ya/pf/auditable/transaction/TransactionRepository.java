@@ -8,20 +8,18 @@ import java.util.Date;
 
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
 
-	Page<TransactionEntity> findByIsDeletedFalse(Pageable pageable);
+	Page<TransactionEntity> findByReceiptNumberContaining(String receiptNumber, Pageable pageable);
 
-	Page<TransactionEntity> findByReceiptNumberContainingAndIsDeletedFalse(String receiptNumber, Pageable pageable);
+	Page<TransactionEntity> findByCustomerEntity_Id(long id, Pageable pageable);
 
-	Page<TransactionEntity> findByCustomerEntity_IdAndIsDeletedFalse(long id, Pageable pageable);
+	Page<TransactionEntity> findByCustomerEntity_IdAndReceiptNumberContaining(long id, String receiptNumber, Pageable pageable);
 
-	Page<TransactionEntity> findByCustomerEntity_IdAndReceiptNumberContainingAndIsDeletedFalse(long id, String receiptNumber, Pageable pageable);
+	Page<TransactionEntity> findByTransactionDateBetween(Date start, Date end, Pageable pageable);
 
-	Page<TransactionEntity> findByTransactionDateBetweenAndIsDeletedFalse(Date start, Date end, Pageable pageable);
+	Page<TransactionEntity> findByReceiptNumberContainingAndTransactionDateBetween(String receiptNumber, Date start, Date end, Pageable pageable);
 
-	Page<TransactionEntity> findByReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(String receiptNumber, Date start, Date end, Pageable pageable);
+	Page<TransactionEntity> findByCustomerEntity_IdAndTransactionDateBetween(long id, Date start, Date end, Pageable pageable);
 
-	Page<TransactionEntity> findByCustomerEntity_IdAndTransactionDateBetweenAndIsDeletedFalse(long id, Date start, Date end, Pageable pageable);
-
-	Page<TransactionEntity> findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(long id, String receiptNumber, Date start, Date end, Pageable pageable);
+	Page<TransactionEntity> findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(long id, String receiptNumber, Date start, Date end, Pageable pageable);
 
 }

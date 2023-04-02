@@ -10,6 +10,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,6 +22,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "\"transaction\"")
 @Accessors(chain = true)
+@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@Where(clause = "deleted=0")
 public class TransactionEntity extends Auditable {
 
 	@Id
@@ -59,9 +63,6 @@ public class TransactionEntity extends Auditable {
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date transactionDate;
 
-	@Column(name = "is_deleted", nullable = false)
-	private boolean isDeleted;
-
 	@Override
 	public boolean equals(Object o) {
 
@@ -91,7 +92,7 @@ public class TransactionEntity extends Auditable {
 				"due money = " + dueMoney + ", " +
 				"paid money = " + paidMoney + ", " +
 				"transaction date = " + transactionDate +
-				"isDeleted = " + isDeleted +
+				"deleted = " + deleted +
 				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";

@@ -22,9 +22,9 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (name.trim().isEmpty()) {
-			return productRepository.findByIsDeletedFalse(pageable);
+			return productRepository.findAll(pageable);
 		} else {
-			return productRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
+			return productRepository.findByNameContaining(name, pageable);
 		}
 	}
 
@@ -47,9 +47,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void deleteProduct(long id) {
 
-		ProductEntity product = productRepository.getReferenceById(id);
-		product.setDeleted(true);
-		productRepository.save(product);
+		productRepository.deleteById(id);
 	}
 
 	@Override
@@ -62,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductEntity> searchProduct(String name) {
 
-		return productRepository.findByNameContainingAndIsDeletedFalse(name);
+		return productRepository.findByNameContaining(name);
 	}
 
 }

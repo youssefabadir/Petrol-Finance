@@ -25,4 +25,7 @@ public class Auditable {
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date lastModifiedDate;
 
+	@Column(name = "deleted")
+	protected boolean deleted;
+
 }

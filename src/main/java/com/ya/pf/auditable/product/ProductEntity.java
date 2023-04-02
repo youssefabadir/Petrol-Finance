@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -18,6 +20,8 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 @Accessors(chain = true)
+@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@Where(clause = "deleted=0")
 public class ProductEntity extends Auditable {
 
 	@Id
@@ -30,9 +34,6 @@ public class ProductEntity extends Auditable {
 
 	@Column(name = "price", nullable = false)
 	private Double price;
-
-	@Column(name = "is_deleted", nullable = false)
-	private boolean isDeleted;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "productEntity")
@@ -61,7 +62,7 @@ public class ProductEntity extends Auditable {
 				"id = " + id + ", " +
 				"name = " + name + ", " +
 				"price = " + price +
-				"isDeleted = " + isDeleted +
+				"deleted = " + deleted +
 				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";

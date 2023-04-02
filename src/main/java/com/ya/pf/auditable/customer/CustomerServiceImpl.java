@@ -23,9 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (name.trim().isEmpty()) {
-			return customerRepository.findByIsDeletedFalse(pageable);
+			return customerRepository.findAll(pageable);
 		} else {
-			return customerRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
+			return customerRepository.findByNameContaining(name, pageable);
 		}
 	}
 
@@ -48,15 +48,13 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void deleteCustomer(long id) {
 
-		CustomerEntity customerEntity = customerRepository.getReferenceById(id);
-		customerEntity.setDeleted(true);
-		customerRepository.save(customerEntity);
+		customerRepository.deleteById(id);
 	}
 
 	@Override
 	public List<CustomerEntity> searchCustomer(String name) {
 
-		return customerRepository.findByNameContainingAndIsDeletedFalse(name);
+		return customerRepository.findByNameContaining(name);
 	}
 
 }

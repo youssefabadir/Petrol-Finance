@@ -23,9 +23,9 @@ public class SupplierServiceImpl implements SupplierService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (name.trim().isEmpty()) {
-			return supplierRepository.findByIsDeletedFalse(pageable);
+			return supplierRepository.findAll(pageable);
 		} else {
-			return supplierRepository.findByNameContainingAndIsDeletedFalse(name, pageable);
+			return supplierRepository.findByNameContaining(name, pageable);
 		}
 	}
 
@@ -48,15 +48,13 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public void deleteSupplier(long id) {
 
-		SupplierEntity supplierEntity = supplierRepository.getReferenceById(id);
-		supplierEntity.setDeleted(true);
-		supplierRepository.save(supplierEntity);
+		supplierRepository.deleteById(id);
 	}
 
 	@Override
 	public List<SupplierEntity> searchSupplier(String name) {
 
-		return supplierRepository.findByNameContainingAndIsDeletedFalse(name);
+		return supplierRepository.findByNameContaining(name);
 	}
 
 }

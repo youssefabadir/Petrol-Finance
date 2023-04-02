@@ -38,13 +38,13 @@ public class TransactionServiceImpl implements TransactionService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByTransactionDateBetweenAndIsDeletedFalse(Date.valueOf(start), Date.valueOf(end), pageable);
+			return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
-			return transactionRepository.findByReceiptNumberContainingAndIsDeletedFalse(receiptNumber, pageable);
+			return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
 		} else {
-			return transactionRepository.findByIsDeletedFalse(pageable);
+			return transactionRepository.findAll(pageable);
 		}
 	}
 
@@ -73,9 +73,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public void deleteTransactionById(long id) {
 
-		TransactionEntity transactionEntity = transactionRepository.getReferenceById(id);
-		transactionEntity.setDeleted(true);
-		transactionRepository.save(transactionEntity);
+		transactionRepository.deleteById(id);
 	}
 
 	@Override
@@ -88,17 +86,17 @@ public class TransactionServiceImpl implements TransactionService {
 
 		if (receiptNumber.isEmpty()) {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_IdAndIsDeletedFalse(id, pageable);
+				page = transactionRepository.findByCustomerEntity_Id(id, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetweenAndIsDeletedFalse(id,
+				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
 		} else {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndIsDeletedFalse(id, receiptNumber, pageable);
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetweenAndIsDeletedFalse(id,
+				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
 						receiptNumber,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);

@@ -2,7 +2,7 @@ CREATE TABLE customer
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255),
-    is_deleted         BIT,
+    deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
 );
@@ -11,7 +11,7 @@ CREATE TABLE supplier
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255),
-    is_deleted         BIT,
+    deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
 );
@@ -21,7 +21,7 @@ CREATE TABLE product
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255),
     price              DECIMAL(18, 2),
-    is_deleted         BIT,
+    deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
 );
@@ -37,7 +37,7 @@ CREATE TABLE [transaction]
     due_money          DECIMAL(18, 2),
     paid_money         DECIMAL(18, 2),
     transaction_date   DATETIME,
-    is_deleted         BIT,
+    deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
         CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
