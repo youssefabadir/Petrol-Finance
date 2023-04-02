@@ -23,57 +23,61 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TransactionServiceImpl implements TransactionService {
+public class BillServiceImpl implements BillService {
 
-	private final TransactionRepository transactionRepository;
+	private final BillRepository billRepository;
 
 	private final SessionFactory sessionFactory;
 
 	private final ProductService productService;
 
 	@Override
-	public Page<TransactionEntity> getTransactions(String receiptNumber, int pageNo, int pageSize, String sortBy,
-	                                               String order, LocalDate start, LocalDate end) {
+	public Page<BillEntity> getBills(String receiptNumber, int pageNo, int pageSize, String sortBy,
+	                                 String order, LocalDate start, LocalDate end) {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (receiptNumber.isEmpty() && start != null && end != null) {
-			return transactionRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
-			return transactionRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+			return billRepository.findByReceiptNumberContaining(receiptNumber, pageable);
 		} else {
-			return transactionRepository.findAll(pageable);
+			return billRepository.findAll(pageable);
 		}
 	}
 
 	@Override
-	public TransactionEntity createTransaction(TransactionEntity transactionEntity) {
+	public BillEntity createBill(BillEntity billEntity) {
 
-		double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
-		transactionEntity.setDueMoney(price * transactionEntity.getAmount());
+		if (billEntity.getId() != null) {
+			billEntity.setId(null);
+		}
 
-		return transactionRepository.save(transactionEntity);
+		double price = productService.getProductPrice(billEntity.getProductEntity().getId());
+		billEntity.setDueMoney(price * billEntity.getAmount());
+
+		return billRepository.save(billEntity);
 	}
 
 	@Override
-	public TransactionEntity updateTransaction(TransactionEntity transactionEntity) {
+	public BillEntity updateBill(BillEntity billEntity) {
 
-		if (transactionRepository.existsById(transactionEntity.getId())) {
+		if (billRepository.existsById(billEntity.getId())) {
 
-			double price = productService.getProductPrice(transactionEntity.getProductEntity().getId());
-			transactionEntity.setDueMoney(price * transactionEntity.getAmount());
-			return transactionRepository.save(transactionEntity);
+			double price = productService.getProductPrice(billEntity.getProductEntity().getId());
+			billEntity.setDueMoney(price * billEntity.getAmount());
+			return billRepository.save(billEntity);
 		} else {
-			throw new EntityNotFoundException("Transaction with ID " + transactionEntity.getId() + " not found");
+			throw new EntityNotFoundException("Transaction with ID " + billEntity.getId() + " not found");
 		}
 	}
 
 	@Override
-	public void deleteTransactionById(long id) {
+	public void deleteBill(long id) {
 
-		transactionRepository.deleteById(id);
+		billRepository.deleteById(id);
 	}
 
 	@Override
@@ -82,21 +86,21 @@ public class TransactionServiceImpl implements TransactionService {
 	                                        String sortBy, String order, LocalDate start, LocalDate end) {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
-		Page<TransactionEntity> page;
+		Page<BillEntity> page;
 
 		if (receiptNumber.isEmpty()) {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_Id(id, pageable);
+				page = billRepository.findByCustomerEntity_Id(id, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
 		} else {
 			if (start == null || end == null) {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
 			} else {
-				page = transactionRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
 						receiptNumber,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
@@ -125,7 +129,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Double> criteria = builder.createQuery(Double.class);
-		Root<TransactionEntity> root = criteria.from(TransactionEntity.class);
+		Root<BillEntity> root = criteria.from(BillEntity.class);
 
 		criteria.select(builder.sum(root.get(columnName)));
 		criteria.where(builder.equal(root.get("customerEntity"), id));

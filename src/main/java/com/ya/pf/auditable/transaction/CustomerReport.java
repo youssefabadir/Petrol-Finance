@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 @AllArgsConstructor
 public class CustomerReport {
 
-	private final Page<TransactionEntity> transactionPage;
+	private final Page<BillEntity> transactionPage;
 
 	private final double totalDueMoney;
 

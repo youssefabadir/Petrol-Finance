@@ -32,6 +32,10 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public SupplierEntity createSupplier(SupplierEntity supplierEntity) {
 
+		if (supplierEntity.getId() != null) {
+			supplierEntity.setId(null);
+		}
+
 		return supplierRepository.save(supplierEntity);
 	}
 

@@ -31,6 +31,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductEntity createProduct(ProductEntity productEntity) {
 
+		if (productEntity.getId() != null) {
+			productEntity.setId(null);
+		}
+
 		return productRepository.save(productEntity);
 	}
 

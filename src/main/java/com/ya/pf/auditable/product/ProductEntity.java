@@ -2,7 +2,7 @@ package com.ya.pf.auditable.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.transaction.TransactionEntity;
+import com.ya.pf.auditable.transaction.BillEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -37,7 +37,7 @@ public class ProductEntity extends Auditable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "productEntity")
-	private Set<TransactionEntity> transactions = new LinkedHashSet<>();
+	private Set<BillEntity> transactions = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {

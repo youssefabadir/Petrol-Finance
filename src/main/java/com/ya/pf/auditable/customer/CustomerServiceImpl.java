@@ -32,6 +32,10 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public CustomerEntity createCustomer(CustomerEntity customerEntity) {
 
+		if (customerEntity.getId() != null) {
+			customerEntity.setId(null);
+		}
+
 		return customerRepository.save(customerEntity);
 	}
 

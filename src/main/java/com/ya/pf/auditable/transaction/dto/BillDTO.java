@@ -7,7 +7,7 @@ import com.ya.pf.auditable.supplier.SupplierEntity;
 
 import java.util.Date;
 
-public record TransactionDTO(
+public record BillDTO(
 		long id,
 		SupplierEntity supplier,
 		CustomerEntity customer,

@@ -20,11 +20,11 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "\"transaction\"")
+@Table(name = "bill")
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
 @Where(clause = "deleted=0")
-public class TransactionEntity extends Auditable {
+public class BillEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,8 +75,8 @@ public class TransactionEntity extends Auditable {
 		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
 			return false;
 		}
-		TransactionEntity transactionEntity = (TransactionEntity) o;
-		return id != null && Objects.equals(id, transactionEntity.id);
+		BillEntity billEntity = (BillEntity) o;
+		return id != null && Objects.equals(id, billEntity.id);
 	}
 
 	@Override
