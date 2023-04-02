@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.transaction;
+package com.ya.pf.auditable.bill;
 
 import org.springframework.data.domain.Page;
 

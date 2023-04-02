@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.transaction.dto;
+package com.ya.pf.auditable.bill.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.customer.CustomerEntity;

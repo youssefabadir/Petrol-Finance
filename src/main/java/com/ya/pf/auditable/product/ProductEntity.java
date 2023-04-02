@@ -2,7 +2,7 @@ package com.ya.pf.auditable.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.transaction.BillEntity;
+import com.ya.pf.auditable.bill.BillEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

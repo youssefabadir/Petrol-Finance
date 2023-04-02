@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.transaction;
+package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.product.ProductService;
 import com.ya.pf.util.Helper;
@@ -38,9 +38,9 @@ public class BillServiceImpl implements BillService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return billRepository.findByReceiptNumberContainingAndTransactionDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByReceiptNumberContainingAndBillDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (receiptNumber.isEmpty() && start != null && end != null) {
-			return billRepository.findByTransactionDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByBillDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
 			return billRepository.findByReceiptNumberContaining(receiptNumber, pageable);
 		} else {
@@ -70,14 +70,19 @@ public class BillServiceImpl implements BillService {
 			billEntity.setDueMoney(price * billEntity.getAmount());
 			return billRepository.save(billEntity);
 		} else {
-			throw new EntityNotFoundException("Transaction with ID " + billEntity.getId() + " not found");
+			throw new EntityNotFoundException("Bill with ID " + billEntity.getId() + " not found");
 		}
 	}
 
 	@Override
 	public void deleteBill(long id) {
 
-		billRepository.deleteById(id);
+		if (billRepository.existsById(id)) {
+
+			billRepository.deleteById(id);
+		} else {
+			throw new EntityNotFoundException("Bill with ID " + id + " not found");
+		}
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class BillServiceImpl implements BillService {
 			if (start == null || end == null) {
 				page = billRepository.findByCustomerEntity_Id(id, pageable);
 			} else {
-				page = billRepository.findByCustomerEntity_IdAndTransactionDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndBillDateBetween(id,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
@@ -100,7 +105,7 @@ public class BillServiceImpl implements BillService {
 			if (start == null || end == null) {
 				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
 			} else {
-				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndBillDateBetween(id,
 						receiptNumber,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
@@ -136,7 +141,7 @@ public class BillServiceImpl implements BillService {
 		if (start != null && end != null) {
 			criteria.where(builder.and(
 					criteria.getRestriction(),
-					builder.between(root.get("transactionDate"), Date.valueOf(start), Date.valueOf(end))));
+					builder.between(root.get("billDate"), Date.valueOf(start), Date.valueOf(end))));
 		}
 
 		TypedQuery<Double> query = session.createQuery(criteria);

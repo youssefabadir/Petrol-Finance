@@ -36,7 +36,7 @@ CREATE TABLE bill
     receipt_no         VARCHAR(255),
     due_money          DECIMAL(18, 2),
     paid_money         DECIMAL(18, 2),
-    transaction_date   DATETIME,
+    bill_date          DATETIME,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,

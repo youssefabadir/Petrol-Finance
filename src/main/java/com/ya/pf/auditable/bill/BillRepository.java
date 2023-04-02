@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.transaction;
+package com.ya.pf.auditable.bill;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +16,12 @@ public interface BillRepository extends JpaRepository<BillEntity, Long> {
 
 	Page<BillEntity> findByCustomerEntity_IdAndReceiptNumberContaining(long id, String receiptNumber, Pageable pageable);
 
-	Page<BillEntity> findByTransactionDateBetween(Date start, Date end, Pageable pageable);
+	Page<BillEntity> findByBillDateBetween(Date start, Date end, Pageable pageable);
 
-	Page<BillEntity> findByReceiptNumberContainingAndTransactionDateBetween(String receiptNumber, Date start, Date end, Pageable pageable);
+	Page<BillEntity> findByReceiptNumberContainingAndBillDateBetween(String receiptNumber, Date start, Date end, Pageable pageable);
 
-	Page<BillEntity> findByCustomerEntity_IdAndTransactionDateBetween(long id, Date start, Date end, Pageable pageable);
+	Page<BillEntity> findByCustomerEntity_IdAndBillDateBetween(long id, Date start, Date end, Pageable pageable);
 
-	Page<BillEntity> findByCustomerEntity_IdAndReceiptNumberContainingAndTransactionDateBetween(long id, String receiptNumber, Date start, Date end, Pageable pageable);
+	Page<BillEntity> findByCustomerEntity_IdAndReceiptNumberContainingAndBillDateBetween(long id, String receiptNumber, Date start, Date end, Pageable pageable);
 
 }

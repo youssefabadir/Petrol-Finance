@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.transaction;
+package com.ya.pf.auditable.bill;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
@@ -59,9 +59,9 @@ public class BillEntity extends Auditable {
 	private double paidMoney;
 
 	@NonNull
-	@Column(name = "transaction_date")
+	@Column(name = "bill_date")
 	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date transactionDate;
+	private Date billDate;
 
 	@Override
 	public boolean equals(Object o) {
@@ -91,7 +91,7 @@ public class BillEntity extends Auditable {
 				"amount = " + amount + ", " +
 				"due money = " + dueMoney + ", " +
 				"paid money = " + paidMoney + ", " +
-				"transaction date = " + transactionDate +
+				"transaction date = " + billDate +
 				"deleted = " + deleted +
 				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +

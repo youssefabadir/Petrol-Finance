@@ -1,6 +1,6 @@
-package com.ya.pf.auditable.transaction.dto;
+package com.ya.pf.auditable.bill.dto;
 
-import com.ya.pf.auditable.transaction.BillEntity;
+import com.ya.pf.auditable.bill.BillEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
@@ -20,7 +20,7 @@ public class BillDTOMapper implements Function<BillEntity, BillDTO> {
 				billEntity.getAmount(),
 				billEntity.getDueMoney(),
 				billEntity.getPaidMoney(),
-				billEntity.getTransactionDate()
+				billEntity.getBillDate()
 		);
 	}
 

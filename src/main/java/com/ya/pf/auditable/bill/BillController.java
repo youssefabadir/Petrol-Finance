@@ -1,7 +1,7 @@
-package com.ya.pf.auditable.transaction;
+package com.ya.pf.auditable.bill;
 
-import com.ya.pf.auditable.transaction.dto.BillDTO;
-import com.ya.pf.auditable.transaction.dto.BillDTOMapper;
+import com.ya.pf.auditable.bill.dto.BillDTO;
+import com.ya.pf.auditable.bill.dto.BillDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

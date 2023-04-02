@@ -52,7 +52,11 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public void deleteSupplier(long id) {
 
-		supplierRepository.deleteById(id);
+		if (supplierRepository.existsById(id)) {
+			supplierRepository.deleteById(id);
+		} else {
+			throw new EntityNotFoundException("Supplier with ID " + id + " not found");
+		}
 	}
 
 	@Override
