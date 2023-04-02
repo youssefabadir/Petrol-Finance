@@ -39,8 +39,8 @@ CREATE TABLE [transaction]
     transaction_date   DATETIME,
     deleted            BIT,
     created_date       DATETIME,
-    last_modified_date DATETIME
-        CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
+    last_modified_date DATETIME,
+    CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
     CONSTRAINT FK_TRANSACTION_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_TRANSACTION_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
 );
