@@ -1,10 +1,10 @@
 package com.ya.pf.auditable.payment.dto;
 
-import com.ya.pf.auditable.customer.CustomerEntity;
+import com.ya.pf.auditable.customer.dto.CustomerDTO;
 
 public record PaymentDTO(
 		long id,
-		CustomerEntity customer,
+		CustomerDTO customer,
 		String receiptNumber,
 		double amount
 ) {
