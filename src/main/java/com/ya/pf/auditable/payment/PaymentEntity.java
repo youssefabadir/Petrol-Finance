@@ -34,15 +34,15 @@ public class PaymentEntity extends Auditable {
 	@JoinColumn(name = "way_of_payment_id", nullable = false)
 	private WayOfPaymentEntity wayOfPaymentEntity;
 
-	@Column(name = "receipt_number", nullable = false)
-	private String receiptNumber;
+	@Column(name = "number", nullable = false)
+	private String number;
 
 	@Column(name = "amount", nullable = false)
 	double amount;
 
-	@Column(name = "payment_date", nullable = false)
+	@Column(name = "date", nullable = false)
 	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date paymentDate;
+	private Date date;
 
 	@Override
 	public boolean equals(Object o) {
@@ -67,8 +67,8 @@ public class PaymentEntity extends Auditable {
 				"id = " + id + ", " +
 				"customer id = " + customerEntity.getId() + ", " +
 				"way of payment = " + wayOfPaymentEntity.getId() + ", " +
-				"receipt number = " + receiptNumber + ", " +
-				"payment date = " + paymentDate + ", " +
+				"receipt number = " + number + ", " +
+				"payment date = " + date + ", " +
 				"deleted = " + deleted +
 				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +

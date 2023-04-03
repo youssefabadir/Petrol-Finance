@@ -24,7 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
 		if (receiptNumber.trim().isEmpty()) {
 			return paymentRepository.findAll(pageable);
 		} else {
-			return paymentRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+			return paymentRepository.findByNumberContaining(receiptNumber, pageable);
 		}
 	}
 
@@ -35,9 +35,9 @@ public class PaymentServiceImpl implements PaymentService {
 			paymentEntity.setId(null);
 		}
 
-		boolean flag = paymentRepository.existsByReceiptNumberAndWayOfPaymentEntity_Id(paymentEntity.getReceiptNumber(),
+		boolean exists = paymentRepository.existsByNumberAndWayOfPaymentEntity_Id(paymentEntity.getNumber(),
 				paymentEntity.getWayOfPaymentEntity().getId());
-		if (flag) {
+		if (exists) {
 			throw new EntityExistsException("This receipt number exists for this way of payment");
 		} else {
 			return paymentRepository.save(paymentEntity);
@@ -49,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 		long id = paymentEntity.getId();
 		if (paymentRepository.existsById(id)) {
-			boolean uniquePayment = paymentRepository.checkUniquePayment(id, paymentEntity.getReceiptNumber(), paymentEntity.getWayOfPaymentEntity().getId());
+			boolean uniquePayment = paymentRepository.checkUniquePayment(id, paymentEntity.getNumber(), paymentEntity.getWayOfPaymentEntity().getId());
 
 			if (uniquePayment) {
 				return paymentRepository.save(paymentEntity);

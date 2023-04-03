@@ -12,12 +12,11 @@ public record BillDTO(
 		SupplierDTO supplier,
 		CustomerDTO customer,
 		ProductDTO product,
-		String receiptNumber,
+		String number,
+		double liter,
 		double amount,
-		double dueMoney,
-		double paidMoney,
 		@JsonFormat(pattern = "dd-MM-yyyy")
-		Date transactionDate
+		Date date
 ) {
 
 }

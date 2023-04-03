@@ -10,19 +10,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
-	Page<PaymentEntity> findByReceiptNumberContaining(String receiptNumber, Pageable pageable);
+	Page<PaymentEntity> findByNumberContaining(String receiptNumber, Pageable pageable);
 
 	@Query("SELECT CASE WHEN COUNT(p) = 0 THEN true ELSE false END " +
 			"FROM PaymentEntity p " +
 			"WHERE p.id != :id AND " +
-			"p.receiptNumber = :receiptNumber AND " +
+			"p.number = :number AND " +
 			"p.wayOfPaymentEntity.id = :wayOfPaymentId")
 	boolean checkUniquePayment(
 			@Param("id") long id,
-			@Param("receiptNumber") String receiptNumber,
+			@Param("number") String number,
 			@Param("wayOfPaymentId") long wayOfPaymentId
 	);
 
-	boolean existsByReceiptNumberAndWayOfPaymentEntity_Id(String receiptNumber, long id);
+	boolean existsByNumberAndWayOfPaymentEntity_Id(String receiptNumber, long id);
 
 }

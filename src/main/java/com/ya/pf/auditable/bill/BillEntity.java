@@ -44,24 +44,21 @@ public class BillEntity extends Auditable {
 	private ProductEntity productEntity;
 
 	@NonNull
-	@Column(name = "receipt_no")
-	private String receiptNumber;
+	@Column(name = "number")
+	private String number;
 
 	@NonNull
+	@Column(name = "liter")
+	private double liter;
+
 	@Column(name = "amount")
 	private double amount;
 
-	@Column(name = "due_money")
-	private double dueMoney;
 
 	@NonNull
-	@Column(name = "paid_money")
-	private double paidMoney;
-
-	@NonNull
-	@Column(name = "bill_date")
+	@Column(name = "date")
 	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date billDate;
+	private Date date;
 
 	@Override
 	public boolean equals(Object o) {
@@ -87,11 +84,10 @@ public class BillEntity extends Auditable {
 				"supplier id = " + supplierEntity.getId() + ", " +
 				"customer id = " + customerEntity.getId() + ", " +
 				"product id = " + productEntity.getId() + ", " +
-				"receipt no = " + receiptNumber + ", " +
+				"number = " + number + ", " +
+				"liter = " + liter + ", " +
 				"amount = " + amount + ", " +
-				"due money = " + dueMoney + ", " +
-				"paid money = " + paidMoney + ", " +
-				"transaction date = " + billDate +
+				"date = " + date +
 				"deleted = " + deleted +
 				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +

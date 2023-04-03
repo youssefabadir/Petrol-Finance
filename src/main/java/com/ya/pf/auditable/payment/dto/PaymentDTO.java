@@ -10,10 +10,10 @@ public record PaymentDTO(
 		long id,
 		CustomerDTO customer,
 		WayOfPaymentDTO wayOfPaymentDTO,
-		String receiptNumber,
+		String number,
 		double amount,
 		@JsonFormat(pattern = "dd-MM-yyyy")
-		Date paymentDate
+		Date date
 ) {
 
 }

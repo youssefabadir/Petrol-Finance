@@ -38,11 +38,11 @@ public class BillServiceImpl implements BillService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return billRepository.findByReceiptNumberContainingAndBillDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByNumberContainingAndDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (receiptNumber.isEmpty() && start != null && end != null) {
-			return billRepository.findByBillDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
 		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
-			return billRepository.findByReceiptNumberContaining(receiptNumber, pageable);
+			return billRepository.findByNumberContaining(receiptNumber, pageable);
 		} else {
 			return billRepository.findAll(pageable);
 		}
@@ -56,7 +56,7 @@ public class BillServiceImpl implements BillService {
 		}
 
 		double price = productService.getProductPrice(billEntity.getProductEntity().getId());
-		billEntity.setDueMoney(price * billEntity.getAmount());
+		billEntity.setAmount(price * billEntity.getAmount());
 
 		return billRepository.save(billEntity);
 	}
@@ -67,7 +67,7 @@ public class BillServiceImpl implements BillService {
 		if (billRepository.existsById(billEntity.getId())) {
 
 			double price = productService.getProductPrice(billEntity.getProductEntity().getId());
-			billEntity.setDueMoney(price * billEntity.getAmount());
+			billEntity.setAmount(price * billEntity.getAmount());
 			return billRepository.save(billEntity);
 		} else {
 			throw new EntityNotFoundException("Bill with ID " + billEntity.getId() + " not found");
@@ -97,15 +97,15 @@ public class BillServiceImpl implements BillService {
 			if (start == null || end == null) {
 				page = billRepository.findByCustomerEntity_Id(id, pageable);
 			} else {
-				page = billRepository.findByCustomerEntity_IdAndBillDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndDateBetween(id,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);
 			}
 		} else {
 			if (start == null || end == null) {
-				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContaining(id, receiptNumber, pageable);
+				page = billRepository.findByCustomerEntity_IdAndNumberContaining(id, receiptNumber, pageable);
 			} else {
-				page = billRepository.findByCustomerEntity_IdAndReceiptNumberContainingAndBillDateBetween(id,
+				page = billRepository.findByCustomerEntity_IdAndNumberContainingAndDateBetween(id,
 						receiptNumber,
 						Date.valueOf(start),
 						Date.valueOf(end), pageable);

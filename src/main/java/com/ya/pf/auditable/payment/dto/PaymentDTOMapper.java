@@ -23,9 +23,9 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
 		return new PaymentDTO(paymentEntity.getId(),
 				customerDTOMapper.apply(paymentEntity.getCustomerEntity()),
 				wayOfPaymentDTOMapper.apply(paymentEntity.getWayOfPaymentEntity()),
-				paymentEntity.getReceiptNumber(),
+				paymentEntity.getNumber(),
 				paymentEntity.getAmount(),
-				paymentEntity.getPaymentDate());
+				paymentEntity.getDate());
 	}
 
 }
