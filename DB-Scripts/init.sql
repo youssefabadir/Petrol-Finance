@@ -81,14 +81,8 @@ SELECT payment_id,
        bill_number,
        bill_amount,
        bill_date,
-       CASE
-           WHEN payment_date is NULL THEN bill_date
-           ELSE payment_date
-           END AS sort_date,
-       CASE
-           WHEN payment_amount is NULL THEN liter
-           ELSE payment_amount
-           END AS balance
+       IIF(payment_date is NULL, bill_date, payment_date) AS sort_date,
+       IIF(payment_amount is NULL, liter, payment_amount) AS balance
 FROM (SELECT p.id     AS payment_id,
              p.way_of_payment_id,
              p.number AS payment_number,
