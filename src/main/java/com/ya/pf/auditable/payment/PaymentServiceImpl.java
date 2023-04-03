@@ -49,14 +49,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 		long id = paymentEntity.getId();
 		if (paymentRepository.existsById(id)) {
-			boolean payment = paymentRepository.checkUniquePayment(id,
-					paymentEntity.getReceiptNumber(),
-					paymentEntity.getWayOfPaymentEntity().getId());
+			boolean uniquePayment = paymentRepository.checkUniquePayment(id, paymentEntity.getReceiptNumber(), paymentEntity.getWayOfPaymentEntity().getId());
 
-			if (payment) {
-				throw new EntityExistsException("This receipt number exists for this way of payment");
-			} else {
+			if (uniquePayment) {
 				return paymentRepository.save(paymentEntity);
+			} else {
+				throw new EntityExistsException("This receipt number exists for this way of payment");
 			}
 		} else {
 			throw new EntityNotFoundException("Payment with Id " + id + " not found");

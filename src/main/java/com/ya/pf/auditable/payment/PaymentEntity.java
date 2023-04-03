@@ -3,7 +3,7 @@ package com.ya.pf.auditable.payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
-import com.ya.pf.auditable.wayofpayment.WayOfPayment;
+import com.ya.pf.auditable.wayofpayment.WayOfPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -32,7 +32,7 @@ public class PaymentEntity extends Auditable {
 
 	@ManyToOne
 	@JoinColumn(name = "way_of_payment_id", nullable = false)
-	private WayOfPayment wayOfPaymentEntity;
+	private WayOfPaymentEntity wayOfPaymentEntity;
 
 	@Column(name = "receipt_number", nullable = false)
 	private String receiptNumber;

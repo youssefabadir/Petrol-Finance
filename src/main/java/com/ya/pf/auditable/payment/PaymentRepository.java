@@ -12,7 +12,7 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
 	Page<PaymentEntity> findByReceiptNumberContaining(String receiptNumber, Pageable pageable);
 
-	@Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+	@Query("SELECT CASE WHEN COUNT(p) = 0 THEN true ELSE false END " +
 			"FROM PaymentEntity p " +
 			"WHERE p.id != :id AND " +
 			"p.receiptNumber = :receiptNumber AND " +

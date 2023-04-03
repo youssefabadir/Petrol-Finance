@@ -48,7 +48,7 @@ CREATE TABLE bill
 CREATE TABLE way_of_payment
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
-    name               NVARCHAR(255),
+    name               NVARCHAR(255) UNIQUE,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
