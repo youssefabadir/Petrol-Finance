@@ -56,7 +56,7 @@ public class BillServiceImpl implements BillService {
 		}
 
 		double price = productService.getProductPrice(billEntity.getProductEntity().getId());
-		billEntity.setAmount(price * billEntity.getAmount());
+		billEntity.setAmount(price * billEntity.getLiter() * -1);
 
 		return billRepository.save(billEntity);
 	}

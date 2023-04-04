@@ -2,6 +2,7 @@ package com.ya.pf.auditable.payment.dto;
 
 import com.ya.pf.auditable.customer.dto.CustomerDTOMapper;
 import com.ya.pf.auditable.payment.PaymentEntity;
+import com.ya.pf.auditable.supplier.dto.SupplierDTOMapper;
 import com.ya.pf.auditable.wayofpayment.dto.WayOfPaymentDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
 
 	private final CustomerDTOMapper customerDTOMapper;
 
+	private final SupplierDTOMapper supplierDTOMapper;
+
 	private final WayOfPaymentDTOMapper wayOfPaymentDTOMapper;
 
 	@Override
@@ -22,6 +25,7 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
 
 		return new PaymentDTO(paymentEntity.getId(),
 				customerDTOMapper.apply(paymentEntity.getCustomerEntity()),
+				supplierDTOMapper.apply(paymentEntity.getSupplierEntity()),
 				wayOfPaymentDTOMapper.apply(paymentEntity.getWayOfPaymentEntity()),
 				paymentEntity.getNumber(),
 				paymentEntity.getAmount(),

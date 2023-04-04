@@ -3,6 +3,7 @@ package com.ya.pf.auditable.payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
+import com.ya.pf.auditable.supplier.SupplierEntity;
 import com.ya.pf.auditable.wayofpayment.WayOfPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,16 @@ public class PaymentEntity extends Auditable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "number", nullable = false)
+	private String number;
+
+	@Column(name = "amount", nullable = false)
+	double amount;
+
+	@ManyToOne
+	@JoinColumn(name = "supplier_id", nullable = false)
+	private SupplierEntity supplierEntity;
+
 	@ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
 	private CustomerEntity customerEntity;
@@ -34,11 +45,6 @@ public class PaymentEntity extends Auditable {
 	@JoinColumn(name = "way_of_payment_id", nullable = false)
 	private WayOfPaymentEntity wayOfPaymentEntity;
 
-	@Column(name = "number", nullable = false)
-	private String number;
-
-	@Column(name = "amount", nullable = false)
-	double amount;
 
 	@Column(name = "date", nullable = false)
 	@JsonFormat(pattern = "dd-MM-yyyy")
