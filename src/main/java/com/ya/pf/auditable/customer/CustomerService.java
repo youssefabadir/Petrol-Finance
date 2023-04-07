@@ -16,4 +16,6 @@ public interface CustomerService {
 
 	List<CustomerEntity> searchCustomer(String name);
 
+	CustomerEntity getCustomerById(long id);
+
 }

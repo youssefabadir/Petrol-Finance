@@ -8,8 +8,6 @@ public interface PaymentService {
 
 	PaymentEntity createPayment(PaymentEntity paymentEntity);
 
-	PaymentEntity updatePayment(PaymentEntity paymentEntity);
-
 	void deletePayment(long id);
 
 }

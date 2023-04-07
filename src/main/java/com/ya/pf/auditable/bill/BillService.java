@@ -10,12 +10,6 @@ public interface BillService {
 
 	BillEntity createBill(BillEntity billEntity);
 
-	BillEntity updateBill(BillEntity billEntity);
-
 	void deleteBill(long id);
-
-	CustomerReport getCustomerReport(long id, String receiptNumber, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
-
-	Double getColumnSum(long id, String columnName, LocalDate start, LocalDate end);
 
 }

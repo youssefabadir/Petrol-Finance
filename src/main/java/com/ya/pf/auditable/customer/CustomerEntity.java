@@ -3,6 +3,7 @@ package com.ya.pf.auditable.customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
+import com.ya.pf.auditable.payment.PaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -32,9 +33,16 @@ public class CustomerEntity extends Auditable {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@Column(name = "balance")
+	private Double balance;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "customerEntity")
-	private Set<BillEntity> transactions = new LinkedHashSet<>();
+	private Set<BillEntity> bills = new LinkedHashSet<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "customerEntity")
+	private Set<PaymentEntity> payments = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
@@ -58,8 +66,8 @@ public class CustomerEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
+				"deleted = " + deleted + ", " +
+				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}

@@ -16,13 +16,13 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 			"FROM PaymentEntity p " +
 			"WHERE p.id != :id AND " +
 			"p.number = :number AND " +
-			"p.wayOfPaymentEntity.id = :wayOfPaymentId")
+			"p.paymentMethodEntity.id = :wayOfPaymentId")
 	boolean checkUniquePayment(
 			@Param("id") long id,
 			@Param("number") String number,
 			@Param("wayOfPaymentId") long wayOfPaymentId
 	);
 
-	boolean existsByNumberAndWayOfPaymentEntity_Id(String receiptNumber, long id);
+	boolean existsByNumberAndPaymentMethodEntity_Id(String receiptNumber, long id);
 
 }

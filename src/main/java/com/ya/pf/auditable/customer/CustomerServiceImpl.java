@@ -65,4 +65,10 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.findByNameContaining(name);
 	}
 
+	@Override
+	public CustomerEntity getCustomerById(long id) {
+
+		return customerRepository.getReferenceById(id);
+	}
+
 }

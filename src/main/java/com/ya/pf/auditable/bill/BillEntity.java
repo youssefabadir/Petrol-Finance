@@ -22,7 +22,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "bill")
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE bill SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class BillEntity extends Auditable {
 
@@ -31,16 +31,16 @@ public class BillEntity extends Auditable {
 	@Column(name = "id")
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "supplier_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "supplier_id", referencedColumnName = "id")
 	private SupplierEntity supplierEntity;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id")
 	private CustomerEntity customerEntity;
 
-	@ManyToOne
-	@JoinColumn(name = "product_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private ProductEntity productEntity;
 
 	@NonNull
@@ -53,7 +53,6 @@ public class BillEntity extends Auditable {
 
 	@Column(name = "amount")
 	private double amount;
-
 
 	@NonNull
 	@Column(name = "date")
@@ -87,9 +86,9 @@ public class BillEntity extends Auditable {
 				"number = " + number + ", " +
 				"liter = " + liter + ", " +
 				"amount = " + amount + ", " +
-				"date = " + date +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
+				"date = " + date + ", " +
+				"deleted = " + deleted + ", " +
+				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}

@@ -1,5 +1,6 @@
 package com.ya.pf.auditable.payment;
 
+import com.ya.pf.auditable.transaction.entity.TransactionService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,15 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentServiceImpl implements PaymentService {
 
 	private final PaymentRepository paymentRepository;
+
+	private final TransactionService transactionService;
 
 	@Override
 	public Page<PaymentEntity> getPayments(String receiptNumber, int pageNo, int pageSize, String sortBy, String order) {
@@ -29,43 +33,34 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional
 	public PaymentEntity createPayment(PaymentEntity paymentEntity) {
 
 		if (paymentEntity.getId() != null) {
 			paymentEntity.setId(null);
 		}
 
-		boolean exists = paymentRepository.existsByNumberAndWayOfPaymentEntity_Id(paymentEntity.getNumber(),
-				paymentEntity.getWayOfPaymentEntity().getId());
+		boolean exists = paymentRepository.existsByNumberAndPaymentMethodEntity_Id(paymentEntity.getNumber(),
+				paymentEntity.getPaymentMethodEntity().getId());
 		if (exists) {
 			throw new EntityExistsException("This receipt number exists for this way of payment");
 		} else {
-			return paymentRepository.save(paymentEntity);
+			PaymentEntity payment = paymentRepository.save(paymentEntity);
+			transactionService.createTransaction(payment.getCustomerEntity().getId(), payment.getSupplierEntity().getId(),
+					payment.getAmount(), payment.getId(), null, payment.getDate());
+			return payment;
 		}
 	}
 
 	@Override
-	public PaymentEntity updatePayment(PaymentEntity paymentEntity) {
-
-		long id = paymentEntity.getId();
-		if (paymentRepository.existsById(id)) {
-			boolean uniquePayment = paymentRepository.checkUniquePayment(id, paymentEntity.getNumber(), paymentEntity.getWayOfPaymentEntity().getId());
-
-			if (uniquePayment) {
-				return paymentRepository.save(paymentEntity);
-			} else {
-				throw new EntityExistsException("This receipt number exists for this way of payment");
-			}
-		} else {
-			throw new EntityNotFoundException("Payment with Id " + id + " not found");
-		}
-	}
-
-	@Override
+	@Transactional
 	public void deletePayment(long id) {
 
 		if (paymentRepository.existsById(id)) {
+			PaymentEntity payment = paymentRepository.getReferenceById(id);
+
 			paymentRepository.deleteById(id);
+			transactionService.deleteTransactionByPaymentId(id, payment.getAmount());
 		} else {
 			throw new EntityNotFoundException("Payment with Id " + id + " not found");
 		}

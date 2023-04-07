@@ -1,6 +1,8 @@
-package com.ya.pf.auditable.wayofpayment;
+package com.ya.pf.auditable.paymentMethod;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
+import com.ya.pf.auditable.payment.PaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -8,15 +10,17 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "way_of_payment")
-@SQLDelete(sql = "UPDATE payment SET deleted = 1 WHERE id=?")
+@Table(name = "payment_method")
+@SQLDelete(sql = "UPDATE payment_method SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
-public class WayOfPaymentEntity extends Auditable {
+public class PaymentMethodEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +28,10 @@ public class WayOfPaymentEntity extends Auditable {
 
 	@Column(name = "name")
 	private String name;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "paymentMethodEntity")
+	private Set<PaymentEntity> payments = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
@@ -37,8 +45,8 @@ public class WayOfPaymentEntity extends Auditable {
 		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
 			return false;
 		}
-		WayOfPaymentEntity wayOfPaymentEntity = (WayOfPaymentEntity) o;
-		return id != null && Objects.equals(id, wayOfPaymentEntity.id);
+		PaymentMethodEntity paymentMethodEntity = (PaymentMethodEntity) o;
+		return id != null && Objects.equals(id, paymentMethodEntity.id);
 	}
 
 	@Override

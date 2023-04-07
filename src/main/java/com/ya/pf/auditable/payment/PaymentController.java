@@ -48,22 +48,6 @@ public class PaymentController {
 		}
 	}
 
-	@PutMapping
-	public ResponseEntity<PaymentDTO> updatePayment(@RequestBody PaymentEntity payment) {
-
-		try {
-			PaymentEntity paymentEntity = paymentService.updatePayment(payment);
-			PaymentDTO paymentDTO = paymentDTOMapper.apply(paymentEntity);
-			return ResponseEntity.ok(paymentDTO);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		} catch (EntityExistsException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
-
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePayment(@PathVariable long id) {
 

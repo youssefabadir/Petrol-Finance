@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "product")
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE product SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class ProductEntity extends Auditable {
 
@@ -37,7 +37,7 @@ public class ProductEntity extends Auditable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "productEntity")
-	private Set<BillEntity> transactions = new LinkedHashSet<>();
+	private Set<BillEntity> bills = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
@@ -61,9 +61,9 @@ public class ProductEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
-				"price = " + price +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
+				"price = " + price + ", " +
+				"deleted = " + deleted + ", " +
+				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}

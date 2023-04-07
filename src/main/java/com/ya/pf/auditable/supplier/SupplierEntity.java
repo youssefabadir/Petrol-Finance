@@ -3,6 +3,7 @@ package com.ya.pf.auditable.supplier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
+import com.ya.pf.auditable.payment.PaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "supplier")
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE supplier SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class SupplierEntity extends Auditable {
 
@@ -34,7 +35,11 @@ public class SupplierEntity extends Auditable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "supplierEntity")
-	private Set<BillEntity> transactions = new LinkedHashSet<>();
+	private Set<BillEntity> bills = new LinkedHashSet<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "supplierEntity")
+	private Set<PaymentEntity> payments = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
@@ -58,8 +63,8 @@ public class SupplierEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
+				"deleted = " + deleted + ", " +
+				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}

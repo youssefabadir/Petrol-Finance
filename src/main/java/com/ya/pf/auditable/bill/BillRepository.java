@@ -12,16 +12,10 @@ public interface BillRepository extends JpaRepository<BillEntity, Long> {
 
 	Page<BillEntity> findByNumberContaining(String receiptNumber, Pageable pageable);
 
-	Page<BillEntity> findByCustomerEntity_Id(long id, Pageable pageable);
-
-	Page<BillEntity> findByCustomerEntity_IdAndNumberContaining(long id, String receiptNumber, Pageable pageable);
-
 	Page<BillEntity> findByDateBetween(Date start, Date end, Pageable pageable);
 
 	Page<BillEntity> findByNumberContainingAndDateBetween(String receiptNumber, Date start, Date end, Pageable pageable);
 
-	Page<BillEntity> findByCustomerEntity_IdAndDateBetween(long id, Date start, Date end, Pageable pageable);
-
-	Page<BillEntity> findByCustomerEntity_IdAndNumberContainingAndDateBetween(long id, String receiptNumber, Date start, Date end, Pageable pageable);
+	boolean existsByNumberAndSupplierEntity_Id(String receiptNumber, long id);
 
 }

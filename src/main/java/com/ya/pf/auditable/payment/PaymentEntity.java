@@ -3,8 +3,8 @@ package com.ya.pf.auditable.payment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
+import com.ya.pf.auditable.paymentMethod.PaymentMethodEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
-import com.ya.pf.auditable.wayofpayment.WayOfPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -33,17 +33,17 @@ public class PaymentEntity extends Auditable {
 	@Column(name = "amount", nullable = false)
 	double amount;
 
-	@ManyToOne
-	@JoinColumn(name = "supplier_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "supplier_id", referencedColumnName = "id", nullable = false)
 	private SupplierEntity supplierEntity;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
 	private CustomerEntity customerEntity;
 
-	@ManyToOne
-	@JoinColumn(name = "way_of_payment_id", nullable = false)
-	private WayOfPaymentEntity wayOfPaymentEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "payment_method_id", referencedColumnName = "id", nullable = false)
+	private PaymentMethodEntity paymentMethodEntity;
 
 
 	@Column(name = "date", nullable = false)
@@ -72,11 +72,11 @@ public class PaymentEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"customer id = " + customerEntity.getId() + ", " +
-				"way of payment = " + wayOfPaymentEntity.getId() + ", " +
+				"way of payment = " + paymentMethodEntity.getId() + ", " +
 				"receipt number = " + number + ", " +
 				"payment date = " + date + ", " +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
+				"deleted = " + deleted + ", " +
+				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}
