@@ -48,8 +48,8 @@ public class BillEntity extends Auditable {
 	private String number;
 
 	@NonNull
-	@Column(name = "liter")
-	private double liter;
+	@Column(name = "quantity")
+	private double quantity;
 
 	@Column(name = "amount")
 	private double amount;
@@ -84,7 +84,7 @@ public class BillEntity extends Auditable {
 				"customer id = " + customerEntity.getId() + ", " +
 				"product id = " + productEntity.getId() + ", " +
 				"number = " + number + ", " +
-				"liter = " + liter + ", " +
+				"liter = " + quantity + ", " +
 				"amount = " + amount + ", " +
 				"date = " + date + ", " +
 				"deleted = " + deleted + ", " +

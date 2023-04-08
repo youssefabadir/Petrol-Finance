@@ -29,7 +29,7 @@ public class BillDTOMapper implements Function<BillEntity, BillDTO> {
 				customerDTOMapper.apply(billEntity.getCustomerEntity()),
 				productDTOMapper.apply(billEntity.getProductEntity()),
 				billEntity.getNumber(),
-				billEntity.getLiter(),
+				billEntity.getQuantity(),
 				billEntity.getAmount(),
 				billEntity.getDate()
 		);

@@ -33,7 +33,7 @@ CREATE TABLE bill
     supplier_id        INT            NOT NULL,
     customer_id        INT            NOT NULL,
     product_id         INT            NOT NULL,
-    liter              DECIMAL(18, 2) NOT NULL,
+    quantity           DECIMAL(18, 2) NOT NULL,
     number             VARCHAR(255)   NOT NULL,
     amount             DECIMAL(18, 2) NOT NULL,
     date               DATETIME       NOT NULL,
