@@ -27,6 +27,15 @@ CREATE TABLE product
     last_modified_date DATETIME
 );
 
+CREATE TABLE payment_method
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    name               NVARCHAR(255) UNIQUE NOT NULL,
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME,
+);
+
 CREATE TABLE bill
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
@@ -41,76 +50,121 @@ CREATE TABLE bill
     created_date       DATETIME,
     last_modified_date DATETIME,
     CONSTRAINT UNIQUE_BILL_NUMBER UNIQUE (supplier_id, number),
-    CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
-    CONSTRAINT FK_TRANSACTION_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
-    CONSTRAINT FK_TRANSACTION_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
+    CONSTRAINT FK_BILL_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
+    CONSTRAINT FK_BILL_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
+    CONSTRAINT FK_BILL_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
-CREATE TABLE payment_method
-(
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    name               NVARCHAR(255) UNIQUE NOT NULL,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME,
-);
-
-CREATE TABLE payment
+CREATE TABLE customer_payment
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     number             VARCHAR(255)   NOT NULL,
     amount             DECIMAL(18, 2) NOT NULL,
     customer_id        INT            NOT NULL,
-    supplier_id        INT            NOT NULL,
     payment_method_id  INT            NOT NULL,
+    transferred        BIT,
     date               DATETIME       NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
-    CONSTRAINT UNIQUE_PAYMENT_NUMBER UNIQUE (payment_method_id, number),
+    CONSTRAINT UNIQUE_CUSTOMER_PAYMENT_NUMBER UNIQUE (payment_method_id, number),
     CONSTRAINT FK_PAYMENT_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
-    CONSTRAINT FK_PAYMENT_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
-    CONSTRAINT FK_PAYMENT_PAYMENT_METHOD FOREIGN KEY (payment_method_id) REFERENCES payment_method (id)
+    CONSTRAINT FK_CUSTOMER_PAYMENT_PAYMENT_METHOD FOREIGN KEY (payment_method_id) REFERENCES payment_method (id)
 );
 
-CREATE TABLE [transaction]
+CREATE TABLE owner_payment
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
-    customer_id        INT,
-    supplier_id        INT,
-    customer_balance   DECIMAL(18, 2),
-    payment_id         INT,
-    bill_id            INT,
-    date               DATETIME,
+    number             VARCHAR(255)   NOT NULL,
+    amount             DECIMAL(18, 2) NOT NULL,
+    supplier_id        INT            NOT NULL,
+    payment_method_id  INT            NOT NULL,
+    transferred        BIT,
+    date               DATETIME       NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
+    CONSTRAINT UNIQUE_OWNER_PAYMENT_NUMBER UNIQUE (payment_method_id, number),
+    CONSTRAINT FK_PAYMENT_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
+    CONSTRAINT FK_OWNER_PAYMENT_PAYMENT_METHOD FOREIGN KEY (payment_method_id) REFERENCES payment_method (id)
 );
 
-CREATE VIEW transaction_view AS
-SELECT t.id               AS transaction_id,
-       c.id               AS customer_id,
-       c.name             AS customer_name,
-       t.customer_balance AS customer_balance,
-       s.id               AS supplier_id,
-       s.name             AS supplier_name,
-       p.id               AS payment_id,
-       p.number           AS payment_number,
-       p.amount           AS payment_amount,
-       pm.id              AS payment_method_id,
-       pm.name            AS payment_method_name,
-       b.id               AS bill_id,
-       b.number           AS bill_number,
-       b.liter            AS bill_liter,
-       b.amount           AS bill_amount,
-       prod.id            AS product_id,
-       prod.name          AS product_name,
-       t.date
-FROM [transaction] t
-         LEFT OUTER JOIN customer c ON c.id = t.customer_id
-         LEFT OUTER JOIN supplier s ON s.id = t.supplier_id
-         LEFT OUTER JOIN payment p ON p.id = t.payment_id
-         LEFT OUTER JOIN bill b ON b.id = t.bill_id
-         LEFT OUTER JOIN payment_method pm ON pm.id = p.payment_method_id
-         LEFT OUTER JOIN product prod ON prod.id = b.product_id
-WHERE t.deleted = 0
+CREATE TABLE customer_transaction
+(
+    id                  INT IDENTITY (1,1) PRIMARY KEY,
+    customer_id         INT,
+    customer_balance    DECIMAL(18, 2),
+    customer_payment_id INT,
+    bill_id             INT,
+    date                DATETIME,
+    deleted             BIT,
+    created_date        DATETIME,
+    last_modified_date  DATETIME,
+    CONSTRAINT FK_TRANSACTION_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id)
+);
+
+CREATE TABLE owner_transaction
+(
+    id                     INT IDENTITY (1,1) PRIMARY KEY,
+    owner_supplier_balance DECIMAL(18, 2),
+    supplier_id            INT,
+    owner_payment_id       INT,
+    bill_id                INT,
+    date                   DATETIME,
+    deleted                BIT,
+    created_date           DATETIME,
+    last_modified_date     DATETIME,
+    CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id)
+);
+
+CREATE VIEW customer_transaction_view AS
+SELECT ct.id               AS transaction_id,
+       c.id                AS customer_id,
+       c.name              AS customer_name,
+       ct.customer_balance AS customer_balance,
+       cp.id               AS payment_id,
+       cp.number           AS payment_number,
+       cp.amount           AS payment_amount,
+       cp.transferred      AS transferred_payment,
+       pm.id               AS payment_method_id,
+       pm.name             AS payment_method_name,
+       b.id                AS bill_id,
+       b.number            AS bill_number,
+       b.quantity          AS bill_quantity,
+       b.amount            AS bill_amount,
+       pr.id               AS product_id,
+       pr.name             AS product_name,
+       ct.date
+FROM customer_transaction ct
+         LEFT OUTER JOIN customer c ON c.id = ct.customer_id
+         LEFT OUTER JOIN customer_payment cp ON cp.id = ct.customer_payment_id
+         LEFT OUTER JOIN payment_method pm ON pm.id = cp.payment_method_id
+         LEFT OUTER JOIN bill b ON b.id = ct.bill_id
+         LEFT OUTER JOIN product pr ON pr.id = b.product_id
+WHERE ct.deleted = 0
+
+CREATE VIEW owner_transaction_view AS
+SELECT ot.id                     AS transaction_id,
+       s.id                      AS supplier_id,
+       s.name                    AS supplier_name,
+       ot.owner_supplier_balance AS owner_supplier_balance,
+       op.id                     AS payment_id,
+       op.number                 AS payment_number,
+       op.amount                 AS payment_amount,
+       op.transferred            AS transferred_payment,
+       pm.id                     AS payment_method_id,
+       pm.name                   AS payment_method_name,
+       b.id                      AS bill_id,
+       b.number                  AS bill_number,
+       b.quantity                AS bill_quantity,
+       b.amount                  AS bill_amount,
+       pr.id                     AS product_id,
+       pr.name                   AS product_name,
+       ot.date
+FROM owner_transaction ot
+         LEFT OUTER JOIN supplier s ON s.id = ot.supplier_id
+         LEFT OUTER JOIN owner_payment op ON op.id = ot.owner_payment_id
+         LEFT OUTER JOIN payment_method pm ON pm.id = op.payment_method_id
+         LEFT OUTER JOIN bill b ON b.id = ot.bill_id
+         LEFT OUTER JOIN product pr ON pr.id = b.product_id
+WHERE ot.deleted = 0

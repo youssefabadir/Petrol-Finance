@@ -1,12 +1,10 @@
-package com.ya.pf.auditable.supplier;
+package com.ya.pf.auditable.payment_method;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.customer_payment.CustomerPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -16,29 +14,23 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@Table(name = "supplier")
-@Accessors(chain = true)
-@SQLDelete(sql = "UPDATE supplier SET deleted = 1 WHERE id=?")
+@Table(name = "payment_method")
+@SQLDelete(sql = "UPDATE payment_method SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
-public class SupplierEntity extends Auditable {
+public class PaymentMethodEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	private String name;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
-	private Set<BillEntity> bills = new LinkedHashSet<>();
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
+	@OneToMany(mappedBy = "paymentMethodEntity")
 	private Set<CustomerPaymentEntity> payments = new LinkedHashSet<>();
 
 	@Override
@@ -53,8 +45,8 @@ public class SupplierEntity extends Auditable {
 		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
 			return false;
 		}
-		SupplierEntity supplierEntity = (SupplierEntity) o;
-		return id != null && Objects.equals(id, supplierEntity.id);
+		PaymentMethodEntity paymentMethodEntity = (PaymentMethodEntity) o;
+		return id != null && Objects.equals(id, paymentMethodEntity.id);
 	}
 
 	@Override
@@ -63,8 +55,8 @@ public class SupplierEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
+				"deleted = " + deleted +
+				"createdDate = " + createdDate +
 				"lastModifiedDate = " + lastModifiedDate +
 				")";
 	}

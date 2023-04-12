@@ -24,7 +24,7 @@ public class BillController {
 	private final BillDTOMapper billDTOMapper;
 
 	@GetMapping
-	public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String receiptNumber,
+	public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String number,
 	                                              @RequestParam(defaultValue = "0") int pageNo,
 	                                              @RequestParam(defaultValue = "10") int pageSize,
 	                                              @RequestParam(defaultValue = "id") String sortBy,
@@ -32,7 +32,7 @@ public class BillController {
 	                                              @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
 	                                              @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
 
-		Page<BillEntity> transactionEntities = billService.getBills(receiptNumber, pageNo, pageSize, sortBy, order, start, end);
+		Page<BillEntity> transactionEntities = billService.getBills(number, pageNo, pageSize, sortBy, order, start, end);
 		Page<BillDTO> transactionDTOS = transactionEntities.map(billDTOMapper);
 		return ResponseEntity.ok(transactionDTOS);
 	}

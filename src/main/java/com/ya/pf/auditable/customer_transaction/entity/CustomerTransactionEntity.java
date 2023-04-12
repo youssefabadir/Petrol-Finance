@@ -1,9 +1,7 @@
-package com.ya.pf.auditable.supplier;
+package com.ya.pf.auditable.customer_transaction.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.bill.BillEntity;
-import com.ya.pf.auditable.customer_payment.CustomerPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -12,34 +10,38 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
+import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 
 @Setter
 @Getter
 @Entity
-@Table(name = "supplier")
+@Table(name = "customer_transaction")
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE supplier SET deleted = 1 WHERE id=?")
+@SQLDelete(sql = "UPDATE customer_transaction SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
-public class SupplierEntity extends Auditable {
+public class CustomerTransactionEntity extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "customer_id")
+	private Long customerId;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
-	private Set<BillEntity> bills = new LinkedHashSet<>();
+	@Column(name = "customer_balance", nullable = false)
+	private double customerBalance;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
-	private Set<CustomerPaymentEntity> payments = new LinkedHashSet<>();
+	@Column(name = "customer_payment_id")
+	private Long customerPaymentId;
+
+	@Column(name = "bill_id")
+	private Long billId;
+
+	@Column(name = "date")
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Date date;
 
 	@Override
 	public boolean equals(Object o) {
@@ -53,8 +55,8 @@ public class SupplierEntity extends Auditable {
 		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
 			return false;
 		}
-		SupplierEntity supplierEntity = (SupplierEntity) o;
-		return id != null && Objects.equals(id, supplierEntity.id);
+		CustomerTransactionEntity customerTransactionEntity = (CustomerTransactionEntity) o;
+		return id != null && Objects.equals(id, customerTransactionEntity.id);
 	}
 
 	@Override
@@ -62,7 +64,11 @@ public class SupplierEntity extends Auditable {
 
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
-				"name = " + name + ", " +
+				"customer id = " + customerId + ", " +
+				"customer balance = " + customerBalance + ", " +
+				"payment id = " + customerPaymentId + ", " +
+				"bill id = " + billId + ", " +
+				"date = " + date + ", " +
 				"deleted = " + deleted + ", " +
 				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +

@@ -1,7 +1,8 @@
 package com.ya.pf.auditable.bill;
 
+import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
+import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.auditable.product.ProductService;
-import com.ya.pf.auditable.transaction.entity.TransactionService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,22 @@ public class BillServiceImpl implements BillService {
 
 	private final ProductService productService;
 
-	private final TransactionService transactionService;
+	private final CustomerTransactionService customerTransactionService;
+
+	private final OwnerTransactionService ownerTransactionService;
 
 	@Override
-	public Page<BillEntity> getBills(String receiptNumber, int pageNo, int pageSize, String sortBy,
+	public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
 	                                 String order, LocalDate start, LocalDate end) {
 
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (!receiptNumber.isEmpty() && start != null && end != null) {
-			return billRepository.findByNumberContainingAndDateBetween(receiptNumber, Date.valueOf(start), Date.valueOf(end), pageable);
-		} else if (receiptNumber.isEmpty() && start != null && end != null) {
+		if (!number.isEmpty() && start != null && end != null) {
+			return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start), Date.valueOf(end), pageable);
+		} else if (number.isEmpty() && start != null && end != null) {
 			return billRepository.findByDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
-		} else if (!receiptNumber.isEmpty() && start == null && end == null) {
-			return billRepository.findByNumberContaining(receiptNumber, pageable);
+		} else if (!number.isEmpty() && start == null && end == null) {
+			return billRepository.findByNumberContaining(number, pageable);
 		} else {
 			return billRepository.findAll(pageable);
 		}
@@ -59,9 +62,14 @@ public class BillServiceImpl implements BillService {
 			billEntity.setAmount(billAmount);
 
 			BillEntity bill = billRepository.save(billEntity);
+			long billId = bill.getId();
+			java.util.Date billDate = bill.getDate();
 
-			transactionService.createTransaction(bill.getCustomerEntity().getId(), bill.getSupplierEntity().getId(),
-					billAmount, null, bill.getId(), bill.getDate());
+			customerTransactionService.createCustomerTransaction(bill.getCustomerEntity().getId(),
+					billAmount, null, billId, billDate);
+
+			ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
+					billAmount, null, billId, billDate);
 
 			return bill;
 		}
@@ -73,9 +81,11 @@ public class BillServiceImpl implements BillService {
 
 		if (billRepository.existsById(id)) {
 			BillEntity bill = billRepository.getReferenceById(id);
+			double billAmount = bill.getAmount();
 
 			billRepository.deleteById(id);
-			transactionService.deleteTransactionByBillId(id, bill.getAmount());
+			customerTransactionService.deleteCustomerTransactionByBillId(id, billAmount);
+			ownerTransactionService.deleteOwnerTransactionByBillId(id, billAmount);
 		} else {
 			throw new EntityNotFoundException("Bill with ID " + id + " not found");
 		}
