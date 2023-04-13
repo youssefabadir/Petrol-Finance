@@ -9,7 +9,7 @@ import java.util.Date;
 public record CustomerPaymentDTO(
 		long id,
 		CustomerDTO customer,
-		PaymentMethodDTO paymentMethodDTO,
+		PaymentMethodDTO paymentMethod,
 		String number,
 		double amount,
 		boolean transferred,
