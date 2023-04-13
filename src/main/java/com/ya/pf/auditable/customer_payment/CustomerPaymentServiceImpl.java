@@ -61,6 +61,7 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
 			if (transferred) {
 				OwnerPaymentEntity ownerPaymentEntity = new OwnerPaymentEntity();
+				ownerPaymentEntity.setAmount(paymentAmount);
 				ownerPaymentEntity.setPaymentMethodEntity(payment.getPaymentMethodEntity());
 				ownerPaymentEntity.setNumber(payment.getNumber());
 				ownerPaymentEntity.setSupplierEntity(new SupplierEntity().setId(supplierId));
