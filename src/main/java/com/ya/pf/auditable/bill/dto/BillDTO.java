@@ -13,7 +13,7 @@ public record BillDTO(
 		CustomerDTO customer,
 		ProductDTO product,
 		String number,
-		double liter,
+		double quantity,
 		double amount,
 		@JsonFormat(pattern = "dd-MM-yyyy")
 		Date date

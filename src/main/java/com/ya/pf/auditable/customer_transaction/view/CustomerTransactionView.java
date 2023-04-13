@@ -103,7 +103,7 @@ public class CustomerTransactionView {
 				"paymentMethodName = " + paymentMethodName + ", " +
 				"billId = " + billId + ", " +
 				"billNumber = " + billNumber + ", " +
-				"billLiter = " + billQuantity + ", " +
+				"billQuantity = " + billQuantity + ", " +
 				"billAmount = " + billAmount + ", " +
 				"productId = " + productId + ", " +
 				"productName = " + productName + ", " +

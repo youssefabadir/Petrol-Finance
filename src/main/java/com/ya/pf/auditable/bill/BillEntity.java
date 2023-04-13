@@ -84,7 +84,7 @@ public class BillEntity extends Auditable {
 				"customer id = " + customerEntity.getId() + ", " +
 				"product id = " + productEntity.getId() + ", " +
 				"number = " + number + ", " +
-				"liter = " + quantity + ", " +
+				"quantity = " + quantity + ", " +
 				"amount = " + amount + ", " +
 				"date = " + date + ", " +
 				"deleted = " + deleted + ", " +
