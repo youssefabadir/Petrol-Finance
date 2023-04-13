@@ -4,7 +4,7 @@ import com.ya.pf.auditable.customer_payment.CustomerPaymentService;
 import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,14 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
 	private final OwnerPaymentRepository ownerPaymentRepository;
 
 	private final OwnerTransactionService ownerTransactionService;
 
+	@Lazy
 	private final CustomerPaymentService customerPaymentService;
 
 	@Override
