@@ -12,6 +12,6 @@ public interface OwnerPaymentRepository extends JpaRepository<OwnerPaymentEntity
 
 	boolean existsByNumberAndPaymentMethodEntity_Id(String number, long id);
 
-	OwnerPaymentEntity getByNumber(String number);
+	OwnerPaymentEntity getByNumberAndPaymentMethodEntity_Id(String number, long paymentMethodId);
 
 }

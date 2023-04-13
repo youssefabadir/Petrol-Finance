@@ -10,6 +10,6 @@ public interface OwnerPaymentService {
 
 	void deleteOwnerPayment(long id);
 
-	void deleteTransferredOwnerPayment(String number);
+	void deleteTransferredOwnerPayment(String number, long paymentMethodId);
 
 }

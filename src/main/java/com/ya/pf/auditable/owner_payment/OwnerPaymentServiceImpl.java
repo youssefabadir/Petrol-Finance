@@ -73,7 +73,7 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 			ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, paymentAmount);
 
 			if (ownerPaymentEntity.isTransferred()) {
-				customerPaymentService.deleteTransferredCustomerPayment(paymentNumber);
+				customerPaymentService.deleteTransferredCustomerPayment(paymentNumber, ownerPaymentEntity.getPaymentMethodEntity().getId());
 			}
 
 		} else {
@@ -83,9 +83,9 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
 	@Override
 	@Transactional
-	public void deleteTransferredOwnerPayment(String number) {
+	public void deleteTransferredOwnerPayment(String number, long paymentMethodId) {
 
-		OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getByNumber(number);
+		OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getByNumberAndPaymentMethodEntity_Id(number, paymentMethodId);
 
 		if (ownerPaymentEntity != null) {
 			if (ownerPaymentEntity.isTransferred()) {

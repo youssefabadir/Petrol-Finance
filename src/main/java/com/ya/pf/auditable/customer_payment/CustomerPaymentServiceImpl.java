@@ -89,7 +89,7 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 			customerTransactionService.deleteCustomerTransactionByPaymentId(paymentId, amount);
 
 			if (transferred) {
-				ownerPaymentService.deleteTransferredOwnerPayment(paymentNumber);
+				ownerPaymentService.deleteTransferredOwnerPayment(paymentNumber, payment.getPaymentMethodEntity().getId());
 			}
 		} else {
 			throw new EntityNotFoundException("Payment with Id " + paymentId + " not found");
@@ -98,9 +98,9 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
 	@Override
 	@Transactional
-	public void deleteTransferredCustomerPayment(String number) {
+	public void deleteTransferredCustomerPayment(String number, long paymentMethodId) {
 
-		CustomerPaymentEntity customerPaymentEntity = customerPaymentRepository.getByNumber(number);
+		CustomerPaymentEntity customerPaymentEntity = customerPaymentRepository.getByNumberAndPaymentMethodEntity_Id(number, paymentMethodId);
 
 		if (customerPaymentEntity != null) {
 			if (customerPaymentEntity.isTransferred()) {

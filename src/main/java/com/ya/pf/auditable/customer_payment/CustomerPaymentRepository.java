@@ -12,6 +12,6 @@ public interface CustomerPaymentRepository extends JpaRepository<CustomerPayment
 
 	boolean existsByNumberAndPaymentMethodEntity_Id(String number, long id);
 
-	CustomerPaymentEntity getByNumber(String number);
+	CustomerPaymentEntity getByNumberAndPaymentMethodEntity_Id(String number, long paymentMethodId);
 
 }

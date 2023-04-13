@@ -10,6 +10,6 @@ public interface CustomerPaymentService {
 
 	void deleteCustomerPayment(long paymentId);
 
-	void deleteTransferredCustomerPayment(String number);
+	void deleteTransferredCustomerPayment(String number, long paymentMethodId);
 
 }
