@@ -35,6 +35,8 @@ CREATE TABLE payment_method
     created_date       DATETIME,
     last_modified_date DATETIME,
 );
+INSERT INTO payment_method
+VALUES ('cash', 0, GETDATE(), GETDATE());
 
 CREATE TABLE bill
 (
@@ -67,7 +69,6 @@ CREATE TABLE customer_payment
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
-    CONSTRAINT UNIQUE_CUSTOMER_PAYMENT_NUMBER UNIQUE (payment_method_id, number),
     CONSTRAINT FK_PAYMENT_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_CUSTOMER_PAYMENT_PAYMENT_METHOD FOREIGN KEY (payment_method_id) REFERENCES payment_method (id)
 );
@@ -84,7 +85,6 @@ CREATE TABLE owner_payment
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
-    CONSTRAINT UNIQUE_OWNER_PAYMENT_NUMBER UNIQUE (payment_method_id, number),
     CONSTRAINT FK_PAYMENT_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
     CONSTRAINT FK_OWNER_PAYMENT_PAYMENT_METHOD FOREIGN KEY (payment_method_id) REFERENCES payment_method (id)
 );

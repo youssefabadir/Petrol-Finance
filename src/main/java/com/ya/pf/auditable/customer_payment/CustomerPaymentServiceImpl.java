@@ -46,32 +46,36 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 			customerPaymentEntity.setId(null);
 		}
 
-		boolean exists = customerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(customerPaymentEntity.getNumber(),
-				customerPaymentEntity.getPaymentMethodEntity().getId());
-		if (exists) {
-			throw new EntityExistsException("This payment number exists for this way of payment");
-		} else {
-			customerPaymentEntity.setAmount(Math.abs(customerPaymentEntity.getAmount()));
-			CustomerPaymentEntity payment = customerPaymentRepository.save(customerPaymentEntity);
-			long paymentId = payment.getId();
-			double paymentAmount = payment.getAmount();
-			Date paymentDate = payment.getDate();
+		long paymentMethodId = customerPaymentEntity.getPaymentMethodEntity().getId();
+		String paymentNumber = customerPaymentEntity.getNumber();
 
-			customerTransactionService.createCustomerTransaction(payment.getCustomerEntity().getId(), paymentAmount, paymentId, null, paymentDate);
-
-			if (transferred) {
-				OwnerPaymentEntity ownerPaymentEntity = new OwnerPaymentEntity();
-				ownerPaymentEntity.setAmount(paymentAmount);
-				ownerPaymentEntity.setPaymentMethodEntity(payment.getPaymentMethodEntity());
-				ownerPaymentEntity.setNumber(payment.getNumber());
-				ownerPaymentEntity.setSupplierEntity(new SupplierEntity().setId(supplierId));
-				ownerPaymentEntity.setTransferred(true);
-				ownerPaymentEntity.setDate(paymentDate);
-				ownerPaymentService.createOwnerPayment(ownerPaymentEntity);
+		if (paymentMethodId != 1) {
+			boolean exists = customerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(paymentNumber, paymentMethodId);
+			if (exists) {
+				throw new EntityExistsException("This payment number exists for this way of payment");
 			}
-
-			return payment;
 		}
+
+		customerPaymentEntity.setAmount(Math.abs(customerPaymentEntity.getAmount()));
+		CustomerPaymentEntity payment = customerPaymentRepository.save(customerPaymentEntity);
+		long paymentId = payment.getId();
+		double paymentAmount = payment.getAmount();
+		Date paymentDate = payment.getDate();
+
+		customerTransactionService.createCustomerTransaction(payment.getCustomerEntity().getId(), paymentAmount, paymentId, null, paymentDate);
+
+		if (transferred) {
+			OwnerPaymentEntity ownerPaymentEntity = new OwnerPaymentEntity();
+			ownerPaymentEntity.setAmount(paymentAmount);
+			ownerPaymentEntity.setPaymentMethodEntity(payment.getPaymentMethodEntity());
+			ownerPaymentEntity.setNumber(paymentNumber);
+			ownerPaymentEntity.setSupplierEntity(new SupplierEntity().setId(supplierId));
+			ownerPaymentEntity.setTransferred(true);
+			ownerPaymentEntity.setDate(paymentDate);
+			ownerPaymentService.createOwnerPayment(ownerPaymentEntity);
+		}
+
+		return payment;
 	}
 
 	@Override

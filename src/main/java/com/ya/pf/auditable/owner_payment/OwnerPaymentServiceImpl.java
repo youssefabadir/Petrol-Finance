@@ -44,17 +44,21 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 			ownerPaymentEntity.setId(null);
 		}
 
-		boolean exists = ownerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(ownerPaymentEntity.getNumber(), ownerPaymentEntity.getPaymentMethodEntity().getId());
+		long paymentMethodId = ownerPaymentEntity.getPaymentMethodEntity().getId();
 
-		if (exists) {
-			throw new EntityExistsException("This payment number exists for this way of payment");
-		} else {
-			ownerPaymentEntity.setAmount(Math.abs(ownerPaymentEntity.getAmount()));
-			OwnerPaymentEntity ownerPayment = ownerPaymentRepository.save(ownerPaymentEntity);
-
-			ownerTransactionService.createOwnerTransaction(ownerPayment.getSupplierEntity().getId(), ownerPayment.getAmount(),
-					ownerPayment.getId(), null, ownerPayment.getDate());
+		if (paymentMethodId != 1) {
+			boolean exists = ownerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(ownerPaymentEntity.getNumber(), paymentMethodId);
+			if (exists) {
+				throw new EntityExistsException("This payment number exists for this way of payment");
+			}
 		}
+
+		ownerPaymentEntity.setAmount(Math.abs(ownerPaymentEntity.getAmount()));
+		OwnerPaymentEntity ownerPayment = ownerPaymentRepository.save(ownerPaymentEntity);
+
+		ownerTransactionService.createOwnerTransaction(ownerPayment.getSupplierEntity().getId(), ownerPayment.getAmount(),
+				ownerPayment.getId(), null, ownerPayment.getDate());
+
 		return null;
 	}
 
