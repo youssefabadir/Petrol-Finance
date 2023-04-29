@@ -41,7 +41,7 @@ public class CustomerTransactionView {
 	private Double paymentAmount;
 
 	@Column(name = "transferred_payment")
-	private boolean transferredPayment;
+	private Boolean transferredPayment;
 
 	@Column(name = "payment_method_id")
 	private Long paymentMethodId;

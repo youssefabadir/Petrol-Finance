@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/wayOfPayment")
+@RequestMapping("/payment-method")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentMethodController {
 

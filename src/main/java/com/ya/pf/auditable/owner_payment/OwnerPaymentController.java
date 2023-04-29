@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/payment/owner")
+@RequestMapping("/owner/payment")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerPaymentController {
 
@@ -48,11 +48,11 @@ public class OwnerPaymentController {
 		}
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteOwnerPayment(@PathVariable long id) {
+	@DeleteMapping("/{paymentId}")
+	public ResponseEntity<Void> deleteOwnerPayment(@PathVariable long paymentId) {
 
 		try {
-			ownerPaymentService.deleteOwnerPayment(id);
+			ownerPaymentService.deleteOwnerPayment(paymentId);
 			return ResponseEntity.noContent().build();
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
