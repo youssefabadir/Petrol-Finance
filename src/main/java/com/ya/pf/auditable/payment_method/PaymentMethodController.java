@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -73,6 +74,17 @@ public class PaymentMethodController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<PaymentMethodDTO>> searchPaymentMethod(@RequestParam(defaultValue = "") String name) {
+
+		if (name.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		List<PaymentMethodEntity> paymentMethodEntities = paymentMethodService.searchPaymentMethod(name);
+		List<PaymentMethodDTO> paymentMethodDTOS = paymentMethodEntities.stream().map(paymentMethodDTOMapper).toList();
+		return ResponseEntity.ok(paymentMethodDTOS);
 	}
 
 }

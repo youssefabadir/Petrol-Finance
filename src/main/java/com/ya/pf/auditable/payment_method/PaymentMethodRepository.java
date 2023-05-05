@@ -7,8 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethodEntity, Long> {
+
+	List<PaymentMethodEntity> findByNameContaining(String name);
 
 	Page<PaymentMethodEntity> findByNameContaining(String name, Pageable pageable);
 

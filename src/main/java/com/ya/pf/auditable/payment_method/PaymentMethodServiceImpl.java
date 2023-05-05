@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -68,6 +69,11 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 		} else {
 			throw new EntityNotFoundException("Way of payment with Id " + id + " not found");
 		}
+	}
+
+	@Override
+	public List<PaymentMethodEntity> searchPaymentMethod(String name) {
+		return paymentMethodRepository.findByNameContaining(name);
 	}
 
 }
