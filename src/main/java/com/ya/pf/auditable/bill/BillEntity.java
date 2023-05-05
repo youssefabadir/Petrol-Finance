@@ -56,7 +56,7 @@ public class BillEntity extends Auditable {
 
 	@NonNull
 	@Column(name = "date")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 
 	@Override

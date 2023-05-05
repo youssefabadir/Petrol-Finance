@@ -19,12 +19,12 @@ public class CustomerTransactionViewController {
 
 	@GetMapping("/{customerId}")
 	public ResponseEntity<Page<CustomerTransactionView>> getCustomerTransactions(@PathVariable long customerId,
-	                                                                             @RequestParam(defaultValue = "0") int pageNo,
-	                                                                             @RequestParam(defaultValue = "10") int pageSize,
-	                                                                             @RequestParam(defaultValue = "date") String sortBy,
-	                                                                             @RequestParam(defaultValue = "asc") String order,
-	                                                                             @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate start,
-	                                                                             @RequestParam(required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate end) {
+																				 @RequestParam(defaultValue = "0") int pageNo,
+																				 @RequestParam(defaultValue = "10") int pageSize,
+																				 @RequestParam(defaultValue = "date") String sortBy,
+																				 @RequestParam(defaultValue = "asc") String order,
+																				 @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
+																				 @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
 
 		Page<CustomerTransactionView> transactionViews = customerTransactionViewService.getCustomerTransaction(customerId, pageNo, pageSize, sortBy, order, start, end);
 		return ResponseEntity.ok(transactionViews);

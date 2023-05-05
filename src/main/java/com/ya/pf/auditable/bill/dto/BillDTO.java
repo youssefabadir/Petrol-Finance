@@ -15,7 +15,7 @@ public record BillDTO(
 		String number,
 		double quantity,
 		double amount,
-		@JsonFormat(pattern = "dd-MM-yyyy")
+		@JsonFormat(pattern = "dd/MM/yyyy")
 		Date date
 ) {
 

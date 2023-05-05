@@ -68,7 +68,7 @@ public class CustomerTransactionView {
 	private String productName;
 
 	@Column(name = "date")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 
 	@Override

@@ -40,7 +40,7 @@ public class OwnerTransactionEntity extends Auditable {
 	private Long billId;
 
 	@Column(name = "date")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 
 	@Override

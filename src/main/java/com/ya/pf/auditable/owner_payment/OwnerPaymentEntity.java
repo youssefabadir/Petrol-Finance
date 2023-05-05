@@ -44,7 +44,7 @@ public class OwnerPaymentEntity extends Auditable {
 	private boolean transferred;
 
 	@Column(name = "date", nullable = false)
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 
 	@Override
