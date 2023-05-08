@@ -1,6 +1,7 @@
 package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
+import com.ya.pf.auditable.discount.CustomerDiscountService;
 import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.auditable.product.ProductService;
 import com.ya.pf.util.Helper;
@@ -27,6 +28,8 @@ public class BillServiceImpl implements BillService {
 	private final CustomerTransactionService customerTransactionService;
 
 	private final OwnerTransactionService ownerTransactionService;
+
+	private final CustomerDiscountService customerDiscountService;
 
 	@Override
 	public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
@@ -57,15 +60,25 @@ public class BillServiceImpl implements BillService {
 		if (exists) {
 			throw new EntityExistsException("This bill number exists for this supplier");
 		} else {
-			double productPrice = productService.getProductPrice(billEntity.getProductEntity().getId());
-			double billAmount = productPrice * billEntity.getQuantity();
+			long productId = billEntity.getProductEntity().getId();
+			double productPrice = productService.getProductPrice(productId);
+			long customerId = billEntity.getCustomerEntity().getId();
+			double billAmount;
+
+			try {
+				double discount = 1 - (customerDiscountService.getCustomerDiscountForProduct(customerId, productId) / 100);
+				billAmount = productPrice * billEntity.getQuantity() * discount;
+			} catch (EntityNotFoundException e) {
+				billAmount = productPrice * billEntity.getQuantity();
+			}
+
 			billEntity.setAmount(billAmount);
 
 			BillEntity bill = billRepository.save(billEntity);
 			long billId = bill.getId();
 			java.util.Date billDate = bill.getDate();
 
-			customerTransactionService.createCustomerTransaction(bill.getCustomerEntity().getId(),
+			customerTransactionService.createCustomerTransaction(customerId,
 					billAmount * -1, null, billId, billDate);
 
 			ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),

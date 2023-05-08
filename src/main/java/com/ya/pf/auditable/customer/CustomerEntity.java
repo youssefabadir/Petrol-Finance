@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.customer_payment.CustomerPaymentEntity;
+import com.ya.pf.auditable.discount.CustomerDiscountEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -43,6 +44,10 @@ public class CustomerEntity extends Auditable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "customerEntity")
 	private Set<CustomerPaymentEntity> payments = new LinkedHashSet<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "customerEntity")
+	private Set<CustomerDiscountEntity> customerDiscountEntities = new LinkedHashSet<>();
 
 	@Override
 	public boolean equals(Object o) {

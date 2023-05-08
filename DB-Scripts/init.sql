@@ -117,6 +117,19 @@ CREATE TABLE owner_transaction
     CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id)
 );
 
+CREATE TABLE customer_discount
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    discount           DECIMAL(3, 3) NOT NULL,
+    customer_id        INT           NOT NULL,
+    product_id         INT           NOT NULL,
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME,
+    CONSTRAINT FK_DISCOUNT_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
+    CONSTRAINT FK_DISCOUNT_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
+);
+
 CREATE VIEW customer_transaction_view AS
 SELECT ct.id               AS transaction_id,
        c.id                AS customer_id,
