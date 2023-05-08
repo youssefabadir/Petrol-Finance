@@ -66,7 +66,7 @@ public class BillServiceImpl implements BillService {
 			java.util.Date billDate = bill.getDate();
 
 			customerTransactionService.createCustomerTransaction(bill.getCustomerEntity().getId(),
-					billAmount, null, billId, billDate);
+					billAmount * -1, null, billId, billDate);
 
 			ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
 					billAmount * -1, null, billId, billDate);
