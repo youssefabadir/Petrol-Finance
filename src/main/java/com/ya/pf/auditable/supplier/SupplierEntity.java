@@ -66,6 +66,7 @@ public class SupplierEntity extends Auditable {
 		return getClass().getSimpleName() + "(" +
 				"id = " + id + ", " +
 				"name = " + name + ", " +
+				"balance = " + balance + ", " +
 				"deleted = " + deleted + ", " +
 				"createdDate = " + createdDate + ", " +
 				"lastModifiedDate = " + lastModifiedDate +
