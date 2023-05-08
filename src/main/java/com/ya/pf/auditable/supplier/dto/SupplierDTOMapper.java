@@ -11,7 +11,7 @@ public class SupplierDTOMapper implements Function<SupplierEntity, SupplierDTO> 
 	@Override
 	public SupplierDTO apply(SupplierEntity supplierEntity) {
 
-		return new SupplierDTO(supplierEntity.getId(), supplierEntity.getName());
+		return new SupplierDTO(supplierEntity.getId(), supplierEntity.getName(), supplierEntity.getBalance());
 	}
 
 }

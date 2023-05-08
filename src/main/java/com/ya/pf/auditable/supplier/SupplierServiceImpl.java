@@ -60,6 +60,18 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
+	public SupplierEntity getSupplierById(long id) {
+
+		return supplierRepository.getReferenceById(id);
+	}
+
+	@Override
+	public void updateSupplierBalance(long supplierId, double supplierBalance) {
+
+		supplierRepository.updateSupplierBalance(supplierId, supplierBalance);
+	}
+
+	@Override
 	public List<SupplierEntity> searchSupplier(String name) {
 
 		return supplierRepository.findByNameContaining(name);

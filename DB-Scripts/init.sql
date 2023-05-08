@@ -12,6 +12,7 @@ CREATE TABLE supplier
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) NOT NULL,
+    balance            DECIMAL(18, 2) DEFAULT 0.00,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
