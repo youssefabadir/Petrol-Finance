@@ -52,7 +52,6 @@ CREATE TABLE bill
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
-    CONSTRAINT UNIQUE_BILL_NUMBER UNIQUE (supplier_id, number),
     CONSTRAINT FK_BILL_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
     CONSTRAINT FK_BILL_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_BILL_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
