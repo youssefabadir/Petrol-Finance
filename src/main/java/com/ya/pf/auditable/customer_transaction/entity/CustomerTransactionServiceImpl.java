@@ -17,29 +17,21 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 	private final CustomerService customerService;
 
 	@Override
+	@Transactional
 	public void createCustomerTransaction(long customerId, double amount, Long paymentId, Long billId, Date date) {
 
-		double balance = getCustomerPreviousBalance(customerId) + amount;
+		double newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
 
 		CustomerTransactionEntity customerTransactionEntity = new CustomerTransactionEntity();
 		customerTransactionEntity.setCustomerId(customerId);
-		customerTransactionEntity.setCustomerBalance(balance);
+		customerTransactionEntity.setCustomerBalance(newBalance);
 		customerTransactionEntity.setCustomerPaymentId(paymentId);
 		customerTransactionEntity.setBillId(billId);
 		customerTransactionEntity.setDate(date);
 
 		customerTransactionRepository.save(customerTransactionEntity);
-	}
 
-	@Override
-	public double getCustomerPreviousBalance(long customerId) {
-
-		CustomerTransactionEntity customerTransactionEntity = customerTransactionRepository.findFirstByCustomerIdOrderByIdDesc(customerId);
-		if (customerTransactionEntity == null) {
-			return customerService.getCustomerById(customerId).getBalance();
-		} else {
-			return customerTransactionEntity.getCustomerBalance();
-		}
+		customerService.updateCustomerBalance(customerId, newBalance);
 	}
 
 	@Override

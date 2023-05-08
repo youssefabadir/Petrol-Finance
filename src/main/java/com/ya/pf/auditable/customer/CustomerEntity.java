@@ -33,7 +33,7 @@ public class CustomerEntity extends Auditable {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "balance")
+	@Column(name = "balance", nullable = false)
 	private Double balance;
 
 	@JsonIgnore

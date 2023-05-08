@@ -71,4 +71,10 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.getReferenceById(id);
 	}
 
+	@Override
+	public void updateCustomerBalance(long customerId, double customerBalance) {
+
+		customerRepository.updateCustomerBalance(customerId, customerBalance);
+	}
+
 }
