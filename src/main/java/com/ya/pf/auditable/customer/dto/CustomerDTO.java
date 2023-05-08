@@ -1,5 +1,5 @@
 package com.ya.pf.auditable.customer.dto;
 
-public record CustomerDTO(long id, String name, double balance) {
+public record CustomerDTO(long id, String name, Double balance) {
 
 }

@@ -17,6 +17,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 	private final SupplierService supplierService;
 
 	@Override
+	@Transactional
 	public void createOwnerTransaction(long supplierId, double amount, Long paymentId, Long billId, Date date) {
 
 		double newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;

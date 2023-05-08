@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -66,6 +67,7 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
+	@Transactional
 	public void updateSupplierBalance(long supplierId, double supplierBalance) {
 
 		supplierRepository.updateSupplierBalance(supplierId, supplierBalance);
