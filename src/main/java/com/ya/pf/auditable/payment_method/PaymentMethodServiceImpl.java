@@ -51,14 +51,13 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 			boolean uniqueWayOfPayment = paymentMethodRepository.checkUniquePayment(id, paymentMethodEntity.getName());
 
 			if (uniqueWayOfPayment) {
-				paymentMethodRepository.save(paymentMethodEntity);
+				return paymentMethodRepository.save(paymentMethodEntity);
 			} else {
 				throw new EntityExistsException("Way of payment with this name already exists");
 			}
 		} else {
 			throw new EntityNotFoundException("Way of payment with Id " + id + " not found");
 		}
-		return null;
 	}
 
 	@Override

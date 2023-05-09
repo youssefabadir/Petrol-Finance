@@ -59,7 +59,7 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 		ownerTransactionService.createOwnerTransaction(ownerPayment.getSupplierEntity().getId(), ownerPayment.getAmount(),
 				ownerPayment.getId(), null, ownerPayment.getDate());
 
-		return null;
+		return ownerPayment;
 	}
 
 	@Override
