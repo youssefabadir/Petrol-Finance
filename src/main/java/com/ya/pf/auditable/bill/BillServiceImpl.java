@@ -38,9 +38,11 @@ public class BillServiceImpl implements BillService {
 		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
 		if (!number.isEmpty() && start != null && end != null) {
-			return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start),
+					Date.valueOf(end.plusDays(1)), pageable);
 		} else if (number.isEmpty() && start != null && end != null) {
-			return billRepository.findByDateBetween(Date.valueOf(start), Date.valueOf(end), pageable);
+			return billRepository.findByDateBetween(Date.valueOf(start),
+					Date.valueOf(end.plusDays(1)), pageable);
 		} else if (!number.isEmpty() && start == null && end == null) {
 			return billRepository.findByNumberContaining(number, pageable);
 		} else {

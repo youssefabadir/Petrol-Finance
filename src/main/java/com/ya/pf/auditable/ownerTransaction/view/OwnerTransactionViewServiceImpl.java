@@ -23,7 +23,8 @@ public class OwnerTransactionViewServiceImpl implements OwnerTransactionViewServ
 		if (start == null || end == null) {
 			return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
 		} else {
-			return ownerTransactionViewRepository.findBySupplierIdAndDateBetween(supplierId, Date.valueOf(start), Date.valueOf(end), pageable);
+			return ownerTransactionViewRepository.findBySupplierIdAndDateBetween(supplierId, Date.valueOf(start),
+					Date.valueOf(end.plusDays(1)), pageable);
 		}
 	}
 
