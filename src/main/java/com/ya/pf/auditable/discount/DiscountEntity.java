@@ -20,17 +20,17 @@ import java.util.Objects;
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE customer_discount SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
-public class CustomerDiscountEntity extends Auditable {
+public class DiscountEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-	@Column(name = "discount", nullable = false)
-	private double discount;
+    @Column(name = "discount", nullable = false)
+    private double discount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
 	private CustomerEntity customerEntity;
 
@@ -41,18 +41,18 @@ public class CustomerDiscountEntity extends Auditable {
 	@Override
 	public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		CustomerDiscountEntity customerDiscountEntity = (CustomerDiscountEntity) o;
-		return id != null && Objects.equals(id, customerDiscountEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        DiscountEntity discountEntity = (DiscountEntity) o;
+        return id != null && Objects.equals(id, discountEntity.id);
+    }
 
 	@Override
 	public String toString() {

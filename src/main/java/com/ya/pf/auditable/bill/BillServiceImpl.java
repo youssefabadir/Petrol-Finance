@@ -1,7 +1,7 @@
 package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
-import com.ya.pf.auditable.discount.CustomerDiscountService;
+import com.ya.pf.auditable.discount.DiscountService;
 import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.auditable.product.ProductService;
 import com.ya.pf.util.Helper;
@@ -29,7 +29,7 @@ public class BillServiceImpl implements BillService {
 
 	private final OwnerTransactionService ownerTransactionService;
 
-	private final CustomerDiscountService customerDiscountService;
+    private final DiscountService discountService;
 
 	@Override
 	public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
@@ -68,7 +68,7 @@ public class BillServiceImpl implements BillService {
 			double billAmount;
 
 			try {
-				double discount = 1 - (customerDiscountService.getCustomerDiscountForProduct(customerId, productId) / 100);
+                double discount = 1 - (discountService.getCustomerDiscountForProduct(customerId, productId) / 100);
 				billAmount = productPrice * billEntity.getQuantity() * discount;
 			} catch (EntityNotFoundException e) {
 				billAmount = productPrice * billEntity.getQuantity();
