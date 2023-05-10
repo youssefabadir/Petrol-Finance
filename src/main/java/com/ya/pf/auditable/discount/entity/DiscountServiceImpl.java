@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.discount;
+package com.ya.pf.auditable.discount.entity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.discount;
+package com.ya.pf.auditable.discount.entity;
 
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
@@ -16,9 +16,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "customer_discount")
+@Table(name = "discount")
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE customer_discount SET deleted = 1 WHERE id=?")
+@SQLDelete(sql = "UPDATE discount SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")
 public class DiscountEntity extends Auditable {
 

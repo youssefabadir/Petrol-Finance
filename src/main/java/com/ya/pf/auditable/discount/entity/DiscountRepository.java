@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.discount;
+package com.ya.pf.auditable.discount.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

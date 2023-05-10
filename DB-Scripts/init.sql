@@ -117,7 +117,7 @@ CREATE TABLE owner_transaction
     CONSTRAINT FK_TRANSACTION_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id)
 );
 
-CREATE TABLE customer_discount
+CREATE TABLE discount
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     discount           DECIMAL(3, 3) NOT NULL,
@@ -161,18 +161,18 @@ SELECT ot.id                     AS transaction_id,
        s.id                      AS supplier_id,
        s.name                    AS supplier_name,
        ot.owner_supplier_balance AS owner_supplier_balance,
-       op.id                     AS payment_id,
-       op.number                 AS payment_number,
-       op.amount                 AS payment_amount,
-       op.transferred            AS transferred_payment,
-       pm.id                     AS payment_method_id,
-       pm.name                   AS payment_method_name,
-       b.id                      AS bill_id,
-       b.number                  AS bill_number,
-       b.quantity                AS bill_quantity,
-       b.amount                  AS bill_amount,
-       pr.id                     AS product_id,
-       pr.name                   AS product_name,
+       op.id          AS payment_id,
+       op.number      AS payment_number,
+       op.amount      AS payment_amount,
+       op.transferred AS transferred_payment,
+       pm.id          AS payment_method_id,
+       pm.name        AS payment_method_name,
+       b.id           AS bill_id,
+       b.number       AS bill_number,
+       b.quantity     AS bill_quantity,
+       b.amount       AS bill_amount,
+       pr.id          AS product_id,
+       pr.name        AS product_name,
        ot.date
 FROM owner_transaction ot
          LEFT OUTER JOIN supplier s ON s.id = ot.supplier_id
@@ -181,3 +181,15 @@ FROM owner_transaction ot
          LEFT OUTER JOIN bill b ON b.id = ot.bill_id
          LEFT OUTER JOIN product pr ON pr.id = b.product_id
 WHERE ot.deleted = 0
+
+CREATE VIEW discount_view AS
+SELECT d.id   AS id,
+       d.discount,
+       c.id   AS customer_id,
+       c.name AS customer_name,
+       p.id   AS product_id,
+       p.name AS product_name
+FROM discount d
+         INNER JOIN customer c ON c.id = d.customer_id
+         INNER JOIN product p ON p.id = d.product_id
+WHERE d.deleted = 0

@@ -1,7 +1,7 @@
 package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
-import com.ya.pf.auditable.discount.DiscountService;
+import com.ya.pf.auditable.discount.entity.DiscountService;
 import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.auditable.product.ProductService;
 import com.ya.pf.util.Helper;
