@@ -120,7 +120,7 @@ CREATE TABLE owner_transaction
 CREATE TABLE discount
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
-    discount           DECIMAL(3, 3) NOT NULL,
+    discount           DECIMAL(6, 3) NOT NULL,
     customer_id        INT           NOT NULL,
     product_id         INT           NOT NULL,
     deleted            BIT,

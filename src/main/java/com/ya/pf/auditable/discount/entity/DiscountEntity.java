@@ -1,8 +1,6 @@
 package com.ya.pf.auditable.discount.entity;
 
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.customer.CustomerEntity;
-import com.ya.pf.auditable.product.ProductEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -30,16 +28,14 @@ public class DiscountEntity extends Auditable {
     @Column(name = "discount", nullable = false)
     private double discount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-	private CustomerEntity customerEntity;
+    @Column(name = "customer_id", nullable = false)
+    private long customerId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
-	private ProductEntity productEntity;
+    @JoinColumn(name = "product_id", nullable = false)
+    private long productId;
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
         if (getClass() != o.getClass()) {
             return false;
@@ -58,14 +54,14 @@ public class DiscountEntity extends Auditable {
 	public String toString() {
 
 		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"discount = " + discount + ", " +
-				"customer id = " + customerEntity.getId() + ", " +
-				"product id = " + productEntity.getId() + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
+                "id = " + id + ", " +
+                "discount = " + discount + ", " +
+                "customer id = " + customerId + ", " +
+                "product id = " + productId + ", " +
+                "deleted = " + deleted + ", " +
+                "createdDate = " + createdDate + ", " +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
 	}
 
 	@Override
