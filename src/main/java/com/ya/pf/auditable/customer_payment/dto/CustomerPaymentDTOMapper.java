@@ -13,20 +13,20 @@ import java.util.function.Function;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerPaymentDTOMapper implements Function<CustomerPaymentEntity, CustomerPaymentDTO> {
 
-	private final CustomerDTOMapper customerDTOMapper;
+    private final CustomerDTOMapper customerDTOMapper;
 
-	private final PaymentMethodDTOMapper paymentMethodDTOMapper;
+    private final PaymentMethodDTOMapper paymentMethodDTOMapper;
 
-	@Override
-	public CustomerPaymentDTO apply(CustomerPaymentEntity customerPaymentEntity) {
+    @Override
+    public CustomerPaymentDTO apply(CustomerPaymentEntity customerPaymentEntity) {
 
-		return new CustomerPaymentDTO(customerPaymentEntity.getId(),
-				customerDTOMapper.apply(customerPaymentEntity.getCustomerEntity()),
-				paymentMethodDTOMapper.apply(customerPaymentEntity.getPaymentMethodEntity()),
-				customerPaymentEntity.getNumber(),
-				customerPaymentEntity.getAmount(),
-				customerPaymentEntity.isTransferred(),
-				customerPaymentEntity.getDate());
-	}
+        return new CustomerPaymentDTO(customerPaymentEntity.getId(),
+                customerDTOMapper.apply(customerPaymentEntity.getCustomerEntity()),
+                paymentMethodDTOMapper.apply(customerPaymentEntity.getPaymentMethodEntity()),
+                customerPaymentEntity.getNumber(),
+                customerPaymentEntity.getAmount(),
+                customerPaymentEntity.isTransferred(),
+                customerPaymentEntity.getDate());
+    }
 
 }

@@ -10,8 +10,8 @@ import java.util.Date;
 @Repository
 public interface OwnerTransactionViewRepository extends JpaRepository<OwnerTransactionView, Long> {
 
-	Page<OwnerTransactionView> findAllBySupplierId(long customerId, Pageable pageable);
+    Page<OwnerTransactionView> findAllBySupplierId(long customerId, Pageable pageable);
 
-	Page<OwnerTransactionView> findBySupplierIdAndDateBetween(long customerId, Date start, Date end, Pageable pageable);
+    Page<OwnerTransactionView> findBySupplierIdAndDateBetween(long customerId, Date start, Date end, Pageable pageable);
 
 }

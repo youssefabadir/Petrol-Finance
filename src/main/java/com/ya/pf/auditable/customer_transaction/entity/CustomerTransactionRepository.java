@@ -9,18 +9,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerTransactionRepository extends JpaRepository<CustomerTransactionEntity, Long> {
 
-	CustomerTransactionEntity findFirstByCustomerIdOrderByIdDesc(@Param("customer_id") long customerId);
+    CustomerTransactionEntity findFirstByCustomerIdOrderByIdDesc(@Param("customer_id") long customerId);
 
-	void deleteByCustomerPaymentId(long id);
+    void deleteByCustomerPaymentId(long id);
 
-	void deleteByBillId(long id);
+    void deleteByBillId(long id);
 
-	@Modifying
-	@Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.billId > :billId")
-	void updateBillCustomerBalance(@Param("billId") long billId, @Param("amount") double amount);
+    @Modifying
+    @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.billId > :billId")
+    void updateBillCustomerBalance(@Param("billId") long billId, @Param("amount") double amount);
 
-	@Modifying
-	@Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.customerPaymentId > :paymentId")
-	void updatePaymentCustomerBalance(@Param("paymentId") long paymentId, @Param("amount") double amount);
+    @Modifying
+    @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.customerPaymentId > :paymentId")
+    void updatePaymentCustomerBalance(@Param("paymentId") long paymentId, @Param("amount") double amount);
 
 }

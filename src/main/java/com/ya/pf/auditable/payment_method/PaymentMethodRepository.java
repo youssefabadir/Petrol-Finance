@@ -12,19 +12,19 @@ import java.util.List;
 @Repository
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethodEntity, Long> {
 
-	List<PaymentMethodEntity> findByNameContaining(String name);
+    List<PaymentMethodEntity> findByNameContaining(String name);
 
-	Page<PaymentMethodEntity> findByNameContaining(String name, Pageable pageable);
+    Page<PaymentMethodEntity> findByNameContaining(String name, Pageable pageable);
 
-	boolean existsByName(String name);
+    boolean existsByName(String name);
 
-	@Query("SELECT CASE WHEN COUNT(w) = 0 THEN true ELSE false END " +
-			"FROM PaymentMethodEntity w " +
-			"WHERE w.id != :id AND " +
-			"w.name = :name")
-	boolean checkUniquePayment(
-			@Param("id") long id,
-			@Param("name") String name
-	);
+    @Query("SELECT CASE WHEN COUNT(w) = 0 THEN true ELSE false END " +
+            "FROM PaymentMethodEntity w " +
+            "WHERE w.id != :id AND " +
+            "w.name = :name")
+    boolean checkUniquePayment(
+            @Param("id") long id,
+            @Param("name") String name
+    );
 
 }

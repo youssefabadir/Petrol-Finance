@@ -22,49 +22,49 @@ import java.util.Set;
 @Where(clause = "deleted=0")
 public class PaymentMethodEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "paymentMethodEntity")
-	private Set<CustomerPaymentEntity> payments = new LinkedHashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "paymentMethodEntity")
+    private Set<CustomerPaymentEntity> payments = new LinkedHashSet<>();
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		PaymentMethodEntity paymentMethodEntity = (PaymentMethodEntity) o;
-		return id != null && Objects.equals(id, paymentMethodEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        PaymentMethodEntity paymentMethodEntity = (PaymentMethodEntity) o;
+        return id != null && Objects.equals(id, paymentMethodEntity.id);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"name = " + name + ", " +
-				"deleted = " + deleted +
-				"createdDate = " + createdDate +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
-	}
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "deleted = " + deleted +
+                "createdDate = " + createdDate +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

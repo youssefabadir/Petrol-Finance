@@ -6,19 +6,19 @@ import java.util.List;
 
 public interface SupplierService {
 
-	Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize, String sortBy, String order);
+    Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize, String sortBy, String order);
 
-	SupplierEntity createSupplier(SupplierEntity supplierEntity);
+    SupplierEntity createSupplier(SupplierEntity supplierEntity);
 
-	SupplierEntity updateSupplier(SupplierEntity supplierEntity);
+    SupplierEntity updateSupplier(SupplierEntity supplierEntity);
 
-	void deleteSupplier(long id);
+    void deleteSupplier(long id);
 
 
-	List<SupplierEntity> searchSupplier(String name);
+    List<SupplierEntity> searchSupplier(String name);
 
-	SupplierEntity getSupplierById(long id);
+    SupplierEntity getSupplierById(long id);
 
-	void updateSupplierBalance(long supplierId, double supplierBalance);
+    void updateSupplierBalance(long supplierId, double supplierBalance);
 
 }

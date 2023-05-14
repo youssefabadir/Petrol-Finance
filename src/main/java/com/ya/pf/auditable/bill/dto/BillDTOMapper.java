@@ -14,25 +14,25 @@ import java.util.function.Function;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BillDTOMapper implements Function<BillEntity, BillDTO> {
 
-	private final SupplierDTOMapper supplierDTOMapper;
+    private final SupplierDTOMapper supplierDTOMapper;
 
-	private final CustomerDTOMapper customerDTOMapper;
+    private final CustomerDTOMapper customerDTOMapper;
 
-	private final ProductDTOMapper productDTOMapper;
+    private final ProductDTOMapper productDTOMapper;
 
-	@Override
-	public BillDTO apply(BillEntity billEntity) {
+    @Override
+    public BillDTO apply(BillEntity billEntity) {
 
-		return new BillDTO(
-				billEntity.getId(),
-				supplierDTOMapper.apply(billEntity.getSupplierEntity()),
-				customerDTOMapper.apply(billEntity.getCustomerEntity()),
-				productDTOMapper.apply(billEntity.getProductEntity()),
-				billEntity.getNumber(),
-				billEntity.getQuantity(),
-				billEntity.getAmount(),
-				billEntity.getDate()
-		);
-	}
+        return new BillDTO(
+                billEntity.getId(),
+                supplierDTOMapper.apply(billEntity.getSupplierEntity()),
+                customerDTOMapper.apply(billEntity.getCustomerEntity()),
+                productDTOMapper.apply(billEntity.getProductEntity()),
+                billEntity.getNumber(),
+                billEntity.getQuantity(),
+                billEntity.getAmount(),
+                billEntity.getDate()
+        );
+    }
 
 }

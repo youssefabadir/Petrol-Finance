@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface CustomerService {
 
-	Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize, String sortBy, String order);
+    Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize, String sortBy, String order);
 
-	CustomerEntity createCustomer(CustomerEntity customerEntity);
+    CustomerEntity createCustomer(CustomerEntity customerEntity);
 
-	CustomerEntity updateCustomer(CustomerEntity customerEntity);
+    CustomerEntity updateCustomer(CustomerEntity customerEntity);
 
-	void deleteCustomer(long id);
+    void deleteCustomer(long id);
 
-	List<CustomerEntity> searchCustomer(String name);
+    List<CustomerEntity> searchCustomer(String name);
 
-	CustomerEntity getCustomerById(long id);
+    CustomerEntity getCustomerById(long id);
 
-	void updateCustomerBalance(long customerId, double customerBalance);
+    void updateCustomerBalance(long customerId, double customerBalance);
 
 }

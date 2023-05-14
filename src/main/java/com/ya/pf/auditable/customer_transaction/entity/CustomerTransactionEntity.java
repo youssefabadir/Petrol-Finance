@@ -22,63 +22,63 @@ import java.util.Objects;
 @Where(clause = "deleted=0")
 public class CustomerTransactionEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@Column(name = "customer_id")
-	private Long customerId;
+    @Column(name = "customer_id")
+    private Long customerId;
 
-	@Column(name = "customer_balance", nullable = false)
-	private double customerBalance;
+    @Column(name = "customer_balance", nullable = false)
+    private double customerBalance;
 
-	@Column(name = "customer_payment_id")
-	private Long customerPaymentId;
+    @Column(name = "customer_payment_id")
+    private Long customerPaymentId;
 
-	@Column(name = "bill_id")
-	private Long billId;
+    @Column(name = "bill_id")
+    private Long billId;
 
-	@Column(name = "date")
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date date;
+    @Column(name = "date")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date date;
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		CustomerTransactionEntity customerTransactionEntity = (CustomerTransactionEntity) o;
-		return id != null && Objects.equals(id, customerTransactionEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        CustomerTransactionEntity customerTransactionEntity = (CustomerTransactionEntity) o;
+        return id != null && Objects.equals(id, customerTransactionEntity.id);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"customer id = " + customerId + ", " +
-				"customer balance = " + customerBalance + ", " +
-				"payment id = " + customerPaymentId + ", " +
-				"bill id = " + billId + ", " +
-				"date = " + date + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
-	}
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "customer id = " + customerId + ", " +
+                "customer balance = " + customerBalance + ", " +
+                "payment id = " + customerPaymentId + ", " +
+                "bill id = " + billId + ", " +
+                "date = " + date + ", " +
+                "deleted = " + deleted + ", " +
+                "createdDate = " + createdDate + ", " +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

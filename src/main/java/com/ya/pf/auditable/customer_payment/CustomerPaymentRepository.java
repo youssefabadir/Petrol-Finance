@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerPaymentRepository extends JpaRepository<CustomerPaymentEntity, Long> {
 
-	Page<CustomerPaymentEntity> findByNumberContaining(String number, Pageable pageable);
+    Page<CustomerPaymentEntity> findByNumberContaining(String number, Pageable pageable);
 
-	boolean existsByNumberAndPaymentMethodEntity_Id(String number, long id);
+    boolean existsByNumberAndPaymentMethodEntity_Id(String number, long id);
 
-	CustomerPaymentEntity getByNumberAndPaymentMethodEntity_Id(String number, long paymentMethodId);
+    CustomerPaymentEntity getByNumberAndPaymentMethodEntity_Id(String number, long paymentMethodId);
 
 }

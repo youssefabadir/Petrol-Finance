@@ -15,68 +15,68 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SupplierServiceImpl implements SupplierService {
 
-	private final SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
 
-	@Override
-	public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize,
-	                                         String sortBy, String order) {
+    @Override
+    public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize,
+                                             String sortBy, String order) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.trim().isEmpty()) {
-			return supplierRepository.findAll(pageable);
-		} else {
-			return supplierRepository.findByNameContaining(name, pageable);
-		}
-	}
+        if (name.trim().isEmpty()) {
+            return supplierRepository.findAll(pageable);
+        } else {
+            return supplierRepository.findByNameContaining(name, pageable);
+        }
+    }
 
-	@Override
-	public SupplierEntity createSupplier(SupplierEntity supplierEntity) {
+    @Override
+    public SupplierEntity createSupplier(SupplierEntity supplierEntity) {
 
-		if (supplierEntity.getId() != null) {
-			supplierEntity.setId(null);
-		}
+        if (supplierEntity.getId() != null) {
+            supplierEntity.setId(null);
+        }
 
-		return supplierRepository.save(supplierEntity);
-	}
+        return supplierRepository.save(supplierEntity);
+    }
 
-	@Override
-	public SupplierEntity updateSupplier(SupplierEntity supplierEntity) {
+    @Override
+    public SupplierEntity updateSupplier(SupplierEntity supplierEntity) {
 
-		if (supplierRepository.existsById(supplierEntity.getId())) {
-			return supplierRepository.save(supplierEntity);
-		} else {
-			throw new EntityNotFoundException("Supplier with ID " + supplierEntity.getId() + " not found");
-		}
-	}
+        if (supplierRepository.existsById(supplierEntity.getId())) {
+            return supplierRepository.save(supplierEntity);
+        } else {
+            throw new EntityNotFoundException("Supplier with ID " + supplierEntity.getId() + " not found");
+        }
+    }
 
-	@Override
-	public void deleteSupplier(long id) {
+    @Override
+    public void deleteSupplier(long id) {
 
-		if (supplierRepository.existsById(id)) {
-			supplierRepository.deleteById(id);
-		} else {
-			throw new EntityNotFoundException("Supplier with ID " + id + " not found");
-		}
-	}
+        if (supplierRepository.existsById(id)) {
+            supplierRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Supplier with ID " + id + " not found");
+        }
+    }
 
-	@Override
-	public SupplierEntity getSupplierById(long id) {
+    @Override
+    public SupplierEntity getSupplierById(long id) {
 
-		return supplierRepository.getReferenceById(id);
-	}
+        return supplierRepository.getReferenceById(id);
+    }
 
-	@Override
-	@Transactional
-	public void updateSupplierBalance(long supplierId, double supplierBalance) {
+    @Override
+    @Transactional
+    public void updateSupplierBalance(long supplierId, double supplierBalance) {
 
-		supplierRepository.updateSupplierBalance(supplierId, supplierBalance);
-	}
+        supplierRepository.updateSupplierBalance(supplierId, supplierBalance);
+    }
 
-	@Override
-	public List<SupplierEntity> searchSupplier(String name) {
+    @Override
+    public List<SupplierEntity> searchSupplier(String name) {
 
-		return supplierRepository.findByNameContaining(name);
-	}
+        return supplierRepository.findByNameContaining(name);
+    }
 
 }

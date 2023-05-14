@@ -15,17 +15,17 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable {
 
-	@CreatedDate
-	@Column(name = "created_date", updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	protected Date createdDate;
+    @CreatedDate
+    @Column(name = "created_date", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date createdDate;
 
-	@LastModifiedDate
-	@Column(name = "last_modified_date")
-	@Temporal(TemporalType.TIMESTAMP)
-	protected Date lastModifiedDate;
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date lastModifiedDate;
 
-	@Column(name = "deleted")
-	protected boolean deleted;
+    @Column(name = "deleted")
+    protected boolean deleted;
 
 }

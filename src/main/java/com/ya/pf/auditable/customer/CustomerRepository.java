@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
-	Page<CustomerEntity> findByNameContaining(String name, Pageable pageable);
+    Page<CustomerEntity> findByNameContaining(String name, Pageable pageable);
 
-	List<CustomerEntity> findByNameContaining(String name);
+    List<CustomerEntity> findByNameContaining(String name);
 
-	@Modifying
-	@Query("update CustomerEntity c set c.balance = :customerBalance where c.id = :customerId")
-	void updateCustomerBalance(@Param("customerId") long customerId, @Param("customerBalance") double customerBalance);
+    @Modifying
+    @Query("update CustomerEntity c set c.balance = :customerBalance where c.id = :customerId")
+    void updateCustomerBalance(@Param("customerId") long customerId, @Param("customerBalance") double customerBalance);
 
 }

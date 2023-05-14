@@ -17,92 +17,92 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
-	private final OwnerPaymentRepository ownerPaymentRepository;
+    private final OwnerPaymentRepository ownerPaymentRepository;
 
-	private final OwnerTransactionService ownerTransactionService;
+    private final OwnerTransactionService ownerTransactionService;
 
-	@Lazy
-	private final CustomerPaymentService customerPaymentService;
+    @Lazy
+    private final CustomerPaymentService customerPaymentService;
 
-	@Override
-	public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
+    @Override
+    public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (number.trim().isEmpty()) {
-			return ownerPaymentRepository.findAll(pageable);
-		} else {
-			return ownerPaymentRepository.findByNumberContaining(number, pageable);
-		}
-	}
+        if (number.trim().isEmpty()) {
+            return ownerPaymentRepository.findAll(pageable);
+        } else {
+            return ownerPaymentRepository.findByNumberContaining(number, pageable);
+        }
+    }
 
-	@Override
-	@Transactional
-	public OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPaymentEntity) {
+    @Override
+    @Transactional
+    public OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPaymentEntity) {
 
-		if (ownerPaymentEntity.getId() != null) {
-			ownerPaymentEntity.setId(null);
-		}
+        if (ownerPaymentEntity.getId() != null) {
+            ownerPaymentEntity.setId(null);
+        }
 
-		long paymentMethodId = ownerPaymentEntity.getPaymentMethodEntity().getId();
+        long paymentMethodId = ownerPaymentEntity.getPaymentMethodEntity().getId();
 
-		if (paymentMethodId != 1) {
-			boolean exists = ownerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(ownerPaymentEntity.getNumber(), paymentMethodId);
-			if (exists) {
-				throw new EntityExistsException("This payment number exists for this way of payment");
-			}
-		}
+        if (paymentMethodId != 1) {
+            boolean exists = ownerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(ownerPaymentEntity.getNumber(), paymentMethodId);
+            if (exists) {
+                throw new EntityExistsException("This payment number exists for this way of payment");
+            }
+        }
 
-		ownerPaymentEntity.setAmount(Math.abs(ownerPaymentEntity.getAmount()));
-		OwnerPaymentEntity ownerPayment = ownerPaymentRepository.save(ownerPaymentEntity);
+        ownerPaymentEntity.setAmount(Math.abs(ownerPaymentEntity.getAmount()));
+        OwnerPaymentEntity ownerPayment = ownerPaymentRepository.save(ownerPaymentEntity);
 
-		ownerTransactionService.createOwnerTransaction(ownerPayment.getSupplierEntity().getId(), ownerPayment.getAmount(),
-				ownerPayment.getId(), null, ownerPayment.getDate());
+        ownerTransactionService.createOwnerTransaction(ownerPayment.getSupplierEntity().getId(), ownerPayment.getAmount(),
+                ownerPayment.getId(), null, ownerPayment.getDate());
 
-		return ownerPayment;
-	}
+        return ownerPayment;
+    }
 
-	@Override
-	@Transactional
-	public void deleteOwnerPayment(long id) {
+    @Override
+    @Transactional
+    public void deleteOwnerPayment(long id) {
 
-		if (ownerPaymentRepository.existsById(id)) {
-			OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getReferenceById(id);
-			long paymentId = ownerPaymentEntity.getId();
-			double paymentAmount = ownerPaymentEntity.getAmount();
-			String paymentNumber = ownerPaymentEntity.getNumber();
+        if (ownerPaymentRepository.existsById(id)) {
+            OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getReferenceById(id);
+            long paymentId = ownerPaymentEntity.getId();
+            double paymentAmount = ownerPaymentEntity.getAmount();
+            String paymentNumber = ownerPaymentEntity.getNumber();
 
-			ownerPaymentRepository.deleteById(id);
+            ownerPaymentRepository.deleteById(id);
 
-			ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, paymentAmount);
+            ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, paymentAmount);
 
-			if (ownerPaymentEntity.isTransferred()) {
-				customerPaymentService.deleteTransferredCustomerPayment(paymentNumber, ownerPaymentEntity.getPaymentMethodEntity().getId());
-			}
+            if (ownerPaymentEntity.isTransferred()) {
+                customerPaymentService.deleteTransferredCustomerPayment(paymentNumber, ownerPaymentEntity.getPaymentMethodEntity().getId());
+            }
 
-		} else {
-			throw new EntityNotFoundException("This owner payment id " + id + " doesn't exists");
-		}
-	}
+        } else {
+            throw new EntityNotFoundException("This owner payment id " + id + " doesn't exists");
+        }
+    }
 
-	@Override
-	@Transactional
-	public void deleteTransferredOwnerPayment(String number, long paymentMethodId) {
+    @Override
+    @Transactional
+    public void deleteTransferredOwnerPayment(String number, long paymentMethodId) {
 
-		OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getByNumberAndPaymentMethodEntity_Id(number, paymentMethodId);
+        OwnerPaymentEntity ownerPaymentEntity = ownerPaymentRepository.getByNumberAndPaymentMethodEntity_Id(number, paymentMethodId);
 
-		if (ownerPaymentEntity != null) {
-			if (ownerPaymentEntity.isTransferred()) {
-				long paymentId = ownerPaymentEntity.getId();
-				double paymentAmount = ownerPaymentEntity.getAmount();
+        if (ownerPaymentEntity != null) {
+            if (ownerPaymentEntity.isTransferred()) {
+                long paymentId = ownerPaymentEntity.getId();
+                double paymentAmount = ownerPaymentEntity.getAmount();
 
-				ownerPaymentRepository.deleteById(paymentId);
+                ownerPaymentRepository.deleteById(paymentId);
 
-				ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, paymentAmount);
-			}
-		} else {
-			throw new EntityNotFoundException("This owner payment number doesn't exists");
-		}
-	}
+                ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, paymentAmount);
+            }
+        } else {
+            throw new EntityNotFoundException("This owner payment number doesn't exists");
+        }
+    }
 
 }

@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface SupplierRepository extends JpaRepository<SupplierEntity, Long> {
 
-	Page<SupplierEntity> findByNameContaining(String name, Pageable pageable);
+    Page<SupplierEntity> findByNameContaining(String name, Pageable pageable);
 
-	List<SupplierEntity> findByNameContaining(String name);
+    List<SupplierEntity> findByNameContaining(String name);
 
-	@Modifying
-	@Query("update SupplierEntity s set s.balance = :supplierBalance where s.id = :supplierId")
-	void updateSupplierBalance(@Param("supplierId") long supplierId, @Param("supplierBalance") double supplierBalance);
+    @Modifying
+    @Query("update SupplierEntity s set s.balance = :supplierBalance where s.id = :supplierId")
+    void updateSupplierBalance(@Param("supplierId") long supplierId, @Param("supplierBalance") double supplierBalance);
 
 }

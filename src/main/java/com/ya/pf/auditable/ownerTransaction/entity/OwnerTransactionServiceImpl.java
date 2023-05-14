@@ -12,42 +12,42 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
-	private final OwnerTransactionRepository ownerTransactionRepository;
+    private final OwnerTransactionRepository ownerTransactionRepository;
 
-	private final SupplierService supplierService;
+    private final SupplierService supplierService;
 
-	@Override
-	@Transactional
-	public void createOwnerTransaction(long supplierId, double amount, Long paymentId, Long billId, Date date) {
+    @Override
+    @Transactional
+    public void createOwnerTransaction(long supplierId, double amount, Long paymentId, Long billId, Date date) {
 
-		double newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
+        double newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
 
-		OwnerTransactionEntity ownerTransactionEntity = new OwnerTransactionEntity();
-		ownerTransactionEntity.setOwnerSupplierBalance(newBalance);
-		ownerTransactionEntity.setSupplierId(supplierId);
-		ownerTransactionEntity.setOwnerPaymentId(paymentId);
-		ownerTransactionEntity.setBillId(billId);
-		ownerTransactionEntity.setDate(date);
+        OwnerTransactionEntity ownerTransactionEntity = new OwnerTransactionEntity();
+        ownerTransactionEntity.setOwnerSupplierBalance(newBalance);
+        ownerTransactionEntity.setSupplierId(supplierId);
+        ownerTransactionEntity.setOwnerPaymentId(paymentId);
+        ownerTransactionEntity.setBillId(billId);
+        ownerTransactionEntity.setDate(date);
 
-		ownerTransactionRepository.save(ownerTransactionEntity);
+        ownerTransactionRepository.save(ownerTransactionEntity);
 
-		supplierService.updateSupplierBalance(supplierId, newBalance);
-	}
+        supplierService.updateSupplierBalance(supplierId, newBalance);
+    }
 
-	@Override
-	@Transactional
-	public void deleteOwnerTransactionByPaymentId(long paymentId, double paymentAmount) {
+    @Override
+    @Transactional
+    public void deleteOwnerTransactionByPaymentId(long paymentId, double paymentAmount) {
 
-		ownerTransactionRepository.updatePaymentOwnerSupplierBalance(paymentId, paymentAmount);
-		ownerTransactionRepository.deleteByOwnerPaymentId(paymentId);
-	}
+        ownerTransactionRepository.updatePaymentOwnerSupplierBalance(paymentId, paymentAmount);
+        ownerTransactionRepository.deleteByOwnerPaymentId(paymentId);
+    }
 
-	@Override
-	@Transactional
-	public void deleteOwnerTransactionByBillId(long billId, double billAmount) {
+    @Override
+    @Transactional
+    public void deleteOwnerTransactionByBillId(long billId, double billAmount) {
 
-		ownerTransactionRepository.updateBillOwnerSupplierBalance(billId, billAmount);
-		ownerTransactionRepository.deleteByBillId(billId);
-	}
+        ownerTransactionRepository.updateBillOwnerSupplierBalance(billId, billAmount);
+        ownerTransactionRepository.deleteByBillId(billId);
+    }
 
 }

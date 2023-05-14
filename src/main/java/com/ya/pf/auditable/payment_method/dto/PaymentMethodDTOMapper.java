@@ -8,10 +8,10 @@ import java.util.function.Function;
 @Service
 public class PaymentMethodDTOMapper implements Function<PaymentMethodEntity, PaymentMethodDTO> {
 
-	@Override
-	public PaymentMethodDTO apply(PaymentMethodEntity paymentMethodEntity) {
+    @Override
+    public PaymentMethodDTO apply(PaymentMethodEntity paymentMethodEntity) {
 
-		return new PaymentMethodDTO(paymentMethodEntity.getId(), paymentMethodEntity.getName());
-	}
+        return new PaymentMethodDTO(paymentMethodEntity.getId(), paymentMethodEntity.getName());
+    }
 
 }

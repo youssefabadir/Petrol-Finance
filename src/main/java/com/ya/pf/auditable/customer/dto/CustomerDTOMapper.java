@@ -8,10 +8,10 @@ import java.util.function.Function;
 @Service
 public class CustomerDTOMapper implements Function<CustomerEntity, CustomerDTO> {
 
-	@Override
-	public CustomerDTO apply(CustomerEntity customerEntity) {
+    @Override
+    public CustomerDTO apply(CustomerEntity customerEntity) {
 
-		return new CustomerDTO(customerEntity.getId(), customerEntity.getName(), customerEntity.getBalance());
-	}
+        return new CustomerDTO(customerEntity.getId(), customerEntity.getName(), customerEntity.getBalance());
+    }
 
 }

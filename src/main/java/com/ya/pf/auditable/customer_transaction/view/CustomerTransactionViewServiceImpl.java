@@ -14,19 +14,19 @@ import java.time.LocalDate;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerTransactionViewServiceImpl implements CustomerTransactionViewService {
 
-	private final CustomerTransactionViewRepository customerTransactionViewRepository;
+    private final CustomerTransactionViewRepository customerTransactionViewRepository;
 
-	@Override
-	public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy,
-	                                                            String order, LocalDate start, LocalDate end) {
+    @Override
+    public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy,
+                                                                String order, LocalDate start, LocalDate end) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
-		if (start == null || end == null) {
-			return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
-		} else {
-			return customerTransactionViewRepository.findByCustomerIdAndDateBetween(customerId, Date.valueOf(start),
-					Date.valueOf(end.plusDays(1)), pageable);
-		}
-	}
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        if (start == null || end == null) {
+            return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
+        } else {
+            return customerTransactionViewRepository.findByCustomerIdAndDateBetween(customerId, Date.valueOf(start),
+                    Date.valueOf(end.plusDays(1)), pageable);
+        }
+    }
 
 }

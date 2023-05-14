@@ -8,10 +8,10 @@ import java.util.function.Function;
 @Service
 public class SupplierDTOMapper implements Function<SupplierEntity, SupplierDTO> {
 
-	@Override
-	public SupplierDTO apply(SupplierEntity supplierEntity) {
+    @Override
+    public SupplierDTO apply(SupplierEntity supplierEntity) {
 
-		return new SupplierDTO(supplierEntity.getId(), supplierEntity.getName(), supplierEntity.getBalance());
-	}
+        return new SupplierDTO(supplierEntity.getId(), supplierEntity.getName(), supplierEntity.getBalance());
+    }
 
 }

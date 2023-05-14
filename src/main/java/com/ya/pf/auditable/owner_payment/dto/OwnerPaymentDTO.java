@@ -7,14 +7,14 @@ import com.ya.pf.auditable.supplier.dto.SupplierDTO;
 import java.util.Date;
 
 public record OwnerPaymentDTO(
-		long id,
-		String number,
-		double amount,
-		SupplierDTO supplier,
-		PaymentMethodDTO paymentMethod,
-		boolean transferred,
-		@JsonFormat(pattern = "dd/MM/yyyy")
-		Date date
+        long id,
+        String number,
+        double amount,
+        SupplierDTO supplier,
+        PaymentMethodDTO paymentMethod,
+        boolean transferred,
+        @JsonFormat(pattern = "dd/MM/yyyy")
+        Date date
 ) {
 
 }

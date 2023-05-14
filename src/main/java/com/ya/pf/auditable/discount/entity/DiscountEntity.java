@@ -50,10 +50,10 @@ public class DiscountEntity extends Auditable {
         return id != null && Objects.equals(id, discountEntity.id);
     }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
+        return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
                 "discount = " + discount + ", " +
                 "customer id = " + customerId + ", " +
@@ -62,12 +62,12 @@ public class DiscountEntity extends Auditable {
                 "createdDate = " + createdDate + ", " +
                 "lastModifiedDate = " + lastModifiedDate +
                 ")";
-	}
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

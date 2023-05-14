@@ -13,11 +13,11 @@ import java.nio.charset.StandardCharsets;
 @RestController
 public class HomeController {
 
-	@GetMapping(value = "/", produces = "text/html")
-	public ResponseEntity<String> index() throws IOException {
+    @GetMapping(value = "/", produces = "text/html")
+    public ResponseEntity<String> index() throws IOException {
 
-		Resource index = new ClassPathResource("static/index.html");
-		return ResponseEntity.ok().body(IOUtils.toString(index.getInputStream(), StandardCharsets.UTF_8));
-	}
+        Resource index = new ClassPathResource("static/index.html");
+        return ResponseEntity.ok().body(IOUtils.toString(index.getInputStream(), StandardCharsets.UTF_8));
+    }
 
 }

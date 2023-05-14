@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface PaymentMethodService {
 
-	Page<PaymentMethodEntity> getWayOfPayments(String name, int pageNo, int pageSize, String sortBy, String order);
+    Page<PaymentMethodEntity> getWayOfPayments(String name, int pageNo, int pageSize, String sortBy, String order);
 
-	PaymentMethodEntity createWayOfPayment(PaymentMethodEntity paymentMethodEntity);
+    PaymentMethodEntity createWayOfPayment(PaymentMethodEntity paymentMethodEntity);
 
-	PaymentMethodEntity updateWayOfPayment(PaymentMethodEntity paymentMethodEntity);
+    PaymentMethodEntity updateWayOfPayment(PaymentMethodEntity paymentMethodEntity);
 
-	void deleteWayOfPayment(long id);
+    void deleteWayOfPayment(long id);
 
-	List<PaymentMethodEntity> searchPaymentMethod(String name);
+    List<PaymentMethodEntity> searchPaymentMethod(String name);
 
 }

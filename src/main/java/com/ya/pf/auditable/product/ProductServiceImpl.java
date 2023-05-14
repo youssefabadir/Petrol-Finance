@@ -14,61 +14,61 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductServiceImpl implements ProductService {
 
-	private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-	@Override
-	public Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order) {
+    @Override
+    public Page<ProductEntity> getProducts(String name, int pageNo, int pageSize, String sortBy, String order) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.trim().isEmpty()) {
-			return productRepository.findAll(pageable);
-		} else {
-			return productRepository.findByNameContaining(name, pageable);
-		}
-	}
+        if (name.trim().isEmpty()) {
+            return productRepository.findAll(pageable);
+        } else {
+            return productRepository.findByNameContaining(name, pageable);
+        }
+    }
 
-	@Override
-	public ProductEntity createProduct(ProductEntity productEntity) {
+    @Override
+    public ProductEntity createProduct(ProductEntity productEntity) {
 
-		if (productEntity.getId() != null) {
-			productEntity.setId(null);
-		}
+        if (productEntity.getId() != null) {
+            productEntity.setId(null);
+        }
 
-		return productRepository.save(productEntity);
-	}
+        return productRepository.save(productEntity);
+    }
 
-	@Override
-	public ProductEntity updateProduct(ProductEntity productEntity) {
+    @Override
+    public ProductEntity updateProduct(ProductEntity productEntity) {
 
-		if (productRepository.existsById(productEntity.getId())) {
-			return productRepository.save(productEntity);
-		} else {
-			throw new EntityNotFoundException("Product with ID " + productEntity.getId() + " not found");
-		}
-	}
+        if (productRepository.existsById(productEntity.getId())) {
+            return productRepository.save(productEntity);
+        } else {
+            throw new EntityNotFoundException("Product with ID " + productEntity.getId() + " not found");
+        }
+    }
 
-	@Override
-	public void deleteProduct(long id) {
+    @Override
+    public void deleteProduct(long id) {
 
-		if (productRepository.existsById(id)) {
-			productRepository.deleteById(id);
-		} else {
-			throw new EntityNotFoundException("Product with ID " + id + " not found");
-		}
-	}
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Product with ID " + id + " not found");
+        }
+    }
 
-	@Override
-	public double getProductPrice(long id) {
+    @Override
+    public double getProductPrice(long id) {
 
-		ProductEntity product = productRepository.getReferenceById(id);
-		return product.getPrice();
-	}
+        ProductEntity product = productRepository.getReferenceById(id);
+        return product.getPrice();
+    }
 
-	@Override
-	public List<ProductEntity> searchProduct(String name) {
+    @Override
+    public List<ProductEntity> searchProduct(String name) {
 
-		return productRepository.findByNameContaining(name);
-	}
+        return productRepository.findByNameContaining(name);
+    }
 
 }

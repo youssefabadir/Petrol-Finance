@@ -22,68 +22,68 @@ import java.util.Objects;
 @Where(clause = "deleted=0")
 public class CustomerPaymentEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "number", nullable = false)
-	private String number;
+    @Column(name = "number", nullable = false)
+    private String number;
 
-	@Column(name = "amount", nullable = false)
-	private double amount;
+    @Column(name = "amount", nullable = false)
+    private double amount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-	private CustomerEntity customerEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    private CustomerEntity customerEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "payment_method_id", referencedColumnName = "id", nullable = false)
-	private PaymentMethodEntity paymentMethodEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id", referencedColumnName = "id", nullable = false)
+    private PaymentMethodEntity paymentMethodEntity;
 
-	@Column(name = "transferred")
-	private boolean transferred;
+    @Column(name = "transferred")
+    private boolean transferred;
 
-	@Column(name = "date", nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date date;
+    @Column(name = "date", nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date date;
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		CustomerPaymentEntity customerPaymentEntity = (CustomerPaymentEntity) o;
-		return id != null && Objects.equals(id, customerPaymentEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        CustomerPaymentEntity customerPaymentEntity = (CustomerPaymentEntity) o;
+        return id != null && Objects.equals(id, customerPaymentEntity.id);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"number = " + number + ", " +
-				"amount = " + amount + ", " +
-				"customer id = " + customerEntity.getId() + ", " +
-				"way of payment = " + paymentMethodEntity.getId() + ", " +
-				"transferred = " + transferred + ", " +
-				"payment date = " + date + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
-	}
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "number = " + number + ", " +
+                "amount = " + amount + ", " +
+                "customer id = " + customerEntity.getId() + ", " +
+                "way of payment = " + paymentMethodEntity.getId() + ", " +
+                "transferred = " + transferred + ", " +
+                "payment date = " + date + ", " +
+                "deleted = " + deleted + ", " +
+                "createdDate = " + createdDate + ", " +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

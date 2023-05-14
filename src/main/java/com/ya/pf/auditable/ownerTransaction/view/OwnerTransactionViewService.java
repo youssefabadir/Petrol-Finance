@@ -6,6 +6,6 @@ import java.time.LocalDate;
 
 public interface OwnerTransactionViewService {
 
-	Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+    Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
 
 }

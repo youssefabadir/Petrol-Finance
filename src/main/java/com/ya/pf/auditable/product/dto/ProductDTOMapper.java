@@ -8,10 +8,10 @@ import java.util.function.Function;
 @Service
 public class ProductDTOMapper implements Function<ProductEntity, ProductDTO> {
 
-	@Override
-	public ProductDTO apply(ProductEntity productEntity) {
+    @Override
+    public ProductDTO apply(ProductEntity productEntity) {
 
-		return new ProductDTO(productEntity.getId(), productEntity.getName(), productEntity.getPrice());
-	}
+        return new ProductDTO(productEntity.getId(), productEntity.getName(), productEntity.getPrice());
+    }
 
 }

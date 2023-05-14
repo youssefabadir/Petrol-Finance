@@ -22,68 +22,68 @@ import java.util.Objects;
 @Where(clause = "deleted=0")
 public class OwnerPaymentEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "number", nullable = false)
-	private String number;
+    @Column(name = "number", nullable = false)
+    private String number;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "supplier_id", referencedColumnName = "id", nullable = false)
-	private SupplierEntity supplierEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id", nullable = false)
+    private SupplierEntity supplierEntity;
 
-	@Column(name = "amount", nullable = false)
-	private double amount;
+    @Column(name = "amount", nullable = false)
+    private double amount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "payment_method_id", referencedColumnName = "id", nullable = false)
-	private PaymentMethodEntity paymentMethodEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id", referencedColumnName = "id", nullable = false)
+    private PaymentMethodEntity paymentMethodEntity;
 
-	@Column(name = "transferred")
-	private boolean transferred;
+    @Column(name = "transferred")
+    private boolean transferred;
 
-	@Column(name = "date", nullable = false)
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date date;
+    @Column(name = "date", nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date date;
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		OwnerPaymentEntity ownerPaymentEntity = (OwnerPaymentEntity) o;
-		return id != null && Objects.equals(id, ownerPaymentEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        OwnerPaymentEntity ownerPaymentEntity = (OwnerPaymentEntity) o;
+        return id != null && Objects.equals(id, ownerPaymentEntity.id);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"number = " + number + ", " +
-				"amount = " + amount + ", " +
-				"supplier id = " + supplierEntity.getId() + ", " +
-				"way of payment = " + paymentMethodEntity.getId() + ", " +
-				"transferred = " + transferred + ", " +
-				"payment date = " + date + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
-	}
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "number = " + number + ", " +
+                "amount = " + amount + ", " +
+                "supplier id = " + supplierEntity.getId() + ", " +
+                "way of payment = " + paymentMethodEntity.getId() + ", " +
+                "transferred = " + transferred + ", " +
+                "payment date = " + date + ", " +
+                "deleted = " + deleted + ", " +
+                "createdDate = " + createdDate + ", " +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

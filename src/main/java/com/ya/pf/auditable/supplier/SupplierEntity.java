@@ -25,58 +25,58 @@ import java.util.Set;
 @Where(clause = "deleted=0")
 public class SupplierEntity extends Auditable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	@Column(name = "balance", nullable = false)
-	private Double balance;
+    @Column(name = "balance", nullable = false)
+    private Double balance;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
-	private Set<BillEntity> bills = new LinkedHashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "supplierEntity")
+    private Set<BillEntity> bills = new LinkedHashSet<>();
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "supplierEntity")
-	private Set<OwnerPaymentEntity> payments = new LinkedHashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "supplierEntity")
+    private Set<OwnerPaymentEntity> payments = new LinkedHashSet<>();
 
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
 
-		if (getClass() != o.getClass()) {
-			return false;
-		}
-		if (this == o) {
-			return true;
-		}
-		if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-			return false;
-		}
-		SupplierEntity supplierEntity = (SupplierEntity) o;
-		return id != null && Objects.equals(id, supplierEntity.id);
-	}
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        SupplierEntity supplierEntity = (SupplierEntity) o;
+        return id != null && Objects.equals(id, supplierEntity.id);
+    }
 
-	@Override
-	public String toString() {
+    @Override
+    public String toString() {
 
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"name = " + name + ", " +
-				"balance = " + balance + ", " +
-				"deleted = " + deleted + ", " +
-				"createdDate = " + createdDate + ", " +
-				"lastModifiedDate = " + lastModifiedDate +
-				")";
-	}
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "balance = " + balance + ", " +
+                "deleted = " + deleted + ", " +
+                "createdDate = " + createdDate + ", " +
+                "lastModifiedDate = " + lastModifiedDate +
+                ")";
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		return getClass().hashCode();
-	}
+        return getClass().hashCode();
+    }
 
 }

@@ -14,67 +14,67 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerServiceImpl implements CustomerService {
 
-	private final CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-	@Override
-	public Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize,
-	                                         String sortBy, String order) {
+    @Override
+    public Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize,
+                                             String sortBy, String order) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
-		if (name.trim().isEmpty()) {
-			return customerRepository.findAll(pageable);
-		} else {
-			return customerRepository.findByNameContaining(name, pageable);
-		}
-	}
+        if (name.trim().isEmpty()) {
+            return customerRepository.findAll(pageable);
+        } else {
+            return customerRepository.findByNameContaining(name, pageable);
+        }
+    }
 
-	@Override
-	public CustomerEntity createCustomer(CustomerEntity customerEntity) {
+    @Override
+    public CustomerEntity createCustomer(CustomerEntity customerEntity) {
 
-		if (customerEntity.getId() != null) {
-			customerEntity.setId(null);
-		}
+        if (customerEntity.getId() != null) {
+            customerEntity.setId(null);
+        }
 
-		return customerRepository.save(customerEntity);
-	}
+        return customerRepository.save(customerEntity);
+    }
 
-	@Override
-	public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
+    @Override
+    public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
 
-		if (customerRepository.existsById(customerEntity.getId())) {
-			return customerRepository.save(customerEntity);
-		} else {
-			throw new EntityNotFoundException("Customer with ID " + customerEntity.getId() + " not found");
-		}
-	}
+        if (customerRepository.existsById(customerEntity.getId())) {
+            return customerRepository.save(customerEntity);
+        } else {
+            throw new EntityNotFoundException("Customer with ID " + customerEntity.getId() + " not found");
+        }
+    }
 
-	@Override
-	public void deleteCustomer(long id) {
+    @Override
+    public void deleteCustomer(long id) {
 
-		if (customerRepository.existsById(id)) {
-			customerRepository.deleteById(id);
-		} else {
-			throw new EntityNotFoundException("Customer with ID " + id + " not found");
-		}
-	}
+        if (customerRepository.existsById(id)) {
+            customerRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Customer with ID " + id + " not found");
+        }
+    }
 
-	@Override
-	public List<CustomerEntity> searchCustomer(String name) {
+    @Override
+    public List<CustomerEntity> searchCustomer(String name) {
 
-		return customerRepository.findByNameContaining(name);
-	}
+        return customerRepository.findByNameContaining(name);
+    }
 
-	@Override
-	public CustomerEntity getCustomerById(long id) {
+    @Override
+    public CustomerEntity getCustomerById(long id) {
 
-		return customerRepository.getReferenceById(id);
-	}
+        return customerRepository.getReferenceById(id);
+    }
 
-	@Override
-	public void updateCustomerBalance(long customerId, double customerBalance) {
+    @Override
+    public void updateCustomerBalance(long customerId, double customerBalance) {
 
-		customerRepository.updateCustomerBalance(customerId, customerBalance);
-	}
+        customerRepository.updateCustomerBalance(customerId, customerBalance);
+    }
 
 }

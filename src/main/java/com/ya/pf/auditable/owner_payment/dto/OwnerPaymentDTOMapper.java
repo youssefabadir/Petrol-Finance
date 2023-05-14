@@ -13,20 +13,20 @@ import java.util.function.Function;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerPaymentDTOMapper implements Function<OwnerPaymentEntity, OwnerPaymentDTO> {
 
-	private final SupplierDTOMapper supplierDTOMapper;
+    private final SupplierDTOMapper supplierDTOMapper;
 
-	private final PaymentMethodDTOMapper paymentMethodDTOMapper;
+    private final PaymentMethodDTOMapper paymentMethodDTOMapper;
 
-	@Override
-	public OwnerPaymentDTO apply(OwnerPaymentEntity ownerPaymentEntity) {
+    @Override
+    public OwnerPaymentDTO apply(OwnerPaymentEntity ownerPaymentEntity) {
 
-		return new OwnerPaymentDTO(ownerPaymentEntity.getId(),
-				ownerPaymentEntity.getNumber(),
-				ownerPaymentEntity.getAmount(),
-				supplierDTOMapper.apply(ownerPaymentEntity.getSupplierEntity()),
-				paymentMethodDTOMapper.apply(ownerPaymentEntity.getPaymentMethodEntity()),
-				ownerPaymentEntity.isTransferred(),
-				ownerPaymentEntity.getDate());
-	}
+        return new OwnerPaymentDTO(ownerPaymentEntity.getId(),
+                ownerPaymentEntity.getNumber(),
+                ownerPaymentEntity.getAmount(),
+                supplierDTOMapper.apply(ownerPaymentEntity.getSupplierEntity()),
+                paymentMethodDTOMapper.apply(ownerPaymentEntity.getPaymentMethodEntity()),
+                ownerPaymentEntity.isTransferred(),
+                ownerPaymentEntity.getDate());
+    }
 
 }

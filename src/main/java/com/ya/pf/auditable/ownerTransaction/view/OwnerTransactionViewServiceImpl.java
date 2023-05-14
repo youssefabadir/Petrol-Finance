@@ -14,18 +14,18 @@ import java.time.LocalDate;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerTransactionViewServiceImpl implements OwnerTransactionViewService {
 
-	private final OwnerTransactionViewRepository ownerTransactionViewRepository;
+    private final OwnerTransactionViewRepository ownerTransactionViewRepository;
 
-	@Override
-	public Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end) {
+    @Override
+    public Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end) {
 
-		Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
-		if (start == null || end == null) {
-			return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
-		} else {
-			return ownerTransactionViewRepository.findBySupplierIdAndDateBetween(supplierId, Date.valueOf(start),
-					Date.valueOf(end.plusDays(1)), pageable);
-		}
-	}
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        if (start == null || end == null) {
+            return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
+        } else {
+            return ownerTransactionViewRepository.findBySupplierIdAndDateBetween(supplierId, Date.valueOf(start),
+                    Date.valueOf(end.plusDays(1)), pageable);
+        }
+    }
 
 }

@@ -6,6 +6,6 @@ import java.time.LocalDate;
 
 public interface CustomerTransactionViewService {
 
-	Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+    Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
 
 }
