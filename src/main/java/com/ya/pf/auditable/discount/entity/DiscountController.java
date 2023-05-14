@@ -3,6 +3,7 @@ package com.ya.pf.auditable.discount.entity;
 import com.ya.pf.auditable.discount.view.DiscountView;
 import com.ya.pf.auditable.discount.view.DiscountViewService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
+@Slf4j
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/discount")
@@ -29,16 +31,26 @@ public class DiscountController {
                                                            @RequestParam(defaultValue = "id") String sortBy,
                                                            @RequestParam(defaultValue = "asc") String order) {
 
-        Page<DiscountView> discountViewPage = discountViewService.getDiscounts(customerName.trim(), productName.trim(), pageNo,
-                pageSize, sortBy, order);
-        return ResponseEntity.ok(discountViewPage);
+        try {
+            Page<DiscountView> discountViewPage = discountViewService.getDiscounts(customerName.trim(), productName.trim(), pageNo,
+                    pageSize, sortBy, order);
+            return ResponseEntity.ok(discountViewPage);
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<DiscountEntity> createDiscount(@RequestBody DiscountEntity discount) {
 
-        DiscountEntity discountEntity = discountService.createDiscount(discount);
-        return ResponseEntity.status(HttpStatus.CREATED).body(discountEntity);
+        try {
+            DiscountEntity discountEntity = discountService.createDiscount(discount);
+            return ResponseEntity.status(HttpStatus.CREATED).body(discountEntity);
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping
@@ -50,6 +62,7 @@ public class DiscountController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -63,6 +76,7 @@ public class DiscountController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
