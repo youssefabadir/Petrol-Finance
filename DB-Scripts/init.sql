@@ -130,15 +130,6 @@ CREATE TABLE discount
     CONSTRAINT FK_DISCOUNT_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
 );
 
-CREATE TABLE driver
-(
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    name               NVARCHAR(255) NOT NULL,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME
-);
-
 CREATE VIEW customer_transaction_view AS
 SELECT ct.id               AS transaction_id,
        c.id                AS customer_id,
