@@ -39,24 +39,6 @@ CREATE TABLE payment_method
 INSERT INTO payment_method
 VALUES ('cash', 0, GETDATE(), GETDATE());
 
-CREATE TABLE driver
-(
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    name               NVARCHAR(255) NOT NULL,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME
-);
-
-CREATE TABLE truck
-(
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    number             NVARCHAR(255) NOT NULL,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME
-);
-
 CREATE TABLE bill
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
@@ -66,17 +48,13 @@ CREATE TABLE bill
     quantity           DECIMAL(18, 2) NOT NULL,
     number             VARCHAR(255)   NOT NULL,
     amount             DECIMAL(18, 2) NOT NULL,
-    driver_id          INT,
-    truck_id           INT,
     date               DATETIME       NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
     CONSTRAINT FK_BILL_SUPPLIER FOREIGN KEY (supplier_id) REFERENCES supplier (id),
     CONSTRAINT FK_BILL_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
-    CONSTRAINT FK_BILL_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
-    CONSTRAINT FK_BILL_DRIVER FOREIGN KEY (driver_id) REFERENCES driver (id),
-    CONSTRAINT FK_BILL_TRUCK FOREIGN KEY (truck_id) REFERENCES truck (id)
+    CONSTRAINT FK_BILL_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
 CREATE TABLE customer_payment
@@ -150,6 +128,24 @@ CREATE TABLE discount
     last_modified_date DATETIME,
     CONSTRAINT FK_DISCOUNT_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_DISCOUNT_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
+);
+
+CREATE TABLE driver
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    name               NVARCHAR(255) NOT NULL,
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME
+);
+
+CREATE TABLE truck
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    number             NVARCHAR(255) NOT NULL,
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME
 );
 
 CREATE VIEW customer_transaction_view AS

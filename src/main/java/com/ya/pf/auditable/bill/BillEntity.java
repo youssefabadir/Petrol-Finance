@@ -3,10 +3,8 @@ package com.ya.pf.auditable.bill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
-import com.ya.pf.auditable.driver.DriverEntity;
 import com.ya.pf.auditable.product.ProductEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
-import com.ya.pf.auditable.truck.TruckEntity;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -56,14 +54,6 @@ public class BillEntity extends Auditable {
     @Column(name = "amount")
     private double amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver_id", referencedColumnName = "id")
-    private DriverEntity driverEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "truck_id", referencedColumnName = "id")
-    private TruckEntity truckEntity;
-
     @NonNull
     @Column(name = "date")
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -96,8 +86,6 @@ public class BillEntity extends Auditable {
                 "number = " + number + ", " +
                 "quantity = " + quantity + ", " +
                 "amount = " + amount + ", " +
-                "driver id = " + driverEntity.getId() + ", " +
-                "truck id = " + truckEntity.getId() + ", " +
                 "date = " + date + ", " +
                 "deleted = " + deleted + ", " +
                 "createdDate = " + createdDate + ", " +

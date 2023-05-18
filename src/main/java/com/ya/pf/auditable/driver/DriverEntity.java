@@ -1,8 +1,6 @@
 package com.ya.pf.auditable.driver;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
-import com.ya.pf.auditable.bill.BillEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,9 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,10 +27,6 @@ public class DriverEntity extends Auditable {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "driverEntity")
-    private Set<BillEntity> bills = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
