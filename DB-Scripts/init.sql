@@ -139,15 +139,6 @@ CREATE TABLE driver
     last_modified_date DATETIME
 );
 
-CREATE TABLE truck
-(
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    number             NVARCHAR(255) NOT NULL,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME
-);
-
 CREATE VIEW customer_transaction_view AS
 SELECT ct.id               AS transaction_id,
        c.id                AS customer_id,
@@ -179,18 +170,18 @@ SELECT ot.id                     AS transaction_id,
        s.id                      AS supplier_id,
        s.name                    AS supplier_name,
        ot.owner_supplier_balance AS owner_supplier_balance,
-       op.id                     AS payment_id,
-       op.number                 AS payment_number,
-       op.amount                 AS payment_amount,
-       op.transferred            AS transferred_payment,
-       pm.id                     AS payment_method_id,
-       pm.name                   AS payment_method_name,
-       b.id                      AS bill_id,
-       b.number                  AS bill_number,
-       b.quantity                AS bill_quantity,
-       b.amount                  AS bill_amount,
-       pr.id                     AS product_id,
-       pr.name                   AS product_name,
+       op.id          AS payment_id,
+       op.number      AS payment_number,
+       op.amount      AS payment_amount,
+       op.transferred AS transferred_payment,
+       pm.id          AS payment_method_id,
+       pm.name        AS payment_method_name,
+       b.id           AS bill_id,
+       b.number       AS bill_number,
+       b.quantity     AS bill_quantity,
+       b.amount       AS bill_amount,
+       pr.id          AS product_id,
+       pr.name        AS product_name,
        ot.date
 FROM owner_transaction ot
          LEFT OUTER JOIN supplier s ON s.id = ot.supplier_id
