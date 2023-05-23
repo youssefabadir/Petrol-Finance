@@ -51,12 +51,13 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
         String paymentNumber = customerPaymentEntity.getNumber();
 
         if (paymentMethodId != 1) {
+            if (customerPaymentEntity.getNumber().trim().isEmpty()) {
+                throw new MissingRequestValueException("This payment is missing the payment number");
+            }
+
             boolean exists = customerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(paymentNumber, paymentMethodId);
             if (exists) {
                 throw new EntityExistsException("This payment number exists for this way of payment");
-            }
-            if (customerPaymentEntity.getNumber().trim().isEmpty()) {
-                throw new MissingRequestValueException("This payment is missing the payment number");
             }
         }
 
