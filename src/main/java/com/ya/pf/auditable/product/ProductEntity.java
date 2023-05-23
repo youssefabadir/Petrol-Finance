@@ -32,8 +32,11 @@ public class ProductEntity extends Auditable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
+    @Column(name = "supplier_price", nullable = false)
+    private Double supplierPrice;
+
+    @Column(name = "customer_price", nullable = false)
+    private Double customerPrice;
 
     @JsonIgnore
     @OneToMany(mappedBy = "productEntity")
@@ -61,7 +64,8 @@ public class ProductEntity extends Auditable {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
                 "name = " + name + ", " +
-                "price = " + price + ", " +
+                "supplier price = " + supplierPrice + ", " +
+                "customer price = " + customerPrice + ", " +
                 "deleted = " + deleted + ", " +
                 "createdDate = " + createdDate + ", " +
                 "lastModifiedDate = " + lastModifiedDate +

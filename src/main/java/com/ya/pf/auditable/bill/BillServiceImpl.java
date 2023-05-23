@@ -63,7 +63,7 @@ public class BillServiceImpl implements BillService {
             throw new EntityExistsException("This bill number exists for this supplier");
         } else {
             long productId = billEntity.getProductEntity().getId();
-            double productPrice = productService.getProductPrice(productId);
+            double productPrice = productService.getProductCustomerPrice(productId);
             long customerId = billEntity.getCustomerEntity().getId();
             double billAmount;
 
