@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MissingRequestValueException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -40,7 +41,7 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
     @Override
     @Transactional
-    public CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPaymentEntity, boolean transferred, long supplierId) {
+    public CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPaymentEntity, boolean transferred, long supplierId) throws MissingRequestValueException {
 
         if (customerPaymentEntity.getId() != null) {
             customerPaymentEntity.setId(null);
@@ -53,6 +54,9 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
             boolean exists = customerPaymentRepository.existsByNumberAndPaymentMethodEntity_Id(paymentNumber, paymentMethodId);
             if (exists) {
                 throw new EntityExistsException("This payment number exists for this way of payment");
+            }
+            if (customerPaymentEntity.getNumber().trim().isEmpty()) {
+                throw new MissingRequestValueException("This payment is missing the payment number");
             }
         }
 

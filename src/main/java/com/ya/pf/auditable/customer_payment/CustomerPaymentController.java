@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
@@ -55,6 +56,8 @@ public class CustomerPaymentController {
             return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
         } catch (EntityExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (MissingRequestValueException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         } catch (Exception e) {
             log.error(e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
