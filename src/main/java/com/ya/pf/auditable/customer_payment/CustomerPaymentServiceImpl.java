@@ -48,10 +48,10 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
         }
 
         long paymentMethodId = customerPaymentEntity.getPaymentMethodEntity().getId();
-        String paymentNumber = customerPaymentEntity.getNumber();
+        String paymentNumber = customerPaymentEntity.getNumber().trim();
 
         if (paymentMethodId != 1) {
-            if (customerPaymentEntity.getNumber().trim().isEmpty()) {
+            if (paymentNumber.isEmpty()) {
                 throw new MissingRequestValueException("This payment is missing the payment number");
             }
 
