@@ -1,0 +1,55 @@
+package com.ya.pf.auditable.transaction.owner_transaction.entity;
+
+import com.ya.pf.auditable.supplier.SupplierService;
+import com.ya.pf.auditable.transaction.TransactionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Date;
+
+@Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class OwnerTransactionServiceImpl implements OwnerTransactionService {
+
+    private final OwnerTransactionRepository ownerTransactionRepository;
+
+    private final TransactionService transactionService;
+
+    private final SupplierService supplierService;
+
+    @Override
+    public void createOwnerTransaction(long supplierId, double amount, Long paymentId, Long billId, Date date) {
+
+        double newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
+
+        OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
+        ownerTransaction.setSupplierId(supplierId);
+        ownerTransaction.setSupplierBalance(newBalance);
+        ownerTransaction.setPaymentId(paymentId);
+        ownerTransaction.setBillId(billId);
+        ownerTransaction.setDate(date);
+
+        ownerTransactionRepository.save(ownerTransaction);
+
+        supplierService.updateSupplierBalance(supplierId, newBalance);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOwnerTransactionByBillId(long billId, double billAmount) {
+
+        ownerTransactionRepository.updateSupplierBalanceByBillId(billId, billAmount);
+        transactionService.deleteTransactionByBillId(billId, billAmount);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOwnerTransactionByPaymentId(long paymentId, double paymentAmount) {
+
+        ownerTransactionRepository.updateSupplierBalanceByPaymentId(paymentId, paymentAmount);
+        transactionService.deleteTransactionByPaymentId(paymentId, paymentAmount);
+    }
+
+}
