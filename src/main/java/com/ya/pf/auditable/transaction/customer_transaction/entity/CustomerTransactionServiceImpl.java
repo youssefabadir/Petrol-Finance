@@ -1,0 +1,56 @@
+package com.ya.pf.auditable.transaction.customer_transaction.entity;
+
+import com.ya.pf.auditable.customer.CustomerService;
+import com.ya.pf.auditable.transaction.TransactionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Date;
+
+@Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class CustomerTransactionServiceImpl implements CustomerTransactionService {
+
+    private final CustomerTransactionRepository customerTransactionRepository;
+
+    private final TransactionService transactionService;
+
+    private final CustomerService customerService;
+
+    @Override
+    @Transactional
+    public void createCustomerTransaction(long customerId, double amount, Long paymentId, Long billId, Date date) {
+
+        double newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
+
+        CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
+        customerTransaction.setCustomerId(customerId);
+        customerTransaction.setCustomerBalance(newBalance);
+        customerTransaction.setPaymentId(paymentId);
+        customerTransaction.setBillId(billId);
+        customerTransaction.setDate(date);
+
+        customerTransactionRepository.save(customerTransaction);
+
+        customerService.updateCustomerBalance(customerId, newBalance);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCustomerTransactionByBillId(long billId, double billAmount) {
+
+        customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
+        transactionService.deleteTransactionByBillId(billId, billAmount);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCustomerTransactionByPaymentId(long paymentId, double paymentAmount) {
+
+        customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, paymentAmount);
+        transactionService.deleteTransactionByPaymentId(paymentId, paymentAmount);
+    }
+
+}

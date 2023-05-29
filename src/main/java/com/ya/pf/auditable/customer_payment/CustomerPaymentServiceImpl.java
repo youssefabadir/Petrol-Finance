@@ -1,3 +1,4 @@
+/*
 package com.ya.pf.auditable.customer_payment;
 
 import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
@@ -126,3 +127,4 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
     }
 
 }
+*/

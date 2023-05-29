@@ -1,9 +1,9 @@
 package com.ya.pf.auditable.bill;
 
-import com.ya.pf.auditable.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.discount.entity.DiscountService;
-import com.ya.pf.auditable.ownerTransaction.entity.OwnerTransactionService;
 import com.ya.pf.auditable.product.ProductService;
+import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
+import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,10 @@ public class BillServiceImpl implements BillService {
 
         if (!number.isEmpty() && start != null && end != null) {
             return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start),
-                    Date.valueOf(end.plusDays(1)), pageable);
+                                                                       Date.valueOf(end.plusDays(1)), pageable);
         } else if (number.isEmpty() && start != null && end != null) {
             return billRepository.findByDateBetween(Date.valueOf(start),
-                    Date.valueOf(end.plusDays(1)), pageable);
+                                                    Date.valueOf(end.plusDays(1)), pageable);
         } else if (!number.isEmpty() && start == null && end == null) {
             return billRepository.findByNumberContaining(number, pageable);
         } else {
@@ -81,10 +81,10 @@ public class BillServiceImpl implements BillService {
             java.util.Date billDate = bill.getDate();
 
             customerTransactionService.createCustomerTransaction(customerId,
-                    billAmount * -1, null, billId, billDate);
+                                                                 billAmount * -1, null, billId, billDate);
 
             ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
-                    billAmount * -1, null, billId, billDate);
+                                                           billAmount * -1, null, billId, billDate);
 
             return bill;
         }

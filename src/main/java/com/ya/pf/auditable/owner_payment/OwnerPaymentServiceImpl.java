@@ -1,3 +1,4 @@
+/*
 package com.ya.pf.auditable.owner_payment;
 
 import com.ya.pf.auditable.customer_payment.CustomerPaymentService;
@@ -106,3 +107,4 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     }
 
 }
+*/

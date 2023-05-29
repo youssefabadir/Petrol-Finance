@@ -1,3 +1,4 @@
+/*
 package com.ya.pf.auditable.customer_payment;
 
 import com.ya.pf.auditable.customer_payment.dto.CustomerPaymentDTO;
@@ -79,3 +80,4 @@ public class CustomerPaymentController {
     }
 
 }
+*/
