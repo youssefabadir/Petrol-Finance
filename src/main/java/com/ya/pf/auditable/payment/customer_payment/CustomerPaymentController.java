@@ -24,11 +24,11 @@ public class CustomerPaymentController {
     private final CustomerPaymentDTOMapper customerPaymentDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<CustomerPaymentDTO>> getOwnerPayments(@RequestParam(defaultValue = "") String number,
-                                                                     @RequestParam(defaultValue = "0") int pageNo,
-                                                                     @RequestParam(defaultValue = "10") int pageSize,
-                                                                     @RequestParam(defaultValue = "id") String sortBy,
-                                                                     @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<CustomerPaymentDTO>> getCustomerPayments(@RequestParam(defaultValue = "") String number,
+                                                                        @RequestParam(defaultValue = "0") int pageNo,
+                                                                        @RequestParam(defaultValue = "10") int pageSize,
+                                                                        @RequestParam(defaultValue = "id") String sortBy,
+                                                                        @RequestParam(defaultValue = "asc") String order) {
 
         try {
             Page<CustomerPaymentEntity> customerPaymentEntities = customerPaymentService.getCustomerPayments(number.trim(), pageNo, pageSize, sortBy, order);
@@ -41,7 +41,7 @@ public class CustomerPaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerPaymentDTO> createOwnerPayment(@RequestBody CustomerPaymentEntity payment) {
+    public ResponseEntity<CustomerPaymentDTO> createCustomerPayment(@RequestBody CustomerPaymentEntity payment) {
 
         try {
             CustomerPaymentEntity customerPayment = customerPaymentService.createCustomerPayment(payment);
