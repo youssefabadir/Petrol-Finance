@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @Service
@@ -30,11 +30,11 @@ public class PaymentServiceImpl implements PaymentService {
             } else if (payment.getPaymentType().equals("OWNER_PAYMENT")) {
                 ownerTransactionService.deleteOwnerTransactionByPaymentId(payment.getId(), payment.getAmount());
             } else {
-                throw new EntityExistsException("This payment type doesn't exists");
+                throw new EntityNotFoundException("This payment type doesn't exists");
             }
             paymentRepository.deleteById(id);
         } else {
-            throw new EntityExistsException("This payment id " + id + "doesn't exists");
+            throw new EntityNotFoundException("This payment id " + id + "doesn't exists");
         }
     }
 
