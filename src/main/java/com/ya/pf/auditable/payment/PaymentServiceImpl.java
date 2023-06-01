@@ -27,8 +27,10 @@ public class PaymentServiceImpl implements PaymentService {
             PaymentEntity payment = paymentRepository.getReferenceById(id);
             if (payment.getPaymentType().equals("CUSTOMER_PAYMENT")) {
                 customerTransactionService.deleteCustomerTransactionByPaymentId(payment.getId(), payment.getAmount());
-            } else {
+            } else if (payment.getPaymentType().equals("OWNER_PAYMENT")) {
                 ownerTransactionService.deleteOwnerTransactionByPaymentId(payment.getId(), payment.getAmount());
+            } else {
+                throw new EntityExistsException("This payment type doesn't exists");
             }
             paymentRepository.deleteById(id);
         } else {
