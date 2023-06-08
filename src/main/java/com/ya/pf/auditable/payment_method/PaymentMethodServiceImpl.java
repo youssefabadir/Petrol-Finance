@@ -18,7 +18,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     private final PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public Page<PaymentMethodEntity> getWayOfPayments(String name, int pageNo, int pageSize, String sortBy, String order) {
+    public Page<PaymentMethodEntity> getPaymentMethods(String name, int pageNo, int pageSize, String sortBy, String order) {
 
         Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
 
@@ -30,10 +30,10 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
-    public PaymentMethodEntity createWayOfPayment(PaymentMethodEntity paymentMethodEntity) {
+    public PaymentMethodEntity createPaymentMethod(PaymentMethodEntity paymentMethodEntity) {
 
         if (paymentMethodRepository.existsByName(paymentMethodEntity.getName())) {
-            throw new EntityExistsException("Way of payment with this name already exists");
+            throw new EntityExistsException("Payment Method with this name already exists");
         }
 
         if (paymentMethodEntity.getId() != null) {
@@ -44,29 +44,31 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
-    public PaymentMethodEntity updateWayOfPayment(PaymentMethodEntity paymentMethodEntity) {
+    public PaymentMethodEntity updatePaymentMethod(PaymentMethodEntity paymentMethodEntity) {
 
         long id = paymentMethodEntity.getId();
         if (paymentMethodRepository.existsById(id)) {
-            boolean uniqueWayOfPayment = paymentMethodRepository.checkUniquePayment(id, paymentMethodEntity.getName());
+            PaymentMethodEntity paymentMethod = paymentMethodRepository.getReferenceById(id);
+            boolean uniquePaymentMethod = paymentMethodRepository.checkUniquePayment(id, paymentMethodEntity.getName());
 
-            if (uniqueWayOfPayment) {
-                return paymentMethodRepository.save(paymentMethodEntity);
+            if (uniquePaymentMethod) {
+                paymentMethod.setBalance(paymentMethod.getBalance());
+                return paymentMethodRepository.save(paymentMethod);
             } else {
-                throw new EntityExistsException("Way of payment with this name already exists");
+                throw new EntityExistsException("Payment Method with this name already exists");
             }
         } else {
-            throw new EntityNotFoundException("Way of payment with Id " + id + " not found");
+            throw new EntityNotFoundException("Payment Method with Id " + id + " not found");
         }
     }
 
     @Override
-    public void deleteWayOfPayment(long id) {
+    public void deletePaymentMethod(long id) {
 
         if (paymentMethodRepository.existsById(id)) {
             paymentMethodRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException("Way of payment with Id " + id + " not found");
+            throw new EntityNotFoundException("Payment Method with Id " + id + " not found");
         }
     }
 
@@ -74,6 +76,18 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     public List<PaymentMethodEntity> searchPaymentMethod(String name) {
 
         return paymentMethodRepository.findByNameContaining(name);
+    }
+
+    @Override
+    public PaymentMethodEntity getPaymentMethodById(long id) {
+
+        return paymentMethodRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void updatePaymentMethodBalance(long id, double balance) {
+
+        paymentMethodRepository.updatePaymentMethodBalance(id, balance);
     }
 
 }

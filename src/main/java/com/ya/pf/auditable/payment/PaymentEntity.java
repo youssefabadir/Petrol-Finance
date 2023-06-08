@@ -24,7 +24,7 @@ public abstract class PaymentEntity extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "payment_type", nullable = false)
+    @Column(name = "payment_type", nullable = false, insertable = false, updatable = false)
     private String paymentType;
 
     @Column(name = "number", nullable = false)
@@ -35,6 +35,15 @@ public abstract class PaymentEntity extends Auditable {
 
     @Column(name = "payment_method_id", nullable = false)
     private long paymentMethodId;
+
+    @Column(name = "payment_method_name", nullable = false)
+    private String paymentMethodName;
+
+    @Column(name = "payment_method_balance", nullable = false)
+    private double paymentMethodBalance;
+
+    @Column(name = "treasury_balance", nullable = false)
+    private double treasury_balance;
 
     @Column(name = "transferred")
     private boolean transferred;

@@ -1,14 +1,13 @@
 package com.ya.pf.auditable.payment.customer_payment;
 
+import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.payment.PaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,7 +17,8 @@ import javax.persistence.Entity;
 @Where(clause = "deleted=0 AND payment_type='CUSTOMER_PAYMENT'")
 public class CustomerPaymentEntity extends PaymentEntity {
 
-    @Column(name = "customer_id")
-    private long customerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    private CustomerEntity customer;
 
 }

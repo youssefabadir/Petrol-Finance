@@ -7,6 +7,6 @@ public interface CustomerPaymentService {
 
     Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy, String order);
 
-    CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment) throws MissingRequestValueException;
+    CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException;
 
 }

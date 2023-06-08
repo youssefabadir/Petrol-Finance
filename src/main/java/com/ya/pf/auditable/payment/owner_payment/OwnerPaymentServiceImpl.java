@@ -1,5 +1,11 @@
 package com.ya.pf.auditable.payment.owner_payment;
 
+import com.ya.pf.auditable.payment.PaymentEntity;
+import com.ya.pf.auditable.payment.PaymentService;
+import com.ya.pf.auditable.payment_method.PaymentMethodService;
+import com.ya.pf.auditable.supplier.SupplierEntity;
+import com.ya.pf.auditable.supplier.SupplierService;
+import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
 
-import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 
 @Service
@@ -16,6 +21,14 @@ import javax.transaction.Transactional;
 public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
     private final OwnerPaymentRepository ownerPaymentRepository;
+
+    private final OwnerTransactionService ownerTransactionService;
+
+    private final PaymentService paymentService;
+
+    private final PaymentMethodService paymentMethodService;
+
+    private final SupplierService supplierService;
 
     @Override
     public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
@@ -33,27 +46,37 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     @Transactional
     public OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException {
 
-        if (ownerPayment.getId() != null) {
-            ownerPayment.setId(null);
-        }
+        OwnerPaymentEntity validatedPayment = (OwnerPaymentEntity) paymentService.validatePayment(ownerPayment);
 
-        long paymentMethodId = ownerPayment.getPaymentMethodId();
-        String paymentNumber = ownerPayment.getNumber().trim();
-        if (paymentMethodId != 1) {
-            if (paymentNumber.isEmpty()) {
-                throw new MissingRequestValueException("This payment is missing the payment number");
-            }
+        OwnerPaymentEntity payment = ownerPaymentRepository.save(validatedPayment);
 
-            boolean exists = ownerPaymentRepository.existsByNumberAndPaymentMethodId(paymentNumber, paymentMethodId);
-            if (exists) {
-                throw new EntityExistsException("This payment number exists for this payment method");
-            }
-        }
-        ownerPayment.setAmount(Math.abs(ownerPayment.getAmount()));
+        ownerTransactionService.createOwnerTransaction(payment.getSupplier().getId(),
+                                                       payment.getAmount(),
+                                                       payment.getId(),
+                                                       null,
+                                                       payment.getDate());
 
-        // TODO: Save owner transaction
+        paymentMethodService.updatePaymentMethodBalance(validatedPayment.getPaymentMethodId(),
+                                                        validatedPayment.getPaymentMethodBalance());
 
-        return ownerPaymentRepository.save(ownerPayment);
+        return payment;
+    }
+
+    @Override
+    public void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) throws MissingRequestValueException {
+
+        SupplierEntity supplier = supplierService.getSupplierById(supplierId);
+        OwnerPaymentEntity ownerPayment = new OwnerPaymentEntity();
+        ownerPayment.setPaymentType("OWNER_PAYMENT");
+        ownerPayment.setNumber(payment.getNumber());
+        ownerPayment.setAmount(payment.getAmount());
+        ownerPayment.setSupplier(supplier);
+        ownerPayment.setTransferred(payment.isTransferred());
+        ownerPayment.setPaymentMethodId(payment.getPaymentMethodId());
+        ownerPayment.setPaymentMethodName(payment.getPaymentMethodName());
+        ownerPayment.setDate(payment.getDate());
+
+        createOwnerPayment(ownerPayment);
     }
 
 

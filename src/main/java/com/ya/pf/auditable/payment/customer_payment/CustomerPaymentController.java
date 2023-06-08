@@ -41,10 +41,11 @@ public class CustomerPaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerPaymentDTO> createCustomerPayment(@RequestBody CustomerPaymentEntity payment) {
+    public ResponseEntity<CustomerPaymentDTO> createCustomerPayment(@RequestBody CustomerPaymentEntity payment,
+                                                                    @RequestParam(defaultValue = "-1") long supplierId) {
 
         try {
-            CustomerPaymentEntity customerPayment = customerPaymentService.createCustomerPayment(payment);
+            CustomerPaymentEntity customerPayment = customerPaymentService.createCustomerPayment(payment, supplierId);
             CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
         } catch (EntityExistsException e) {

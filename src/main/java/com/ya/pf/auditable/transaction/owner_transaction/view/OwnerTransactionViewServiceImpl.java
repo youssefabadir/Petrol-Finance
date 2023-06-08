@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.ownerTransaction.view;
+package com.ya.pf.auditable.transaction.owner_transaction.view;
 
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;

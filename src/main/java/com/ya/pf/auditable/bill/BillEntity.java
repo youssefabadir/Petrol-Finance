@@ -9,13 +9,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -58,45 +56,5 @@ public class BillEntity extends Auditable {
     @Column(name = "date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date date;
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-        if (this == o) {
-            return true;
-        }
-        if (Hibernate.getClass(this) != Hibernate.getClass(o)) {
-            return false;
-        }
-        BillEntity billEntity = (BillEntity) o;
-        return id != null && Objects.equals(id, billEntity.id);
-    }
-
-    @Override
-    public String toString() {
-
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "supplier id = " + supplierEntity.getId() + ", " +
-                "customer id = " + customerEntity.getId() + ", " +
-                "product id = " + productEntity.getId() + ", " +
-                "number = " + number + ", " +
-                "quantity = " + quantity + ", " +
-                "amount = " + amount + ", " +
-                "date = " + date + ", " +
-                "deleted = " + deleted + ", " +
-                "createdDate = " + createdDate + ", " +
-                "lastModifiedDate = " + lastModifiedDate +
-                ")";
-    }
-
-    @Override
-    public int hashCode() {
-
-        return getClass().hashCode();
-    }
 
 }
