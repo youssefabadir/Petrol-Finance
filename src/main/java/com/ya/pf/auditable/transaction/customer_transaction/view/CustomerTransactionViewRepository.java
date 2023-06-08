@@ -1,4 +1,4 @@
-package com.ya.pf.auditable.customer_transaction.view;
+package com.ya.pf.auditable.transaction.customer_transaction.view;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

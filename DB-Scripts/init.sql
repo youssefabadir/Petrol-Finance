@@ -33,34 +33,22 @@ CREATE TABLE payment_method
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) UNIQUE NOT NULL,
-    balance            FLOAT                NOT NULL,
+    balance            FLOAT DEFAULT 0.00,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
 );
 
-CREATE TABLE treasury
-(
-    id                     INT IDENTITY (1,1) PRIMARY KEY,
-    balance                FLOAT NOT NULL,
-    payment_method_id      INT   NOT NULL,
-    payment_method_balance FLOAT,
-    payment_number         NVARCHAR(255),
-    deleted                BIT,
-    created_date           DATETIME,
-    last_modified_date     DATETIME,
-);
-
 CREATE TABLE bill
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
-    supplier_id        INT          NOT NULL,
-    customer_id        INT          NOT NULL,
-    product_id         INT          NOT NULL,
-    quantity           FLOAT        NOT NULL,
-    number             VARCHAR(255) NOT NULL,
-    amount             FLOAT        NOT NULL,
-    date               DATETIME     NOT NULL,
+    supplier_id        INT           NOT NULL,
+    customer_id        INT           NOT NULL,
+    product_id         INT           NOT NULL,
+    quantity           FLOAT         NOT NULL,
+    number             NVARCHAR(255) NOT NULL,
+    amount             FLOAT         NOT NULL,
+    date               DATETIME      NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
@@ -71,18 +59,21 @@ CREATE TABLE bill
 
 CREATE TABLE payment
 (
-    id                 INT IDENTITY (1,1) PRIMARY KEY,
-    payment_type       NVARCHAR(255) NOT NULL,
-    number             NVARCHAR(255),
-    amount             FLOAT         NOT NULL,
-    payment_method_id  INT           NOT NULL,
-    customer_id        INT,
-    supplier_id        INT,
-    transferred        BIT,
-    date               DATE,
-    deleted            BIT,
-    created_date       DATETIME,
-    last_modified_date DATETIME,
+    id                     INT IDENTITY (1,1) PRIMARY KEY,
+    payment_type           NVARCHAR(255) NOT NULL,
+    number                 NVARCHAR(255),
+    amount                 FLOAT         NOT NULL,
+    payment_method_id      INT           NOT NULL,
+    payment_method_name    NVARCHAR(255) NOT NULL,
+    payment_method_balance Float         NOT NULL,
+    treasury_balance       FLOAT,
+    customer_id            INT,
+    supplier_id            INT,
+    transferred            BIT,
+    date                   DATE,
+    deleted                BIT,
+    created_date           DATETIME,
+    last_modified_date     DATETIME,
 );
 
 CREATE TABLE [transaction]
@@ -145,7 +136,7 @@ CREATE VIEW owner_transaction_view AS
 SELECT t.id               AS transaction_id,
        s.id               AS supplier_id,
        s.name             AS supplier_name,
-       t.supplier_balance AS owner_supplier_balance,
+       t.supplier_balance AS supplier_balance,
        p.id               AS payment_id,
        p.number           AS payment_number,
        p.amount           AS payment_amount,

@@ -74,17 +74,15 @@ public class BillServiceImpl implements BillService {
                 billAmount = productPrice * billEntity.getQuantity();
             }
 
-            billEntity.setAmount(billAmount);
+            billEntity.setAmount(Math.abs(billAmount));
 
             BillEntity bill = billRepository.save(billEntity);
             long billId = bill.getId();
             java.util.Date billDate = bill.getDate();
 
-            customerTransactionService.createCustomerTransaction(customerId,
-                                                                 billAmount * -1, null, billId, billDate);
+            customerTransactionService.createCustomerTransaction(customerId, billAmount * -1, null, billId, billDate);
 
-            ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
-                                                           billAmount * -1, null, billId, billDate);
+            ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(), billAmount * -1, null, billId, billDate);
 
             return bill;
         }

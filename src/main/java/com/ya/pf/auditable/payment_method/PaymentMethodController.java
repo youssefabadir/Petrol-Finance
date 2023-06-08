@@ -26,14 +26,14 @@ public class PaymentMethodController {
     private final PaymentMethodDTOMapper paymentMethodDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<PaymentMethodDTO>> getWayOfPayments(@RequestParam(defaultValue = "") String name,
-                                                                   @RequestParam(defaultValue = "0") int pageNo,
-                                                                   @RequestParam(defaultValue = "10") int pageSize,
-                                                                   @RequestParam(defaultValue = "id") String sortBy,
-                                                                   @RequestParam(defaultValue = "asc") String order) {
+    public ResponseEntity<Page<PaymentMethodDTO>> getPaymentMethods(@RequestParam(defaultValue = "") String name,
+                                                                    @RequestParam(defaultValue = "0") int pageNo,
+                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(defaultValue = "id") String sortBy,
+                                                                    @RequestParam(defaultValue = "asc") String order) {
 
         try {
-            Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getWayOfPayments(name, pageNo, pageSize, sortBy, order);
+            Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getPaymentMethods(name, pageNo, pageSize, sortBy, order);
             Page<PaymentMethodDTO> wayOfPaymentDTOS = wayOfPaymentEntities.map(paymentMethodDTOMapper);
             return ResponseEntity.ok(wayOfPaymentDTOS);
         } catch (Exception e) {
@@ -43,10 +43,10 @@ public class PaymentMethodController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentMethodDTO> createWayOfPayment(@RequestBody PaymentMethodEntity wayOfPayment) {
+    public ResponseEntity<PaymentMethodDTO> createPaymentMethod(@RequestBody PaymentMethodEntity wayOfPayment) {
 
         try {
-            PaymentMethodEntity paymentMethodEntity = paymentMethodService.createWayOfPayment(wayOfPayment);
+            PaymentMethodEntity paymentMethodEntity = paymentMethodService.createPaymentMethod(wayOfPayment);
             PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(paymentMethodDTO);
         } catch (EntityExistsException e) {
@@ -58,10 +58,10 @@ public class PaymentMethodController {
     }
 
     @PutMapping
-    public ResponseEntity<PaymentMethodDTO> updateWayOfPayment(@RequestBody PaymentMethodEntity wayOfPayment) {
+    public ResponseEntity<PaymentMethodDTO> updatePaymentMethod(@RequestBody PaymentMethodEntity wayOfPayment) {
 
         try {
-            PaymentMethodEntity paymentMethodEntity = paymentMethodService.updateWayOfPayment(wayOfPayment);
+            PaymentMethodEntity paymentMethodEntity = paymentMethodService.updatePaymentMethod(wayOfPayment);
             PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
             return ResponseEntity.ok(paymentMethodDTO);
         } catch (EntityNotFoundException e) {
@@ -78,7 +78,7 @@ public class PaymentMethodController {
     public ResponseEntity<Void> deletePayment(@PathVariable long id) {
 
         try {
-            paymentMethodService.deleteWayOfPayment(id);
+            paymentMethodService.deletePaymentMethod(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

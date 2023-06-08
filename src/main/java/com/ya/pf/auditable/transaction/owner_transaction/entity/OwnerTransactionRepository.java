@@ -17,4 +17,8 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
     @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount WHERE t.paymentId > :paymentId")
     void updateSupplierBalanceByPaymentId(@Param("paymentId") long paymentId, @Param("amount") double amount);
 
+    OwnerTransactionEntity findByBillId(long billId);
+
+    OwnerTransactionEntity findByPaymentId(long paymentId);
+
 }

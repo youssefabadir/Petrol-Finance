@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "transaction")
+@Table(name = "\"transaction\"")
 @DiscriminatorColumn(name = "transaction_type")
 @SQLDelete(sql = "UPDATE [transaction] SET deleted = 1 WHERE id=?")
 @Where(clause = "deleted=0")

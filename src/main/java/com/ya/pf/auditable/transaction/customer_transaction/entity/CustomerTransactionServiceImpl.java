@@ -42,6 +42,8 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     public void deleteCustomerTransactionByBillId(long billId, double billAmount) {
 
         customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
+        CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
+        customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
         transactionService.deleteTransactionByBillId(billId, billAmount);
     }
 
@@ -49,7 +51,9 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     @Transactional
     public void deleteCustomerTransactionByPaymentId(long paymentId, double paymentAmount) {
 
-        customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, paymentAmount);
+        customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
+        CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByPaymentId(paymentId);
+        customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() - paymentAmount);
         transactionService.deleteTransactionByPaymentId(paymentId, paymentAmount);
     }
 
