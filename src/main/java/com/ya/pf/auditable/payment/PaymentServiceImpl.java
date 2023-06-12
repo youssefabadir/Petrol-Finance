@@ -4,14 +4,19 @@ import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Config;
+import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -79,6 +84,27 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public Page<PaymentEntity> getPayments(long paymentMethodId, int pageNo, int pageSize,
+                                           String sortBy, String order, LocalDate start, LocalDate end) {
+
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        if (start == null || end == null) {
+            if (paymentMethodId == -1) {
+                return paymentRepository.findAll(pageable);
+            } else {
+                return paymentRepository.findByPaymentMethodId(paymentMethodId, pageable);
+            }
+        } else {
+            if (paymentMethodId == -1) {
+                return paymentRepository.findAllByDateBetween(Date.valueOf(start), Date.valueOf(end.plusDays(1)), pageable);
+            } else {
+                return paymentRepository.findByPaymentMethodIdAndDateBetween(paymentMethodId, Date.valueOf(start),
+                                                                             Date.valueOf(end.plusDays(1)), pageable);
+            }
+        }
+    }
+
+    @Override
     @Transactional
     public void deletePaymentById(long id) {
 
@@ -88,14 +114,13 @@ public class PaymentServiceImpl implements PaymentService {
             String paymentNumber = payment.getNumber();
             String paymentType = payment.getPaymentType();
             PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
-            long transferredPaymentId = transferredPayment.getId();
 
             if (payment.isTransferred()) {
                 customerTransactionService.deleteCustomerTransactionByPaymentId(paymentType.equals("CUSTOMER_PAYMENT") ? paymentId
-                                                                                                                       : transferredPaymentId,
+                                                                                                                       : transferredPayment.getId(),
                                                                                 payment.getAmount());
                 ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentType.equals("OWNER_PAYMENT") ? paymentId
-                                                                                                              : transferredPaymentId,
+                                                                                                              : transferredPayment.getId(),
                                                                           payment.getAmount());
 
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());

@@ -1,5 +1,7 @@
 package com.ya.pf.auditable.transaction.owner_transaction.view.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public record OwnerTransactionViewDTO(
@@ -13,6 +15,7 @@ public record OwnerTransactionViewDTO(
         Double billQuantity,
         Double billAmount,
         String productName,
+        @JsonFormat(pattern = "dd/MM/yyyy")
         Date date
 ) {
 
