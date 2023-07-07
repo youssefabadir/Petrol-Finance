@@ -34,9 +34,14 @@ public class PaymentController {
                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
 
-        Page<PaymentEntity> paymentEntities = paymentService.getPayments(paymentMethodId, pageNo, pageSize, sortBy, order, start, end);
-        Page<PaymentDTO> paymentDTOS = paymentEntities.map(paymentDTOMapper);
-        return ResponseEntity.ok(paymentDTOS);
+        try {
+            Page<PaymentEntity> paymentEntities = paymentService.getPayments(paymentMethodId, pageNo, pageSize, sortBy, order, start, end);
+            Page<PaymentDTO> paymentDTOS = paymentEntities.map(paymentDTOMapper);
+            return ResponseEntity.ok(paymentDTOS);
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")

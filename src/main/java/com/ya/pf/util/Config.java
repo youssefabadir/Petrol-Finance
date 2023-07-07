@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class Config {
 
-    private double treasuryBalance;
+    private float treasuryBalance;
 
 }

@@ -27,7 +27,7 @@ public class CustomerTransactionView {
     private String customerName;
 
     @Column(name = "customer_balance")
-    private Double customerBalance;
+    private Float customerBalance;
 
     @Column(name = "payment_id")
     private Long paymentId;
@@ -36,7 +36,7 @@ public class CustomerTransactionView {
     private String paymentNumber;
 
     @Column(name = "payment_amount")
-    private Double paymentAmount;
+    private Float paymentAmount;
 
     @Column(name = "transferred_payment")
     private Boolean transferredPayment;
@@ -54,10 +54,10 @@ public class CustomerTransactionView {
     private String billNumber;
 
     @Column(name = "bill_quantity")
-    private Double billQuantity;
+    private Float billQuantity;
 
     @Column(name = "bill_amount")
-    private Double billAmount;
+    private Float billAmount;
 
     @Column(name = "product_id")
     private Long productId;

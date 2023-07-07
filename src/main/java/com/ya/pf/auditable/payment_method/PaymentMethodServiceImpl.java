@@ -85,7 +85,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
-    public void updatePaymentMethodBalance(long id, double balance) {
+    public void updatePaymentMethodBalance(long id, float balance) {
 
         paymentMethodRepository.updatePaymentMethodBalance(id, balance);
     }

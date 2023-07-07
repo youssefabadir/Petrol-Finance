@@ -19,6 +19,6 @@ public interface SupplierRepository extends JpaRepository<SupplierEntity, Long> 
 
     @Modifying
     @Query("update SupplierEntity s set s.balance = :supplierBalance where s.id = :supplierId")
-    void updateSupplierBalance(@Param("supplierId") long supplierId, @Param("supplierBalance") double supplierBalance);
+    void updateSupplierBalance(@Param("supplierId") long supplierId, @Param("supplierBalance") float supplierBalance);
 
 }

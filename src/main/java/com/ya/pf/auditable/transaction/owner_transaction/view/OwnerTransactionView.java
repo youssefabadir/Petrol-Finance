@@ -27,7 +27,7 @@ public class OwnerTransactionView {
     private String supplierName;
 
     @Column(name = "supplier_balance")
-    private Double ownerSupplierBalance;
+    private Float ownerSupplierBalance;
 
     @Column(name = "payment_id")
     private Long paymentId;
@@ -36,7 +36,7 @@ public class OwnerTransactionView {
     private String paymentNumber;
 
     @Column(name = "payment_amount")
-    private Double paymentAmount;
+    private Float paymentAmount;
 
     @Column(name = "transferred_payment")
     private Boolean transferredPayment;
@@ -54,10 +54,10 @@ public class OwnerTransactionView {
     private String billNumber;
 
     @Column(name = "bill_quantity")
-    private Double billQuantity;
+    private Float billQuantity;
 
     @Column(name = "bill_amount")
-    private Double billAmount;
+    private Float billAmount;
 
     @Column(name = "product_id")
     private Long productId;

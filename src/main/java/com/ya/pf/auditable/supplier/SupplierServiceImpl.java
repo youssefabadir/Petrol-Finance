@@ -68,7 +68,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     @Transactional
-    public void updateSupplierBalance(long supplierId, double supplierBalance) {
+    public void updateSupplierBalance(long supplierId, float supplierBalance) {
 
         supplierRepository.updateSupplierBalance(supplierId, supplierBalance);
     }

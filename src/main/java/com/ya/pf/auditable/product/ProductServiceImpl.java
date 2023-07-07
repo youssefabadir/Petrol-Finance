@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public double getProductCustomerPrice(long id) {
+    public float getProductCustomerPrice(long id) {
 
         ProductEntity product = productRepository.getReferenceById(id);
         return product.getCustomerPrice();

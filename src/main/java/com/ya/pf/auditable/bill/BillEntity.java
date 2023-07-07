@@ -47,10 +47,10 @@ public class BillEntity extends Auditable {
 
     @NonNull
     @Column(name = "quantity")
-    private double quantity;
+    private float quantity;
 
     @Column(name = "amount")
-    private double amount;
+    private float amount;
 
     @NonNull
     @Column(name = "date")

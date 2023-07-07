@@ -21,7 +21,7 @@ public class DiscountView {
     private Long id;
 
     @Column(name = "discount")
-    private double discount;
+    private float discount;
 
     @Column(name = "customer_id")
     private Long customerId;

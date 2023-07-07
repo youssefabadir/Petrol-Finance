@@ -42,7 +42,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public double getCustomerDiscountForProduct(long customerId, long productId) {
+    public float getCustomerDiscountForProduct(long customerId, long productId) {
 
         DiscountEntity discountEntity = discountRepository.findByCustomerIdAndProductId(customerId, productId);
         if (discountEntity != null) {

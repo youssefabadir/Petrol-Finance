@@ -18,6 +18,6 @@ public interface CustomerService {
 
     CustomerEntity getCustomerById(long id);
 
-    void updateCustomerBalance(long customerId, double customerBalance);
+    void updateCustomerBalance(long customerId, float customerBalance);
 
 }

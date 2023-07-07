@@ -21,9 +21,9 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
     @Override
     @Transactional
-    public void createOwnerTransaction(long supplierId, double amount, Long paymentId, Long billId, Date date) {
+    public void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date) {
 
-        double newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
+        float newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
 
         OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
         ownerTransaction.setSupplierId(supplierId);
@@ -39,7 +39,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
     @Override
     @Transactional
-    public void deleteOwnerTransactionByBillId(long billId, double billAmount) {
+    public void deleteOwnerTransactionByBillId(long billId, float billAmount) {
 
         ownerTransactionRepository.updateSupplierBalanceByBillId(billId, billAmount);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByBillId(billId);
@@ -49,7 +49,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
     @Override
     @Transactional
-    public void deleteOwnerTransactionByPaymentId(long paymentId, double paymentAmount) {
+    public void deleteOwnerTransactionByPaymentId(long paymentId, float paymentAmount) {
 
         ownerTransactionRepository.updateSupplierBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByPaymentId(paymentId);

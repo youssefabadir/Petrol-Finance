@@ -8,7 +8,7 @@ import java.util.Date;
 public record OwnerPaymentDTO(
         Long id,
         String number,
-        Double amount,
+        Float amount,
         String paymentMethodName,
         SupplierDTO supplier,
         Boolean transferred,

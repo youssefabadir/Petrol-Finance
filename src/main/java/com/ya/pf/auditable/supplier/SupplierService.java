@@ -19,6 +19,6 @@ public interface SupplierService {
 
     SupplierEntity getSupplierById(long id);
 
-    void updateSupplierBalance(long supplierId, double supplierBalance);
+    void updateSupplierBalance(long supplierId, float supplierBalance);
 
 }

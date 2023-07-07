@@ -26,7 +26,7 @@ public class DiscountEntity extends Auditable {
     private Long id;
 
     @Column(name = "discount", nullable = false)
-    private double discount;
+    private float discount;
 
     @Column(name = "customer_id", nullable = false)
     private long customerId;

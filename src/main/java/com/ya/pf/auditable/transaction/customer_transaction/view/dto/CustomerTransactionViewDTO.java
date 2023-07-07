@@ -6,14 +6,14 @@ import java.util.Date;
 
 public record CustomerTransactionViewDTO(
         String customerName,
-        Double customerBalance,
+        Float customerBalance,
         String paymentNumber,
-        Double paymentAmount,
+        Float paymentAmount,
         Boolean transferredPayment,
         String paymentMethod,
         String billNumber,
-        Double billQuantity,
-        Double billAmount,
+        Float billQuantity,
+        Float billAmount,
         String productName,
         @JsonFormat(pattern = "dd/MM/yyyy")
         Date date

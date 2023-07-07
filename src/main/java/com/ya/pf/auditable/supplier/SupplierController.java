@@ -62,6 +62,7 @@ public class SupplierController {
             SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
             return ResponseEntity.ok(supplierDTO);
         } catch (EntityNotFoundException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(e.toString());
@@ -76,6 +77,7 @@ public class SupplierController {
             supplierService.deleteSupplier(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(e.toString());

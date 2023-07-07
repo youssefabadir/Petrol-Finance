@@ -22,6 +22,6 @@ public class CustomerTransactionEntity extends TransactionEntity {
     private Long customerId;
 
     @Column(name = "customer_balance")
-    private Double customerBalance;
+    private Float customerBalance;
 
 }

@@ -59,13 +59,13 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         payment.setNumber(paymentNumber);
-        double amount = Math.abs(payment.getAmount());
+        float amount = Math.abs(payment.getAmount());
         payment.setAmount(amount);
 
         PaymentEntity paymentEntity = paymentRepository.findFirstByOrderByIdDesc();
-        double treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
-                                                       : paymentEntity.getTreasury_balance();
-        double paymentMethodBalance = paymentMethodService.getPaymentMethodById(paymentMethodId).getBalance();
+        float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
+                                                      : paymentEntity.getTreasury_balance();
+        float paymentMethodBalance = paymentMethodService.getPaymentMethodById(paymentMethodId).getBalance();
         if (paymentType.equals("CUSTOMER_PAYMENT")) {
             treasuryBalance = treasuryBalance + amount;
             paymentMethodBalance = paymentMethodBalance + amount;
