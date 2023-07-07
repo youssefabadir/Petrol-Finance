@@ -68,8 +68,8 @@ public class BillServiceImpl implements BillService {
             float billAmount;
 
             try {
-                float discount = 1 - (discountService.getCustomerDiscountForProduct(customerId, productId) / 100);
-                billAmount = productPrice * billEntity.getQuantity() * discount;
+                float discountedPrice = discountService.getCustomerDiscountedPrice(customerId, productId);
+                billAmount = discountedPrice * billEntity.getQuantity();
             } catch (EntityNotFoundException e) {
                 billAmount = productPrice * billEntity.getQuantity();
             }

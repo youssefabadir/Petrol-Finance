@@ -95,7 +95,7 @@ CREATE TABLE [transaction]
 CREATE TABLE discount
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
-    discount           FLOAT NOT NULL,
+    discounted_price   FLOAT NOT NULL,
     customer_id        INT   NOT NULL,
     product_id         INT   NOT NULL,
     deleted            BIT,
@@ -161,7 +161,7 @@ WHERE t.deleted = 0
 
 CREATE VIEW discount_view AS
 SELECT d.id   AS id,
-       d.discount,
+       d.discounted_price,
        c.id   AS customer_id,
        c.name AS customer_name,
        p.id   AS product_id,
