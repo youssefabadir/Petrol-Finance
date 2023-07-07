@@ -8,7 +8,7 @@ import java.util.Date;
 public record CustomerPaymentDTO(
         Long id,
         String number,
-        Double amount,
+        Float amount,
         String paymentMethodName,
         CustomerDTO customer,
         Boolean transferred,

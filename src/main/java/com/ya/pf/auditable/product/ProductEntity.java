@@ -33,10 +33,10 @@ public class ProductEntity extends Auditable {
     private String name;
 
     @Column(name = "supplier_price", nullable = false)
-    private Double supplierPrice;
+    private Float supplierPrice;
 
     @Column(name = "customer_price", nullable = false)
-    private Double customerPrice;
+    private Float customerPrice;
 
     @JsonIgnore
     @OneToMany(mappedBy = "productEntity")

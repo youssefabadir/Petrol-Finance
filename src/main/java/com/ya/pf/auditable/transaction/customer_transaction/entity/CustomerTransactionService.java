@@ -4,10 +4,10 @@ import java.util.Date;
 
 public interface CustomerTransactionService {
 
-    void createCustomerTransaction(long customerId, double amount, Long paymentId, Long billId, Date date);
+    void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date);
 
-    void deleteCustomerTransactionByBillId(long billId, double billAmount);
+    void deleteCustomerTransactionByBillId(long billId, float billAmount);
 
-    void deleteCustomerTransactionByPaymentId(long paymentId, double paymentAmount);
+    void deleteCustomerTransactionByPaymentId(long paymentId, float paymentAmount);
 
 }

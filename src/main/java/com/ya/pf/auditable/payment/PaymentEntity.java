@@ -31,7 +31,7 @@ public abstract class PaymentEntity extends Auditable {
     private String number;
 
     @Column(name = "amount", nullable = false)
-    private double amount;
+    private float amount;
 
     @Column(name = "payment_method_id", nullable = false)
     private long paymentMethodId;
@@ -40,10 +40,10 @@ public abstract class PaymentEntity extends Auditable {
     private String paymentMethodName;
 
     @Column(name = "payment_method_balance", nullable = false)
-    private double paymentMethodBalance;
+    private float paymentMethodBalance;
 
     @Column(name = "treasury_balance", nullable = false)
-    private double treasury_balance;
+    private float treasury_balance;
 
     @Column(name = "transferred")
     private boolean transferred;

@@ -22,6 +22,6 @@ public class OwnerTransactionEntity extends TransactionEntity {
     private Long supplierId;
 
     @Column(name = "supplier_balance")
-    private Double supplierBalance;
+    private Float supplierBalance;
 
 }

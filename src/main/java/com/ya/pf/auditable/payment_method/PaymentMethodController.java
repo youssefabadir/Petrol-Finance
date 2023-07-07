@@ -50,6 +50,7 @@ public class PaymentMethodController {
             PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(paymentMethodDTO);
         } catch (EntityExistsException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
             log.error(e.toString());

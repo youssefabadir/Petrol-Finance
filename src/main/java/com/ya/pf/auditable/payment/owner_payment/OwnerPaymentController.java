@@ -49,6 +49,7 @@ public class OwnerPaymentController {
             OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
             return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
         } catch (EntityExistsException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (MissingRequestValueException e) {
             log.error(e.toString());

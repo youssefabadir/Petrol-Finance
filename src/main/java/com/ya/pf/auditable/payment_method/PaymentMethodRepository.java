@@ -30,6 +30,6 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethodEnti
 
     @Modifying
     @Query("UPDATE PaymentMethodEntity p SET p.balance = :balance WHERE p.id = :id")
-    void updatePaymentMethodBalance(@Param("id") Long id, @Param("balance") double balance);
+    void updatePaymentMethodBalance(@Param("id") Long id, @Param("balance") float balance);
 
 }

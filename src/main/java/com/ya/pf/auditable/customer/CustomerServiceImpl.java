@@ -72,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerBalance(long customerId, double customerBalance) {
+    public void updateCustomerBalance(long customerId, float customerBalance) {
 
         customerRepository.updateCustomerBalance(customerId, customerBalance);
     }

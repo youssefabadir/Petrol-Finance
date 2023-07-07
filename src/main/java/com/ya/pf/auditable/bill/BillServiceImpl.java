@@ -63,12 +63,12 @@ public class BillServiceImpl implements BillService {
             throw new EntityExistsException("This bill number exists for this supplier");
         } else {
             long productId = billEntity.getProductEntity().getId();
-            double productPrice = productService.getProductCustomerPrice(productId);
+            float productPrice = productService.getProductCustomerPrice(productId);
             long customerId = billEntity.getCustomerEntity().getId();
-            double billAmount;
+            float billAmount;
 
             try {
-                double discount = 1 - (discountService.getCustomerDiscountForProduct(customerId, productId) / 100);
+                float discount = 1 - (discountService.getCustomerDiscountForProduct(customerId, productId) / 100);
                 billAmount = productPrice * billEntity.getQuantity() * discount;
             } catch (EntityNotFoundException e) {
                 billAmount = productPrice * billEntity.getQuantity();
@@ -94,7 +94,7 @@ public class BillServiceImpl implements BillService {
 
         if (billRepository.existsById(id)) {
             BillEntity bill = billRepository.getReferenceById(id);
-            double billAmount = bill.getAmount();
+            float billAmount = bill.getAmount();
 
             billRepository.deleteById(id);
             customerTransactionService.deleteCustomerTransactionByBillId(id, billAmount);

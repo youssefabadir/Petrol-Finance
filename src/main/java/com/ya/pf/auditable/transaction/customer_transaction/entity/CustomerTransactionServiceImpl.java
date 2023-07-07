@@ -21,9 +21,9 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
     @Override
     @Transactional
-    public void createCustomerTransaction(long customerId, double amount, Long paymentId, Long billId, Date date) {
+    public void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date) {
 
-        double newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
+        float newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
 
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
         customerTransaction.setCustomerId(customerId);
@@ -39,7 +39,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
     @Override
     @Transactional
-    public void deleteCustomerTransactionByBillId(long billId, double billAmount) {
+    public void deleteCustomerTransactionByBillId(long billId, float billAmount) {
 
         customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
@@ -49,7 +49,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
     @Override
     @Transactional
-    public void deleteCustomerTransactionByPaymentId(long paymentId, double paymentAmount) {
+    public void deleteCustomerTransactionByPaymentId(long paymentId, float paymentAmount) {
 
         customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByPaymentId(paymentId);

@@ -8,6 +8,6 @@ public interface DiscountService {
 
     void deleteDiscount(long id);
 
-    double getCustomerDiscountForProduct(long customerId, long productId);
+    float getCustomerDiscountForProduct(long customerId, long productId);
 
 }

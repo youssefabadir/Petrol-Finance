@@ -62,6 +62,7 @@ public class ProductController {
             ProductDTO productDTO = productDTOMapper.apply(productEntity);
             return ResponseEntity.ok(productDTO);
         } catch (EntityNotFoundException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(e.toString());
@@ -76,6 +77,7 @@ public class ProductController {
             productService.deleteProduct(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(e.toString());

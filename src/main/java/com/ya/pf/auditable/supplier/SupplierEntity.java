@@ -32,7 +32,7 @@ public class SupplierEntity extends Auditable {
     private String name;
 
     @Column(name = "balance", nullable = false)
-    private Double balance;
+    private Float balance;
 
     @JsonIgnore
     @OneToMany(mappedBy = "supplierEntity")

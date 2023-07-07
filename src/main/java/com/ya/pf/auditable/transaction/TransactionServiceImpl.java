@@ -11,13 +11,13 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
 
     @Override
-    public void deleteTransactionByPaymentId(long paymentId, double paymentAmount) {
+    public void deleteTransactionByPaymentId(long paymentId, float paymentAmount) {
 
         transactionRepository.deleteByPaymentId(paymentId);
     }
 
     @Override
-    public void deleteTransactionByBillId(long billId, double billAmount) {
+    public void deleteTransactionByBillId(long billId, float billAmount) {
 
         transactionRepository.deleteByBillId(billId);
     }

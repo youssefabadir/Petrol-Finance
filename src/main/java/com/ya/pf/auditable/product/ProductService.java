@@ -14,7 +14,7 @@ public interface ProductService {
 
     void deleteProduct(long id);
 
-    double getProductCustomerPrice(long id);
+    float getProductCustomerPrice(long id);
 
     List<ProductEntity> searchProduct(String name);
 

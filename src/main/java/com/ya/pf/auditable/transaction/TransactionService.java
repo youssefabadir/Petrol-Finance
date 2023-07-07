@@ -2,8 +2,8 @@ package com.ya.pf.auditable.transaction;
 
 public interface TransactionService {
 
-    void deleteTransactionByPaymentId(long paymentId, double paymentAmount);
+    void deleteTransactionByPaymentId(long paymentId, float paymentAmount);
 
-    void deleteTransactionByBillId(long billId, double billAmount);
+    void deleteTransactionByBillId(long billId, float billAmount);
 
 }

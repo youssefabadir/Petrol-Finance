@@ -11,11 +11,11 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 
     @Modifying
     @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.billId > :billId")
-    void updateCustomerBalanceByBillId(@Param("billId") long billId, @Param("amount") double amount);
+    void updateCustomerBalanceByBillId(@Param("billId") long billId, @Param("amount") float amount);
 
     @Modifying
     @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.paymentId > :paymentId")
-    void updateCustomerBalanceByPaymentId(@Param("paymentId") long paymentId, @Param("amount") double amount);
+    void updateCustomerBalanceByPaymentId(@Param("paymentId") long paymentId, @Param("amount") float amount);
 
     CustomerTransactionEntity findByBillId(long billId);
 

@@ -8,11 +8,11 @@ import java.util.Date;
 
 public record PaymentDTO(
         String paymentNumber,
-        double paymentAmount,
+        float paymentAmount,
         long paymentMethodId,
         String paymentMethodName,
-        double paymentMethodBalance,
-        double treasuryBalance,
+        float paymentMethodBalance,
+        float treasuryBalance,
         CustomerDTO customer,
         SupplierDTO supplier,
         @JsonFormat(pattern = "dd/MM/yyyy")

@@ -18,6 +18,6 @@ public interface PaymentMethodService {
 
     PaymentMethodEntity getPaymentMethodById(long id);
 
-    void updatePaymentMethodBalance(long id, double balance);
+    void updatePaymentMethodBalance(long id, float balance);
 
 }

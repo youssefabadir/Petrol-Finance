@@ -19,6 +19,6 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
 
     @Modifying
     @Query("update CustomerEntity c set c.balance = :customerBalance where c.id = :customerId")
-    void updateCustomerBalance(@Param("customerId") long customerId, @Param("customerBalance") double customerBalance);
+    void updateCustomerBalance(@Param("customerId") long customerId, @Param("customerBalance") float customerBalance);
 
 }

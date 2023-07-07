@@ -32,7 +32,7 @@ public class CustomerEntity extends Auditable {
     private String name;
 
     @Column(name = "balance", nullable = false)
-    private Double balance;
+    private Float balance;
 
     @JsonIgnore
     @OneToMany(mappedBy = "customerEntity")

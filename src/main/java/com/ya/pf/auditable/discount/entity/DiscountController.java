@@ -74,6 +74,7 @@ public class DiscountController {
             discountService.deleteDiscount(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
+            log.error(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(e.toString());
