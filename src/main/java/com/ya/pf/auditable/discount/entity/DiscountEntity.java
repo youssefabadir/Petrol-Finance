@@ -25,8 +25,8 @@ public class DiscountEntity extends Auditable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "discount", nullable = false)
-    private float discount;
+    @Column(name = "discounted_price", nullable = false)
+    private float discountedPrice;
 
     @Column(name = "customer_id", nullable = false)
     private long customerId;
@@ -55,7 +55,7 @@ public class DiscountEntity extends Auditable {
 
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "discount = " + discount + ", " +
+                "discount = " + discountedPrice + ", " +
                 "customer id = " + customerId + ", " +
                 "product id = " + productId + ", " +
                 "deleted = " + deleted + ", " +

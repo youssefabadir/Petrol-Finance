@@ -20,8 +20,8 @@ public class DiscountView {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "discount")
-    private float discount;
+    @Column(name = "discounted_price")
+    private float discountedPrice;
 
     @Column(name = "customer_id")
     private Long customerId;
@@ -56,7 +56,7 @@ public class DiscountView {
 
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "discount = " + discount + ", " +
+                "discount = " + discountedPrice + ", " +
                 "customer id = " + customerId + ", " +
                 "customer name = " + customerName + ", " +
                 "product id = " + productId + ", " +
