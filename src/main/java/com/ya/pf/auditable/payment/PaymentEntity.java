@@ -48,6 +48,9 @@ public abstract class PaymentEntity extends Auditable {
     @Column(name = "transferred")
     private boolean transferred;
 
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date date;

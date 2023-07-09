@@ -23,6 +23,7 @@ public class OwnerPaymentDTOMapper implements Function<OwnerPaymentEntity, Owner
                                    ownerPaymentEntity.getPaymentMethodName(),
                                    supplierDTOMapper.apply(ownerPaymentEntity.getSupplier()),
                                    ownerPaymentEntity.isTransferred(),
+                                   ownerPaymentEntity.getNote(),
                                    ownerPaymentEntity.getDate());
     }
 

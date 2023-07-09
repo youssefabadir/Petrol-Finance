@@ -70,6 +70,7 @@ CREATE TABLE payment
     customer_id            INT,
     supplier_id            INT,
     transferred            BIT,
+    note                   NVARCHAR(255),
     date                   DATE,
     deleted                BIT,
     created_date           DATETIME,

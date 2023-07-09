@@ -23,6 +23,7 @@ public class CustomerPaymentDTOMapper implements Function<CustomerPaymentEntity,
                                       customerPaymentEntity.getPaymentMethodName(),
                                       customerDTOMapper.apply(customerPaymentEntity.getCustomer()),
                                       customerPaymentEntity.isTransferred(),
+                                      customerPaymentEntity.getNote(),
                                       customerPaymentEntity.getDate());
     }
 

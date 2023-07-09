@@ -12,6 +12,7 @@ public record OwnerPaymentDTO(
         String paymentMethodName,
         SupplierDTO supplier,
         Boolean transferred,
+        String note,
         @JsonFormat(pattern = "dd/MM/yyyy")
         Date date
 ) {
