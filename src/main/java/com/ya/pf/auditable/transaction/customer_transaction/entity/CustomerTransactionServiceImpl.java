@@ -1,7 +1,6 @@
 package com.ya.pf.auditable.transaction.customer_transaction.entity;
 
 import com.ya.pf.auditable.customer.CustomerService;
-import com.ya.pf.auditable.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,6 @@ import java.util.Date;
 public class CustomerTransactionServiceImpl implements CustomerTransactionService {
 
     private final CustomerTransactionRepository customerTransactionRepository;
-
-    private final TransactionService transactionService;
 
     private final CustomerService customerService;
 
@@ -44,7 +41,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
         customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
         customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
-        transactionService.deleteTransactionByBillId(billId, billAmount);
+        customerTransactionRepository.deleteByBillId(billId);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
         customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByPaymentId(paymentId);
         customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() - paymentAmount);
-        transactionService.deleteTransactionByPaymentId(paymentId, paymentAmount);
+        customerTransactionRepository.deleteByPaymentId(paymentId);
     }
 
 }

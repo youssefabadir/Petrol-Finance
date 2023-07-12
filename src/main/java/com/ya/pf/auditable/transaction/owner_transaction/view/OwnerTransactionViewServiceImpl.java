@@ -24,7 +24,7 @@ public class OwnerTransactionViewServiceImpl implements OwnerTransactionViewServ
             return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
         } else {
             return ownerTransactionViewRepository.findBySupplierIdAndDateBetween(supplierId, Date.valueOf(start),
-                    Date.valueOf(end.plusDays(1)), pageable);
+                                                                                 Date.valueOf(end.plusDays(1)), pageable);
         }
     }
 

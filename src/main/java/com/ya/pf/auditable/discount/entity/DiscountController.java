@@ -33,7 +33,7 @@ public class DiscountController {
 
         try {
             Page<DiscountView> discountViewPage = discountViewService.getDiscounts(customerName.trim(), productName.trim(), pageNo,
-                    pageSize, sortBy, order);
+                                                                                   pageSize, sortBy, order);
             return ResponseEntity.ok(discountViewPage);
         } catch (Exception e) {
             log.error(e.toString());

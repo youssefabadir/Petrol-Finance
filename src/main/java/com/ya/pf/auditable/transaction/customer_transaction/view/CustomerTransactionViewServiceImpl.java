@@ -25,7 +25,7 @@ public class CustomerTransactionViewServiceImpl implements CustomerTransactionVi
             return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
         } else {
             return customerTransactionViewRepository.findByCustomerIdAndDateBetween(customerId, Date.valueOf(start),
-                    Date.valueOf(end.plusDays(1)), pageable);
+                                                                                    Date.valueOf(end.plusDays(1)), pageable);
         }
     }
 

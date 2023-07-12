@@ -21,4 +21,8 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 
     CustomerTransactionEntity findByPaymentId(long paymentId);
 
+    void deleteByBillId(long billId);
+
+    void deleteByPaymentId(long paymentId);
+
 }

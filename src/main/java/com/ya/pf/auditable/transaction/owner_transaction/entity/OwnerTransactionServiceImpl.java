@@ -1,7 +1,6 @@
 package com.ya.pf.auditable.transaction.owner_transaction.entity;
 
 import com.ya.pf.auditable.supplier.SupplierService;
-import com.ya.pf.auditable.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,6 @@ import java.util.Date;
 public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
     private final OwnerTransactionRepository ownerTransactionRepository;
-
-    private final TransactionService transactionService;
 
     private final SupplierService supplierService;
 
@@ -44,7 +41,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
         ownerTransactionRepository.updateSupplierBalanceByBillId(billId, billAmount);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByBillId(billId);
         supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(), ownerTransaction.getSupplierBalance() + billAmount);
-        transactionService.deleteTransactionByBillId(billId, billAmount);
+        ownerTransactionRepository.deleteByBillId(billId);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
         ownerTransactionRepository.updateSupplierBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByPaymentId(paymentId);
         supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(), ownerTransaction.getSupplierBalance() - paymentAmount);
-        transactionService.deleteTransactionByPaymentId(paymentId, paymentAmount);
+        ownerTransactionRepository.deleteByPaymentId(paymentId);
     }
 
 }

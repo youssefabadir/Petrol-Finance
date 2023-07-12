@@ -21,4 +21,8 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     OwnerTransactionEntity findByPaymentId(long paymentId);
 
+    void deleteByBillId(long billId);
+
+    void deleteByPaymentId(long paymentId);
+
 }
