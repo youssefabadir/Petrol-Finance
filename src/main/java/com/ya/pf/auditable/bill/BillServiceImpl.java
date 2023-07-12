@@ -82,7 +82,11 @@ public class BillServiceImpl implements BillService {
 
             customerTransactionService.createCustomerTransaction(customerId, billAmount * -1, null, billId, billDate);
 
-            ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(), billAmount * -1, null, billId, billDate);
+            ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
+                                                           billEntity.getProductEntity().getSupplierPrice() * -1,
+                                                           null,
+                                                           billId,
+                                                           billDate);
 
             return bill;
         }
