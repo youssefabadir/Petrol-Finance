@@ -17,6 +17,14 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     private final SupplierService supplierService;
 
     @Override
+    public void createOwnerTransaction(Long paymentId, Date date) {
+        OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
+        ownerTransaction.setPaymentId(paymentId);
+        ownerTransaction.setDate(date);
+        ownerTransactionRepository.save(ownerTransaction);
+    }
+
+    @Override
     @Transactional
     public void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date) {
 

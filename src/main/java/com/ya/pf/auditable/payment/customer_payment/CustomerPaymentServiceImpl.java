@@ -57,7 +57,7 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
                                                              null,
                                                              payment.getDate());
 
-        paymentMethodService.updatePaymentMethodBalance(validatedPayment.getPaymentMethodId(), validatedPayment.getPaymentMethodBalance());
+        paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance());
 
         if (customerPayment.isTransferred()) {
             ownerPaymentService.createOwnerTransferredPayment(customerPayment, supplierId);

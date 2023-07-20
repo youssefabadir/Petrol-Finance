@@ -20,7 +20,7 @@ import javax.persistence.EntityExistsException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerPaymentController {
 
-    private final OwnerPaymentServiceImpl ownerPaymentService;
+    private final OwnerPaymentService ownerPaymentService;
 
     private final OwnerPaymentDTOMapper ownerPaymentDTOMapper;
 
