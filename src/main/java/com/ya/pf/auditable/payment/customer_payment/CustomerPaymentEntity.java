@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class CustomerPaymentEntity extends PaymentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
 
 }
