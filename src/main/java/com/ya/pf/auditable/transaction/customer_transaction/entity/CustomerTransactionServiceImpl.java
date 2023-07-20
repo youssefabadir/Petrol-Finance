@@ -17,6 +17,14 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     private final CustomerService customerService;
 
     @Override
+    public void createCustomerTransaction(Long paymentId, Date date) {
+        CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
+        customerTransaction.setPaymentId(paymentId);
+        customerTransaction.setDate(date);
+        customerTransactionRepository.save(customerTransaction);
+    }
+
+    @Override
     @Transactional
     public void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date) {
 
