@@ -113,8 +113,13 @@ public class PaymentServiceImpl implements PaymentService {
             long paymentId = payment.getId();
             String paymentNumber = payment.getNumber();
             String paymentType = payment.getPaymentType();
-            PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
+            if (paymentType.equals("CUSTOMER_PAYMENT")) {
+                paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
+            } else {
+                paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
+            }
 
+            PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
             if (payment.isTransferred()) {
                 customerTransactionService.deleteCustomerTransactionByPaymentId(paymentType.equals("CUSTOMER_PAYMENT") ? paymentId
                                                                                                                        : transferredPayment.getId(),

@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -35,7 +36,7 @@ public class CustomerPaymentController {
             Page<CustomerPaymentDTO> customerPaymentDTOS = customerPaymentEntities.map(customerPaymentDTOMapper);
             return ResponseEntity.ok(customerPaymentDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -49,13 +50,13 @@ public class CustomerPaymentController {
             CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
         } catch (EntityExistsException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (MissingRequestValueException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

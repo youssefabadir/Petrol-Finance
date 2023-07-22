@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -36,7 +37,7 @@ public class DiscountController {
                                                                                    pageSize, sortBy, order);
             return ResponseEntity.ok(discountViewPage);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -48,7 +49,7 @@ public class DiscountController {
             DiscountEntity discountEntity = discountService.createDiscount(discount);
             return ResponseEntity.status(HttpStatus.CREATED).body(discountEntity);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -62,7 +63,7 @@ public class DiscountController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -74,10 +75,10 @@ public class DiscountController {
             discountService.deleteDiscount(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

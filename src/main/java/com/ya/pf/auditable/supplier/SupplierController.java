@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +37,7 @@ public class SupplierController {
             Page<SupplierDTO> supplierDTOS = supplierEntities.map(supplierDTOMapper);
             return ResponseEntity.ok(supplierDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -49,7 +50,7 @@ public class SupplierController {
             SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(supplierDTO);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -62,10 +63,10 @@ public class SupplierController {
             SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
             return ResponseEntity.ok(supplierDTO);
         } catch (EntityNotFoundException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -77,10 +78,10 @@ public class SupplierController {
             supplierService.deleteSupplier(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -96,7 +97,7 @@ public class SupplierController {
             List<SupplierDTO> supplierDTOS = supplierEntities.stream().map(supplierDTOMapper).toList();
             return ResponseEntity.ok(supplierDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

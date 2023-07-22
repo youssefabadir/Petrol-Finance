@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +38,7 @@ public class PaymentMethodController {
             Page<PaymentMethodDTO> wayOfPaymentDTOS = wayOfPaymentEntities.map(paymentMethodDTOMapper);
             return ResponseEntity.ok(wayOfPaymentDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -50,10 +51,10 @@ public class PaymentMethodController {
             PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(paymentMethodDTO);
         } catch (EntityExistsException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -70,7 +71,7 @@ public class PaymentMethodController {
         } catch (EntityExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -84,7 +85,7 @@ public class PaymentMethodController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -100,7 +101,7 @@ public class PaymentMethodController {
             List<PaymentMethodDTO> paymentMethodDTOS = paymentMethodEntities.stream().map(paymentMethodDTOMapper).toList();
             return ResponseEntity.ok(paymentMethodDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

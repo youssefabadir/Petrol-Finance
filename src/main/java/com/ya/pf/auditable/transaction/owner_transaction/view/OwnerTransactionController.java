@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -44,7 +45,7 @@ public class OwnerTransactionController {
             Page<OwnerTransactionViewDTO> ownerTransactionViewDTOS = transactionViews.map(ownerTransactionViewDTOMapper);
             return ResponseEntity.ok(ownerTransactionViewDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

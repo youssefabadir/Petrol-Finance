@@ -11,6 +11,9 @@ public class CustomerDTOMapper implements Function<CustomerEntity, CustomerDTO> 
     @Override
     public CustomerDTO apply(CustomerEntity customerEntity) {
 
+        if (customerEntity == null) {
+            return new CustomerDTO(null, null, null);
+        }
         return new CustomerDTO(customerEntity.getId(), customerEntity.getName(), customerEntity.getBalance());
     }
 

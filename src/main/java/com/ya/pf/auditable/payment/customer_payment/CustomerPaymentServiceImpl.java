@@ -51,7 +51,8 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
         CustomerPaymentEntity payment = customerPaymentRepository.save(validatedPayment);
 
-        if (payment.getCustomer() == null) {
+        if (payment.getCustomer() == null || payment.getCustomer().getId() == null) {
+            customerPayment.setCustomer(null);
             customerTransactionService.createCustomerTransaction(payment.getId(), payment.getDate());
         } else {
             customerTransactionService.createCustomerTransaction(payment.getCustomer().getId(),

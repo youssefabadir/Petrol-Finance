@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -39,7 +40,7 @@ public class PaymentController {
             Page<PaymentDTO> paymentDTOS = paymentEntities.map(paymentDTOMapper);
             return ResponseEntity.ok(paymentDTOS);
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -51,10 +52,10 @@ public class PaymentController {
             paymentService.deletePaymentById(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
