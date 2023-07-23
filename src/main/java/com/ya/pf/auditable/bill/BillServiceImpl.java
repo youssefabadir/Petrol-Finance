@@ -65,14 +65,15 @@ public class BillServiceImpl implements BillService {
             long productId = billEntity.getProductEntity().getId();
             float productPrice = productService.getProductCustomerPrice(productId);
             long customerId = billEntity.getCustomerEntity().getId();
-            float billAmount;
+            float billQuantity = billEntity.getQuantity();
+            float billAmount = billQuantity * billEntity.getProductEntity().getSupplierPrice();
 
-            try {
+/*            try {
                 float discountedPrice = discountService.getCustomerDiscountedPrice(customerId, productId);
-                billAmount = discountedPrice * billEntity.getQuantity();
+                billAmount = discountedPrice * billQuantity;
             } catch (EntityNotFoundException e) {
-                billAmount = productPrice * billEntity.getQuantity();
-            }
+                billAmount = productPrice * billQuantity;
+            }*/
 
             billEntity.setAmount(Math.abs(billAmount));
 
@@ -80,13 +81,13 @@ public class BillServiceImpl implements BillService {
             long billId = bill.getId();
             java.util.Date billDate = bill.getDate();
 
-            customerTransactionService.createCustomerTransaction(customerId, billAmount * -1, null, billId, billDate);
+            customerTransactionService.createCustomerTransaction(customerId, billQuantity * productPrice * -1, null, billId, billDate);
 
             ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
-                                                           billEntity.getProductEntity().getSupplierPrice() * -1,
-                                                           null,
-                                                           billId,
-                                                           billDate);
+                    billEntity.getProductEntity().getSupplierPrice() * billQuantity * -1,
+                    null,
+                    billId,
+                    billDate);
 
             return bill;
         }
