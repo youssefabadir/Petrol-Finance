@@ -49,9 +49,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
         customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
-        if (customerTransaction.getCustomerId() != null) {
-            customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
-        }
+        customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
         customerTransactionRepository.deleteByBillId(billId);
     }
 

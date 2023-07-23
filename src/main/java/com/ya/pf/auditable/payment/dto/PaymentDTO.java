@@ -15,6 +15,7 @@ public record PaymentDTO(
         float treasuryBalance,
         CustomerDTO customer,
         SupplierDTO supplier,
+        String note,
         @JsonFormat(pattern = "dd/MM/yyyy")
         Date date
 ) {

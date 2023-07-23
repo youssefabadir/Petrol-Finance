@@ -50,7 +50,8 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
         OwnerPaymentEntity payment = ownerPaymentRepository.save(validatedPayment);
 
-        if (payment.getSupplier() == null) {
+        if (payment.getSupplier() == null || payment.getSupplier().getId() == null) {
+            payment.setSupplier(null);
             ownerTransactionService.createOwnerTransaction(payment.getId(), payment.getDate());
         } else {
             ownerTransactionService.createOwnerTransaction(payment.getSupplier().getId(),

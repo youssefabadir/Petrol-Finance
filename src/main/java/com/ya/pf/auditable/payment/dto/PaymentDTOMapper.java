@@ -31,6 +31,7 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
                                   payment.getTreasury_balance(),
                                   customerDTOMapper.apply(((CustomerPaymentEntity) payment).getCustomer()),
                                   null,
+                                  payment.getNote(),
                                   payment.getDate());
         } else {
             return new PaymentDTO(payment.getNumber(),
@@ -41,6 +42,7 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
                                   payment.getTreasury_balance(),
                                   null,
                                   supplierDTOMapper.apply(((OwnerPaymentEntity) payment).getSupplier()),
+                                  payment.getNote(),
                                   payment.getDate());
         }
     }

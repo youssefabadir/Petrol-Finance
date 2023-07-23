@@ -115,8 +115,10 @@ public class PaymentServiceImpl implements PaymentService {
             String paymentType = payment.getPaymentType();
             if (paymentType.equals("CUSTOMER_PAYMENT")) {
                 paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
-            } else {
+            } else if (paymentType.equals("OWNER_PAYMENT")) {
                 paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
+            } else {
+                throw new EntityNotFoundException("This payment type doesn't exists");
             }
 
             PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
@@ -130,12 +132,10 @@ public class PaymentServiceImpl implements PaymentService {
 
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
             } else {
-                if (payment.getPaymentType().equals("CUSTOMER_PAYMENT")) {
+                if (paymentType.equals("CUSTOMER_PAYMENT")) {
                     customerTransactionService.deleteCustomerTransactionByPaymentId(paymentId, payment.getAmount());
-                } else if (payment.getPaymentType().equals("OWNER_PAYMENT")) {
-                    ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, payment.getAmount());
                 } else {
-                    throw new EntityNotFoundException("This payment type doesn't exists");
+                    ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, payment.getAmount());
                 }
 
                 paymentRepository.deleteById(id);
