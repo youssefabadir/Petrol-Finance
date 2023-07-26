@@ -13,7 +13,7 @@ public record CustomerTransactionViewDTO(
         String paymentMethod,
         String billNumber,
         Float billQuantity,
-        Float billAmount,
+        Float billCustomerAmount,
         String productName,
         @JsonFormat(pattern = "dd/MM/yyyy")
         Date date

@@ -2,11 +2,13 @@ package com.ya.pf.auditable.customer;
 
 import com.ya.pf.util.Helper;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -16,12 +18,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final EntityManager entityManager;
+
     @Override
     public Page<CustomerEntity> getCustomers(String name, int pageNo, int pageSize,
                                              String sortBy, String order) {
 
+        enableDeletedCustomerFilter();
         Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
-
         if (name.trim().isEmpty()) {
             return customerRepository.findAll(pageable);
         } else {
@@ -42,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerEntity updateCustomer(CustomerEntity customerEntity) {
 
+        enableDeletedCustomerFilter();
         if (customerRepository.existsById(customerEntity.getId())) {
             return customerRepository.save(customerEntity);
         } else {
@@ -52,6 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(long id) {
 
+        enableDeletedCustomerFilter();
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
         } else {
@@ -62,19 +68,29 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerEntity> searchCustomer(String name) {
 
+        enableDeletedCustomerFilter();
         return customerRepository.findByNameContaining(name);
     }
 
     @Override
     public CustomerEntity getCustomerById(long id) {
 
+        enableDeletedCustomerFilter();
         return customerRepository.getReferenceById(id);
     }
 
     @Override
     public void updateCustomerBalance(long customerId, float customerBalance) {
 
+        enableDeletedCustomerFilter();
         customerRepository.updateCustomerBalance(customerId, customerBalance);
+    }
+
+    @Override
+    public void enableDeletedCustomerFilter() {
+
+        Session session = entityManager.unwrap(Session.class);
+        session.enableFilter("deletedCustomerFilter");
     }
 
 }

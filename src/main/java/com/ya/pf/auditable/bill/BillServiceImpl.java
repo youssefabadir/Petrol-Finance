@@ -1,7 +1,7 @@
 package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.discount.entity.DiscountService;
-import com.ya.pf.auditable.product.ProductService;
+import com.ya.pf.auditable.product.ProductEntity;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
@@ -22,8 +22,6 @@ import java.time.LocalDate;
 public class BillServiceImpl implements BillService {
 
     private final BillRepository billRepository;
-
-    private final ProductService productService;
 
     private final CustomerTransactionService customerTransactionService;
 
@@ -62,32 +60,31 @@ public class BillServiceImpl implements BillService {
         if (exists) {
             throw new EntityExistsException("This bill number exists for this supplier");
         } else {
-            long productId = billEntity.getProductEntity().getId();
-            float productPrice = productService.getProductCustomerPrice(productId);
             long customerId = billEntity.getCustomerEntity().getId();
             float billQuantity = billEntity.getQuantity();
-            float billAmount = billQuantity * billEntity.getProductEntity().getSupplierPrice();
-
-/*            try {
-                float discountedPrice = discountService.getCustomerDiscountedPrice(customerId, productId);
-                billAmount = discountedPrice * billQuantity;
+            ProductEntity product = billEntity.getProductEntity();
+            float supplierAmount = Math.abs(billQuantity * product.getSupplierPrice());
+            float customerAmount;
+            try {
+                customerAmount = Math.abs(billQuantity * discountService.getCustomerDiscountedPrice(customerId, product.getId()));
             } catch (EntityNotFoundException e) {
-                billAmount = productPrice * billQuantity;
-            }*/
+                customerAmount = Math.abs(billQuantity * product.getCustomerPrice());
+            }
 
-            billEntity.setAmount(Math.abs(billAmount));
-
+            billEntity.setSupplierAmount(supplierAmount);
+            billEntity.setCustomerAmount(customerAmount);
             BillEntity bill = billRepository.save(billEntity);
+
             long billId = bill.getId();
             java.util.Date billDate = bill.getDate();
 
-            customerTransactionService.createCustomerTransaction(customerId, billQuantity * productPrice * -1, null, billId, billDate);
+            customerTransactionService.createCustomerTransaction(customerId, customerAmount * -1, null, billId, billDate);
 
             ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
-                    billEntity.getProductEntity().getSupplierPrice() * billQuantity * -1,
-                    null,
-                    billId,
-                    billDate);
+                                                           supplierAmount * -1,
+                                                           null,
+                                                           billId,
+                                                           billDate);
 
             return bill;
         }
@@ -99,11 +96,10 @@ public class BillServiceImpl implements BillService {
 
         if (billRepository.existsById(id)) {
             BillEntity bill = billRepository.getReferenceById(id);
-            float billAmount = bill.getAmount();
 
             billRepository.deleteById(id);
-            customerTransactionService.deleteCustomerTransactionByBillId(id, billAmount);
-            ownerTransactionService.deleteOwnerTransactionByBillId(id, billAmount);
+            customerTransactionService.deleteCustomerTransactionByBillId(id, bill.getCustomerAmount());
+            ownerTransactionService.deleteOwnerTransactionByBillId(id, bill.getSupplierAmount());
         } else {
             throw new EntityNotFoundException("Bill with ID " + id + " not found");
         }

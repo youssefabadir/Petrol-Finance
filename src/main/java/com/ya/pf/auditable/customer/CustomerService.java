@@ -20,4 +20,6 @@ public interface CustomerService {
 
     void updateCustomerBalance(long customerId, float customerBalance);
 
+    void enableDeletedCustomerFilter();
+
 }

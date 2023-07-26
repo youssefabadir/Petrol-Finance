@@ -19,7 +19,7 @@ public class CustomerTransactionViewDTOMapper implements Function<CustomerTransa
                                               customerTransactionView.getPaymentMethodName(),
                                               customerTransactionView.getBillNumber(),
                                               customerTransactionView.getBillQuantity(),
-                                              customerTransactionView.getBillAmount(),
+                                              customerTransactionView.getBillCustomerAmount(),
                                               customerTransactionView.getProductName(),
                                               customerTransactionView.getDate());
     }

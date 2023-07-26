@@ -56,8 +56,8 @@ public class CustomerTransactionView {
     @Column(name = "bill_quantity")
     private Float billQuantity;
 
-    @Column(name = "bill_amount")
-    private Float billAmount;
+    @Column(name = "bill_customer_amount")
+    private Float billCustomerAmount;
 
     @Column(name = "product_id")
     private Long productId;
