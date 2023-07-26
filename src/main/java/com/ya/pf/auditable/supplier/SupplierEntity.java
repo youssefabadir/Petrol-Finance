@@ -7,8 +7,9 @@ import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -20,7 +21,8 @@ import java.util.Set;
 @Table(name = "supplier")
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE supplier SET deleted = 1 WHERE id=?")
-@Where(clause = "deleted=0")
+@FilterDef(name = "deletedSupplierFilter")
+@Filter(name = "deletedSupplierFilter", condition = "deleted = 0")
 public class SupplierEntity extends Auditable {
 
     @Id

@@ -21,4 +21,6 @@ public interface SupplierService {
 
     void updateSupplierBalance(long supplierId, float supplierBalance);
 
+    void enableDeletedSupplierFilter();
+
 }
