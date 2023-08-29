@@ -1,5 +1,6 @@
 package com.ya.pf.auditable.payment;
 
+import com.ya.pf.auditable.payment_method.PaymentMethodEntity;
 import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
@@ -65,7 +66,8 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentEntity paymentEntity = paymentRepository.findFirstByOrderByIdDesc();
         float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
                                                       : paymentEntity.getTreasury_balance();
-        float paymentMethodBalance = paymentMethodService.getPaymentMethodById(paymentMethodId).getBalance();
+        PaymentMethodEntity paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
+        float paymentMethodBalance = paymentMethod.getBalance();
         if (paymentType.equals("CUSTOMER_PAYMENT")) {
             treasuryBalance = treasuryBalance + amount;
             paymentMethodBalance = paymentMethodBalance + amount;
@@ -79,6 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
         payment.setTreasury_balance(treasuryBalance);
         payment.setPaymentMethodBalance(paymentMethodBalance);
+        payment.setPaymentMethodName(paymentMethod.getName());
 
         return payment;
     }

@@ -56,7 +56,7 @@ public class OwnerTransactionView {
     @Column(name = "bill_quantity")
     private Float billQuantity;
 
-    @Column(name = "bill_amount")
+    @Column(name = "bill_supplier_amount")
     private Float billAmount;
 
     @Column(name = "product_id")

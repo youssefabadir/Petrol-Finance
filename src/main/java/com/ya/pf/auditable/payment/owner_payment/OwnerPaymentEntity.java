@@ -1,5 +1,7 @@
 package com.ya.pf.auditable.payment.owner_payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ya.pf.auditable.expense.ExpenseEntity;
 import com.ya.pf.auditable.payment.PaymentEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
 import lombok.Getter;
@@ -20,5 +22,9 @@ public class OwnerPaymentEntity extends PaymentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplier;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "ownerPayment", fetch = FetchType.LAZY)
+    private ExpenseEntity expense;
 
 }

@@ -68,6 +68,7 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     }
 
     @Override
+    @Transactional
     public void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) throws MissingRequestValueException {
 
         SupplierEntity supplier = supplierService.getSupplierById(supplierId);

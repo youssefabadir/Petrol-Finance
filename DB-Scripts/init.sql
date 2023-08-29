@@ -2,7 +2,7 @@ CREATE TABLE customer
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) NOT NULL,
-    balance            FLOAT DEFAULT 0.00,
+    balance FLOAT NOT NULL DEFAULT 0.00,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
@@ -12,7 +12,7 @@ CREATE TABLE supplier
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) NOT NULL,
-    balance            FLOAT DEFAULT 0.00,
+    balance FLOAT NOT NULL DEFAULT 0.00,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
@@ -33,7 +33,7 @@ CREATE TABLE payment_method
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) UNIQUE NOT NULL,
-    balance            FLOAT DEFAULT 0.00,
+    balance FLOAT NOT NULL DEFAULT 0.00,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME,
@@ -106,6 +106,46 @@ CREATE TABLE discount
     CONSTRAINT FK_DISCOUNT_CUSTOMER FOREIGN KEY (customer_id) REFERENCES customer (id),
     CONSTRAINT FK_DISCOUNT_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
 );
+
+CREATE TABLE truck
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    number             NVARCHAR(255) NOT NULL UNIQUE,
+    balance            FLOAT         NOT NULL DEFAULT 0.00,
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME
+);
+
+CREATE TABLE shipment
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    truck_id           INT   NOT NULL,
+    bill_id            INT   NOT NULL,
+    revenue            FLOAT NOT NULL,
+    truck_balance      FLOAT NOT NULL,
+    note               NVARCHAR(255),
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME,
+    CONSTRAINT FK_SHIPMENT_BILL FOREIGN KEY (bill_id) REFERENCES bill (id),
+    CONSTRAINT FK_SHIPMENT_TRUCK FOREIGN KEY (truck_id) REFERENCES truck (id),
+);
+
+CREATE TABLE expenses
+(
+    id                 INT IDENTITY (1,1) PRIMARY KEY,
+    shipment_id        INT   NOT NULL,
+    amount             FLOAT NOT NULL,
+    payment_id         INT   NOT NULL,
+    note               NVARCHAR(255),
+    deleted            BIT,
+    created_date       DATETIME,
+    last_modified_date DATETIME,
+    CONSTRAINT FK_EXPENSES_SHIPMENT FOREIGN KEY (shipment_id) REFERENCES shipment (id),
+    CONSTRAINT FK_EXPENSES_PAYMENT FOREIGN KEY (payment_id) REFERENCES payment (id),
+);
+
 
 CREATE VIEW customer_transaction_view AS
 SELECT t.id               AS transaction_id,

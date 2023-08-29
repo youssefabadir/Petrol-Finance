@@ -2,6 +2,7 @@ package com.ya.pf.auditable.bill;
 
 import com.ya.pf.auditable.discount.entity.DiscountService;
 import com.ya.pf.auditable.product.ProductEntity;
+import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
@@ -29,6 +30,8 @@ public class BillServiceImpl implements BillService {
 
     private final DiscountService discountService;
 
+    private final ShipmentService shipmentService;
+
     @Override
     public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
                                      String order, LocalDate start, LocalDate end) {
@@ -50,7 +53,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public BillEntity createBill(BillEntity billEntity) {
+    public BillEntity createBill(BillEntity billEntity, long truckId) {
 
         if (billEntity.getId() != null) {
             billEntity.setId(null);
@@ -86,6 +89,8 @@ public class BillServiceImpl implements BillService {
                                                            billId,
                                                            billDate);
 
+            shipmentService.createShipment(billId, truckId, customerAmount - supplierAmount);
+
             return bill;
         }
     }
@@ -100,6 +105,7 @@ public class BillServiceImpl implements BillService {
             billRepository.deleteById(id);
             customerTransactionService.deleteCustomerTransactionByBillId(id, bill.getCustomerAmount());
             ownerTransactionService.deleteOwnerTransactionByBillId(id, bill.getSupplierAmount());
+            shipmentService.deleteShipmentByBillId(id);
         } else {
             throw new EntityNotFoundException("Bill with ID " + id + " not found");
         }

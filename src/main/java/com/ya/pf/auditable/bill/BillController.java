@@ -46,10 +46,11 @@ public class BillController {
     }
 
     @PostMapping
-    public ResponseEntity<BillDTO> createBill(@RequestBody BillEntity transaction) {
+    public ResponseEntity<BillDTO> createBill(@RequestBody BillEntity bill,
+                                              @RequestParam long truckId) {
 
         try {
-            BillEntity billEntity = billService.createBill(transaction);
+            BillEntity billEntity = billService.createBill(bill, truckId);
             BillDTO billDTO = billDTOMapper.apply(billEntity);
             return ResponseEntity.ok(billDTO);
         } catch (Exception e) {
