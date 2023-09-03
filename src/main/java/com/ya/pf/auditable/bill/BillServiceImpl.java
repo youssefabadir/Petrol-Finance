@@ -97,6 +97,16 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
+    public BillEntity updateBill(BillEntity billEntity, long truckId) {
+
+        long billId = billEntity.getId();
+        deleteBill(billId);
+        billEntity.setId(null);
+        return createBill(billEntity, truckId);
+    }
+
+    @Override
+    @Transactional
     public void deleteBill(long id) {
 
         if (billRepository.existsById(id)) {

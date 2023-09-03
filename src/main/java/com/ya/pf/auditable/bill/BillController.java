@@ -59,6 +59,20 @@ public class BillController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<BillDTO> updateBill(@RequestBody BillEntity bill,
+                                              @RequestParam long truckId) {
+
+        try {
+            BillEntity billEntity = billService.updateBill(bill, truckId);
+            BillDTO billDTO = billDTOMapper.apply(billEntity);
+            return ResponseEntity.ok(billDTO);
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBill(@PathVariable long id) {
 

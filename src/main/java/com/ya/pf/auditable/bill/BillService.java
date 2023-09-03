@@ -10,6 +10,8 @@ public interface BillService {
 
     BillEntity createBill(BillEntity billEntity, long truckId);
 
+    BillEntity updateBill(BillEntity billEntity, long truckId);
+
     void deleteBill(long id);
 
 }
