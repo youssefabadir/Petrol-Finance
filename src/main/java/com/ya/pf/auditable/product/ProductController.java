@@ -89,7 +89,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<List<ProductDTO>> searchCustomer(@RequestParam(defaultValue = "") String name) {
 
-        if (name.isEmpty()) {
+        if (name.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         try {

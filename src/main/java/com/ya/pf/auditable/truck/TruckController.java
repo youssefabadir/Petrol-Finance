@@ -88,7 +88,7 @@ public class TruckController {
     @GetMapping("/search")
     public ResponseEntity<List<TruckDTO>> searchTruck(@RequestParam(defaultValue = "") String number) {
 
-        if (number.isEmpty()) {
+        if (number.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         try {

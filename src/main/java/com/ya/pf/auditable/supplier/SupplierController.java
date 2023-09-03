@@ -89,7 +89,7 @@ public class SupplierController {
     @GetMapping("/search")
     public ResponseEntity<List<SupplierDTO>> searchSupplier(@RequestParam(defaultValue = "") String name) {
 
-        if (name.isEmpty()) {
+        if (name.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         try {
