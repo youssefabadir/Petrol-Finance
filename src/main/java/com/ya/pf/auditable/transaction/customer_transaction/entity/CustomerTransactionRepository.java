@@ -25,4 +25,6 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 
     void deleteByPaymentId(long paymentId);
 
+    CustomerTransactionEntity findFirstByCustomerIdOrderByIdDesc(long customerId);
+
 }

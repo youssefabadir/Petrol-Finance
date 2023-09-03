@@ -116,22 +116,25 @@ public class PaymentServiceImpl implements PaymentService {
             long paymentId = payment.getId();
             String paymentNumber = payment.getNumber();
             String paymentType = payment.getPaymentType();
-            if (paymentType.equals("CUSTOMER_PAYMENT")) {
-                paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
-            } else if (paymentType.equals("OWNER_PAYMENT")) {
-                paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
-            } else {
-                throw new EntityNotFoundException("This payment type doesn't exists");
+            boolean isTransferred = payment.isTransferred();
+            if (!isTransferred) {
+                if (paymentType.equals("CUSTOMER_PAYMENT")) {
+                    paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
+                } else if (paymentType.equals("OWNER_PAYMENT")) {
+                    paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
+                } else {
+                    throw new EntityNotFoundException("This payment type doesn't exists");
+                }
             }
 
-            PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
-            if (payment.isTransferred()) {
+            if (isTransferred) {
+                PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
                 customerTransactionService.deleteCustomerTransactionByPaymentId(paymentType.equals("CUSTOMER_PAYMENT") ? paymentId
-                                                                                                                       : transferredPayment.getId(),
-                                                                                payment.getAmount());
+                                : transferredPayment.getId(),
+                        payment.getAmount());
                 ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentType.equals("OWNER_PAYMENT") ? paymentId
-                                                                                                              : transferredPayment.getId(),
-                                                                          payment.getAmount());
+                                : transferredPayment.getId(),
+                        payment.getAmount());
 
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
             } else {

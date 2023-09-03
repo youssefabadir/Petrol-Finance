@@ -61,4 +61,22 @@ public class CustomerPaymentController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<CustomerPaymentDTO> updateCustomerPayment(@RequestBody CustomerPaymentEntity payment,
+                                                                    @RequestParam(defaultValue = "-1") long supplierId) {
+
+        try {
+            //TODO: implement update payment
+        } catch (EntityExistsException e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (MissingRequestValueException e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

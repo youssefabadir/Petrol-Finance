@@ -25,4 +25,6 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     void deleteByPaymentId(long paymentId);
 
+    OwnerTransactionEntity findFirstBySupplierIdOrderByIdDesc(long supplierId);
+
 }

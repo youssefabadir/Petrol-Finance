@@ -29,7 +29,8 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     @Transactional
     public void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date) {
 
-        float newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
+        float newBalance = customerTransactionRepository.findFirstByCustomerIdOrderByIdDesc(customerId)
+                .getCustomerBalance() + amount;
 
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
         customerTransaction.setCustomerId(customerId);

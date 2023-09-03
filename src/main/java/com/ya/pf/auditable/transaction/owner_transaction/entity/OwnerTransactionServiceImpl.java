@@ -29,7 +29,8 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     @Transactional
     public void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date) {
 
-        float newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
+        float newBalance = ownerTransactionRepository.findFirstBySupplierIdOrderByIdDesc(supplierId)
+                .getSupplierBalance() + amount;
 
         OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
         ownerTransaction.setSupplierId(supplierId);
