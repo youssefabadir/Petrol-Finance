@@ -66,7 +66,9 @@ public class CustomerPaymentController {
                                                                     @RequestParam(defaultValue = "-1") long supplierId) {
 
         try {
-            //TODO: implement update payment
+            CustomerPaymentEntity customerPayment = customerPaymentService.updateCustomerPayment(payment, supplierId);
+            CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
         } catch (EntityExistsException e) {
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

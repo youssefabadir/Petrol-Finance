@@ -9,4 +9,6 @@ public interface CustomerPaymentService {
 
     CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException;
 
+    CustomerPaymentEntity updateCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException;
+
 }

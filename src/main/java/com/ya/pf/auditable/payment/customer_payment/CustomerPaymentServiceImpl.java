@@ -71,4 +71,14 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
         return payment;
     }
 
+    @Override
+    @Transactional
+    public CustomerPaymentEntity updateCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException {
+
+        long paymentId = customerPayment.getId();
+        paymentService.deletePaymentById(paymentId);
+        customerPayment.setId(null);
+        return createCustomerPayment(customerPayment, supplierId);
+    }
+
 }

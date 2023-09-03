@@ -65,7 +65,9 @@ public class OwnerPaymentController {
     public ResponseEntity<OwnerPaymentDTO> updateOwnerPayment(@RequestBody OwnerPaymentEntity payment) {
 
         try {
-            //TODO: implement update payment
+            OwnerPaymentEntity ownerPayment = ownerPaymentService.updateOwnerPayment(payment);
+            OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
         } catch (EntityExistsException e) {
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

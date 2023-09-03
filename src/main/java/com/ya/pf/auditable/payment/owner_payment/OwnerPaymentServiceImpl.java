@@ -69,6 +69,15 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
     @Override
     @Transactional
+    public OwnerPaymentEntity updateOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException {
+
+        long paymentId = ownerPayment.getId();
+        paymentService.deletePaymentById(paymentId);
+        return createOwnerPayment(ownerPayment);
+    }
+
+    @Override
+    @Transactional
     public void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) throws MissingRequestValueException {
 
         SupplierEntity supplier = supplierService.getSupplierById(supplierId);

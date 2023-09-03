@@ -10,6 +10,8 @@ public interface OwnerPaymentService {
 
     OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException;
 
+    OwnerPaymentEntity updateOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException;
+
     void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) throws MissingRequestValueException;
 
 }
