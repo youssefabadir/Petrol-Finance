@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -53,6 +54,9 @@ public class BillController {
             BillEntity billEntity = billService.createBill(bill, truckId);
             BillDTO billDTO = billDTOMapper.apply(billEntity);
             return ResponseEntity.ok(billDTO);
+        } catch (EntityExistsException e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -67,6 +71,9 @@ public class BillController {
             BillEntity billEntity = billService.updateBill(bill, truckId);
             BillDTO billDTO = billDTOMapper.apply(billEntity);
             return ResponseEntity.ok(billDTO);
+        } catch (EntityExistsException e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
