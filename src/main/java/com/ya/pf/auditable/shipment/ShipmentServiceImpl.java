@@ -32,7 +32,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         if (billNumber.trim().isEmpty()) {
             return shipmentRepository.findAll(pageable);
         } else {
-            return shipmentRepository.findByBillEntity_Number(billNumber, pageable);
+            return shipmentRepository.findByBillNumber(billNumber, pageable);
         }
     }
 

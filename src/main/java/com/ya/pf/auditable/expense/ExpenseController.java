@@ -39,10 +39,10 @@ public class ExpenseController {
 
     @PostMapping
     public ResponseEntity<ExpenseDTO> createExpense(@RequestBody ExpenseEntity expense,
-                                                    @RequestParam(defaultValue = "") String paymentNumber) {
+                                                    @RequestParam long paymentMethodId) {
 
         try {
-            ExpenseEntity expenseEntity = expenseService.createExpense(expense, paymentNumber);
+            ExpenseEntity expenseEntity = expenseService.createExpense(expense, paymentMethodId);
             ExpenseDTO expenseDTO = expenseDTOMapper.apply(expenseEntity);
             return ResponseEntity.ok(expenseDTO);
         } catch (Exception e) {
@@ -53,10 +53,10 @@ public class ExpenseController {
 
     @PutMapping
     public ResponseEntity<ExpenseDTO> updateExpense(@RequestBody ExpenseEntity expense,
-                                                    @RequestParam(defaultValue = "") String paymentNumber) {
+                                                    @RequestParam long paymentMethodId) {
 
         try {
-            ExpenseEntity expenseEntity = expenseService.updateExpense(expense, paymentNumber);
+            ExpenseEntity expenseEntity = expenseService.updateExpense(expense, paymentMethodId);
             ExpenseDTO expenseDTO = expenseDTOMapper.apply(expenseEntity);
             return ResponseEntity.ok(expenseDTO);
         } catch (EntityNotFoundException e) {

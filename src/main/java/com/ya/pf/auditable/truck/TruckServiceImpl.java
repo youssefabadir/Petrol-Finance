@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -78,6 +79,7 @@ public class TruckServiceImpl implements TruckService {
     }
 
     @Override
+    @Transactional
     public TruckEntity updateTruckBalance(long truckId, float amount) {
 
         if (truckRepository.existsById(truckId)) {

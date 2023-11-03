@@ -8,9 +8,9 @@ public interface ExpenseService {
 
     List<ExpenseEntity> getExpenses(long shipmentId);
 
-    ExpenseEntity createExpense(ExpenseEntity expense, String paymentNumber) throws MissingRequestValueException;
+    ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException;
 
-    ExpenseEntity updateExpense(ExpenseEntity expense, String paymentNumber) throws MissingRequestValueException;
+    ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException;
 
     void deleteExpense(long id);
 

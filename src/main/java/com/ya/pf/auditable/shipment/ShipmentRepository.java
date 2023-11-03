@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ShipmentRepository extends JpaRepository<ShipmentEntity, Long> {
 
-    Page<ShipmentEntity> findByBillEntity_Number(String billNumber, Pageable pageable);
+    @Query("SELECT s FROM ShipmentEntity s WHERE s.billEntity.number LIKE %:billNumber%")
+    Page<ShipmentEntity> findByBillNumber(@Param("billNumber") String billNumber, Pageable pageable);
 
     @Modifying
     @Query("UPDATE ShipmentEntity s SET s.truckBalance = s.truckBalance + :amount WHERE s.id > :id AND s.truckEntity.id = :truckId")

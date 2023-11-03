@@ -3,6 +3,7 @@ package com.ya.pf.auditable.expense;
 import com.ya.pf.auditable.payment.PaymentService;
 import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
 import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentService;
+import com.ya.pf.auditable.shipment.ShipmentEntity;
 import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.truck.TruckService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.MissingRequestValueException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
@@ -35,7 +38,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public ExpenseEntity createExpense(ExpenseEntity expense, String paymentNumber) throws MissingRequestValueException {
+    @Transactional
+    public ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException {
 
         if (expense.getId() != null) {
             expense.setId(null);
@@ -46,10 +50,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         OwnerPaymentEntity payment = new OwnerPaymentEntity();
         payment.setPaymentType("OWNER_PAYMENT");
         payment.setAmount(amount);
-        payment.setPaymentMethodId(1);
+        payment.setPaymentMethodId(paymentMethodId);
         payment.setTransferred(false);
         payment.setNote(expense.getNote());
-        payment.setNumber(paymentNumber);
+        payment.setNumber(UUID.randomUUID().toString());
+        payment.setDate(new Date());
         OwnerPaymentEntity ownerPayment = ownerPaymentService.createOwnerPayment(payment);
         expense.setOwnerPayment(ownerPayment);
 
@@ -58,12 +63,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
-    public ExpenseEntity updateExpense(ExpenseEntity expense, String paymentNumber) throws MissingRequestValueException {
+    public ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException {
 
         if (expenseRepository.existsById(expense.getId())) {
             ExpenseEntity oldExpense = expenseRepository.getReferenceById(expense.getId());
+            ShipmentEntity shipment = new ShipmentEntity();
+            shipment.setId(oldExpense.getShipment().getId());
+            expense.setShipment(shipment);
             deleteExpense(oldExpense.getId());
-            return createExpense(oldExpense, paymentNumber);
+            return createExpense(expense, paymentMethodId);
         } else {
             throw new EntityNotFoundException("This expense with ID " + expense.getId() + " is not found");
         }
@@ -88,6 +96,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @Transactional
     public void deleteExpensesByShipmentId(long shipmentId, long truckId) {
 
         float totalExpenses = expenseRepository.totalShipmentExpenses(shipmentId);
