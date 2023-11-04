@@ -17,6 +17,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     private final CustomerService customerService;
 
     @Override
+    @Transactional
     public void createCustomerTransaction(Long paymentId, Date date) {
 
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
@@ -29,9 +30,13 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     @Transactional
     public void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date) {
 
-        float newBalance = customerTransactionRepository.findFirstByCustomerIdOrderByIdDesc(customerId)
-                .getCustomerBalance() + amount;
-
+        float newBalance;
+        try {
+            newBalance = customerTransactionRepository.findFirstByCustomerIdOrderByIdDesc(customerId)
+                    .getCustomerBalance() + amount;
+        } catch (Exception e) {
+            newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
+        }
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
         customerTransaction.setCustomerId(customerId);
         customerTransaction.setCustomerBalance(newBalance);

@@ -17,6 +17,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     private final SupplierService supplierService;
 
     @Override
+    @Transactional
     public void createOwnerTransaction(Long paymentId, Date date) {
 
         OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
@@ -29,9 +30,13 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     @Transactional
     public void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date) {
 
-        float newBalance = ownerTransactionRepository.findFirstBySupplierIdOrderByIdDesc(supplierId)
-                .getSupplierBalance() + amount;
-
+        float newBalance;
+        try {
+            newBalance = ownerTransactionRepository.findFirstBySupplierIdOrderByIdDesc(supplierId)
+                    .getSupplierBalance() + amount;
+        } catch (Exception e) {
+            newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
+        }
         OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
         ownerTransaction.setSupplierId(supplierId);
         ownerTransaction.setSupplierBalance(newBalance);
