@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -80,6 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void updateCustomerBalance(long customerId, float customerBalance) {
 
         enableDeletedCustomerFilter();

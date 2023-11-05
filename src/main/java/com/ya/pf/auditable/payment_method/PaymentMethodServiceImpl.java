@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -85,6 +86,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
+    @Transactional
     public void updatePaymentMethodBalance(long id, float balance) {
 
         paymentMethodRepository.updatePaymentMethodBalance(id, balance);
