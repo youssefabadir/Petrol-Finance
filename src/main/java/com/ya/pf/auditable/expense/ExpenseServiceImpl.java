@@ -100,7 +100,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpensesByShipmentId(long shipmentId, long truckId) {
 
         float totalExpenses = expenseRepository.totalShipmentExpenses(shipmentId);
-        truckService.updateTruckBalance(truckId, totalExpenses);
+        truckService.updateTruckBalance(truckId, totalExpenses * -1);
         expenseRepository.deleteAllByShipment_Id(shipmentId);
     }
 
