@@ -87,6 +87,7 @@ public class BillController {
             billService.deleteBill(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
