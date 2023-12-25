@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.Date;
 
 @Service
+@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerTransactionServiceImpl implements CustomerTransactionService {
 
@@ -17,7 +18,6 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     private final CustomerService customerService;
 
     @Override
-    @Transactional
     public void createCustomerTransaction(Long paymentId, Date date) {
 
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
@@ -27,12 +27,11 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     }
 
     @Override
-    @Transactional
     public void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date) {
 
         float newBalance;
         try {
-            newBalance = customerTransactionRepository.findFirstByCustomerIdOrderByIdDesc(customerId)
+            newBalance = customerTransactionRepository.findFirstByCustomerIdAndDateLessThanEqualOrderByIdDesc(customerId, date)
                     .getCustomerBalance() + amount;
         } catch (Exception e) {
             newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
@@ -46,11 +45,14 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
         customerTransactionRepository.save(customerTransaction);
 
+        customerTransactionRepository.updateCustomerBalanceByCustomerIdAfterDate(amount, customerId, date);
+
+        newBalance = customerTransactionRepository.findFirstByOrderByDateDescIdDesc().getCustomerBalance();
+
         customerService.updateCustomerBalance(customerId, newBalance);
     }
 
     @Override
-    @Transactional
     public void deleteCustomerTransactionByBillId(long billId, float billAmount) {
 
         customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
@@ -60,7 +62,6 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     }
 
     @Override
-    @Transactional
     public void deleteCustomerTransactionByPaymentId(long paymentId, float paymentAmount) {
 
         customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);

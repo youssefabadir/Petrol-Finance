@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface CustomerTransactionRepository extends JpaRepository<CustomerTransactionEntity, Long> {
 
@@ -25,6 +27,11 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 
     void deleteByPaymentId(long paymentId);
 
-    CustomerTransactionEntity findFirstByCustomerIdOrderByIdDesc(long customerId);
+    CustomerTransactionEntity findFirstByCustomerIdAndDateLessThanEqualOrderByIdDesc(long customerId, Date date);
 
+    @Modifying
+    @Query("UPDATE CustomerTransactionEntity c SET c.customerBalance = c.customerBalance + :amount WHERE c.customerId = :customerId AND c.date > :date")
+    void updateCustomerBalanceByCustomerIdAfterDate(@Param("amount") float amount, @Param("customerId") long customerId, @Param("date") Date date);
+
+    CustomerTransactionEntity findFirstByOrderByDateDescIdDesc();
 }

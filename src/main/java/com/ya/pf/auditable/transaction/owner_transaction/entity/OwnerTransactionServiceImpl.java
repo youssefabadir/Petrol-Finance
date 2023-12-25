@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.Date;
 
 @Service
+@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
@@ -17,7 +18,6 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     private final SupplierService supplierService;
 
     @Override
-    @Transactional
     public void createOwnerTransaction(Long paymentId, Date date) {
 
         OwnerTransactionEntity ownerTransaction = new OwnerTransactionEntity();
@@ -27,12 +27,11 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     }
 
     @Override
-    @Transactional
     public void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date) {
 
         float newBalance;
         try {
-            newBalance = ownerTransactionRepository.findFirstBySupplierIdOrderByIdDesc(supplierId)
+            newBalance = ownerTransactionRepository.findFirstBySupplierIdAndDateLessThanEqualOrderByIdDesc(supplierId, date)
                     .getSupplierBalance() + amount;
         } catch (Exception e) {
             newBalance = supplierService.getSupplierById(supplierId).getBalance() + amount;
@@ -46,11 +45,14 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
         ownerTransactionRepository.save(ownerTransaction);
 
+        ownerTransactionRepository.updateSupplierBalanceBySupplierIdAfterDate(amount, supplierId, date);
+
+        newBalance = ownerTransactionRepository.findFirstByOrderByDateDescIdDesc().getSupplierBalance();
+
         supplierService.updateSupplierBalance(supplierId, newBalance);
     }
 
     @Override
-    @Transactional
     public void deleteOwnerTransactionByBillId(long billId, float billAmount) {
 
         ownerTransactionRepository.updateSupplierBalanceByBillId(billId, billAmount);
@@ -60,7 +62,6 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
     }
 
     @Override
-    @Transactional
     public void deleteOwnerTransactionByPaymentId(long paymentId, float paymentAmount) {
 
         ownerTransactionRepository.updateSupplierBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface OwnerTransactionRepository extends JpaRepository<OwnerTransactionEntity, Long> {
 
@@ -25,6 +27,12 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     void deleteByPaymentId(long paymentId);
 
-    OwnerTransactionEntity findFirstBySupplierIdOrderByIdDesc(long supplierId);
+    OwnerTransactionEntity findFirstBySupplierIdAndDateLessThanEqualOrderByIdDesc(long supplierId, Date date);
+
+    @Modifying
+    @Query("UPDATE OwnerTransactionEntity o SET o.supplierBalance = o.supplierBalance + :amount WHERE o.supplierId = :supplierId AND o.date > :date")
+    void updateSupplierBalanceBySupplierIdAfterDate(@Param("amount") float amount, @Param("supplierId") long supplierId, @Param("date") Date date);
+
+    OwnerTransactionEntity findFirstByOrderByDateDescIdDesc();
 
 }
