@@ -2,12 +2,11 @@ package com.ya.pf.auditable.payment.customer_payment;
 
 import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.payment.PaymentEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import javax.persistence.*;
 
 @Getter
 @Setter

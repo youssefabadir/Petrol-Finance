@@ -5,6 +5,7 @@ import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.product.ProductEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Setter

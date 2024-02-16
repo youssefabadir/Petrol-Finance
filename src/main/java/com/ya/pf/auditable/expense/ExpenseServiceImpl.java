@@ -6,13 +6,13 @@ import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentService;
 import com.ya.pf.auditable.shipment.ShipmentEntity;
 import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.truck.TruckService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

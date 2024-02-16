@@ -7,14 +7,13 @@ import com.ya.pf.auditable.supplier.SupplierEntity;
 import com.ya.pf.auditable.supplier.SupplierService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Helper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
-
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))

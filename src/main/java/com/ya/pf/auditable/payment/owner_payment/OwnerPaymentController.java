@@ -2,6 +2,7 @@ package com.ya.pf.auditable.payment.owner_payment;
 
 import com.ya.pf.auditable.payment.owner_payment.dto.OwnerPaymentDTO;
 import com.ya.pf.auditable.payment.owner_payment.dto.OwnerPaymentDTOMapper;
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityExistsException;
 import java.util.Arrays;
 
 @Slf4j

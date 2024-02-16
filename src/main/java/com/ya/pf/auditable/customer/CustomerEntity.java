@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,7 +12,6 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.SQLDelete;
 
-import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

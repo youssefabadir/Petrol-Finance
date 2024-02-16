@@ -2,12 +2,12 @@ package com.ya.pf.auditable.payment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ya.pf.auditable.Auditable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Getter

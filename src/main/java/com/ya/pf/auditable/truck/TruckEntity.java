@@ -1,14 +1,13 @@
 package com.ya.pf.auditable.truck;
 
 import com.ya.pf.auditable.Auditable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.persistence.*;
 
 @Setter
 @Getter
