@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -99,7 +100,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional
     public void deleteExpensesByShipmentId(long shipmentId, long truckId) {
 
-        float totalExpenses = expenseRepository.totalShipmentExpenses(shipmentId);
+        float totalExpenses = Optional.ofNullable(expenseRepository.totalShipmentExpenses(shipmentId)).orElse(0f);
         truckService.updateTruckBalance(truckId, totalExpenses * -1);
         expenseRepository.deleteAllByShipment_Id(shipmentId);
     }

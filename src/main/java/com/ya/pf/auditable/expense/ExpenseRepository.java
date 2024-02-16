@@ -13,7 +13,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
     void deleteAllByShipment_Id(long shipmentId);
 
     @Query("SELECT SUM(e.amount) FROM ExpenseEntity e where e.shipment.id = :shipmentId")
-    float totalShipmentExpenses(@Param("shipmentId") long shipmentId);
+    Float totalShipmentExpenses(@Param("shipmentId") long shipmentId);
 
     List<ExpenseEntity> findAllByShipment_Id(long shipmentId);
 
