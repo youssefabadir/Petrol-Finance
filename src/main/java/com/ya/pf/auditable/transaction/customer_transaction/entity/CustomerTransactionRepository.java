@@ -34,5 +34,4 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
     void updateCustomerBalanceByCustomerIdAfterDate(@Param("amount") float amount, @Param("customerId") long customerId, @Param("date") Date date);
 
     CustomerTransactionEntity findFirstByOrderByDateDescIdDesc();
-
 }

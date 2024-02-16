@@ -3,12 +3,13 @@ package com.ya.pf.auditable.expense;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
 import com.ya.pf.auditable.shipment.ShipmentEntity;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 @Setter
 @Getter

@@ -1,13 +1,14 @@
 package com.ya.pf.auditable.transaction.owner_transaction.entity;
 
 import com.ya.pf.auditable.transaction.TransactionEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Getter
 @Setter

@@ -6,9 +6,6 @@ import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTrans
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Config;
 import com.ya.pf.util.Helper;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -130,11 +130,11 @@ public class PaymentServiceImpl implements PaymentService {
             if (isTransferred) {
                 PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
                 customerTransactionService.deleteCustomerTransactionByPaymentId(paymentType.equals("CUSTOMER_PAYMENT") ? paymentId
-                                                                                                                       : transferredPayment.getId(),
-                                                                                payment.getAmount());
+                                : transferredPayment.getId(),
+                        payment.getAmount());
                 ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentType.equals("OWNER_PAYMENT") ? paymentId
-                                                                                                              : transferredPayment.getId(),
-                                                                          payment.getAmount());
+                                : transferredPayment.getId(),
+                        payment.getAmount());
 
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
             } else {

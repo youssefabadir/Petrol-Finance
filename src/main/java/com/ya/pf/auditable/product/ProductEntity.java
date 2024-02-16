@@ -3,7 +3,6 @@ package com.ya.pf.auditable.product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;

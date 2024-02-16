@@ -5,13 +5,13 @@ import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.expense.ExpenseEntity;
 import com.ya.pf.auditable.truck.TruckEntity;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
