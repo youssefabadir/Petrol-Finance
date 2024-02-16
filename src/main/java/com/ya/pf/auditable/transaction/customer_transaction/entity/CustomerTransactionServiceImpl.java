@@ -2,12 +2,15 @@ package com.ya.pf.auditable.transaction.customer_transaction.entity;
 
 import com.ya.pf.auditable.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Date;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -34,6 +37,8 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
             newBalance = customerTransactionRepository.findFirstByCustomerIdAndDateLessThanEqualOrderByIdDesc(customerId, date)
                     .getCustomerBalance() + amount;
         } catch (Exception e) {
+            log.warn("Couldn't find previous balance for customer " + customerId + " for date " + date);
+            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
             newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
         }
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
@@ -53,18 +58,18 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     }
 
     @Override
-    public void deleteCustomerTransactionByBillId(long billId, float billAmount) {
+    public void deleteCustomerTransactionByBillId(long customerId, long billId, float billAmount, Date date) {
 
-        customerTransactionRepository.updateCustomerBalanceByBillId(billId, billAmount);
+        customerTransactionRepository.updateCustomerBalance(customerId, billAmount, date);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
         customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
         customerTransactionRepository.deleteByBillId(billId);
     }
 
     @Override
-    public void deleteCustomerTransactionByPaymentId(long paymentId, float paymentAmount) {
+    public void deleteCustomerTransactionByPaymentId(long customerId, long paymentId, float paymentAmount, Date date) {
 
-        customerTransactionRepository.updateCustomerBalanceByPaymentId(paymentId, Math.abs(paymentAmount) * -1);
+        customerTransactionRepository.updateCustomerBalance(customerId, Math.abs(paymentAmount) * -1, date);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByPaymentId(paymentId);
         if (customerTransaction.getCustomerId() != null) {
             customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() - paymentAmount);

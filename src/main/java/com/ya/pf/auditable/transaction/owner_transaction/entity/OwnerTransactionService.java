@@ -8,8 +8,8 @@ public interface OwnerTransactionService {
 
     void createOwnerTransaction(long supplierId, float amount, Long paymentId, Long billId, Date date);
 
-    void deleteOwnerTransactionByBillId(long billId, float billAmount);
+    void deleteOwnerTransactionByBillId(long supplierId, long billId, float billAmount, Date date);
 
-    void deleteOwnerTransactionByPaymentId(long paymentId, float paymentAmount);
+    void deleteOwnerTransactionByPaymentId(long supplierId, long paymentId, float paymentAmount, Date date);
 
 }

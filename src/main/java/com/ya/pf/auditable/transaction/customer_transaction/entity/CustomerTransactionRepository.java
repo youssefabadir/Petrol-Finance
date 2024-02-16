@@ -12,12 +12,8 @@ import java.util.Date;
 public interface CustomerTransactionRepository extends JpaRepository<CustomerTransactionEntity, Long> {
 
     @Modifying
-    @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.billId > :billId")
-    void updateCustomerBalanceByBillId(@Param("billId") long billId, @Param("amount") float amount);
-
-    @Modifying
-    @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.paymentId > :paymentId")
-    void updateCustomerBalanceByPaymentId(@Param("paymentId") long paymentId, @Param("amount") float amount);
+    @Query("UPDATE CustomerTransactionEntity t SET t.customerBalance = t.customerBalance + :amount WHERE t.customerId = :customerId AND t.date > :date")
+    void updateCustomerBalance(@Param("customerId") long customerId, @Param("amount") float amount, @Param("date") Date date);
 
     CustomerTransactionEntity findByBillId(long billId);
 

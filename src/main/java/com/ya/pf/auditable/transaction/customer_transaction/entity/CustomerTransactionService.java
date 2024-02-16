@@ -8,8 +8,8 @@ public interface CustomerTransactionService {
 
     void createCustomerTransaction(long customerId, float amount, Long paymentId, Long billId, Date date);
 
-    void deleteCustomerTransactionByBillId(long billId, float billAmount);
+    void deleteCustomerTransactionByBillId(long customerId, long billId, float billAmount, Date date);
 
-    void deleteCustomerTransactionByPaymentId(long paymentId, float paymentAmount);
+    void deleteCustomerTransactionByPaymentId(long customerId, long paymentId, float paymentAmount, Date date);
 
 }

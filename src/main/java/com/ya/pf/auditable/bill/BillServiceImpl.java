@@ -113,8 +113,8 @@ public class BillServiceImpl implements BillService {
             BillEntity bill = billRepository.getReferenceById(id);
 
             billRepository.deleteById(id);
-            customerTransactionService.deleteCustomerTransactionByBillId(id, bill.getCustomerAmount());
-            ownerTransactionService.deleteOwnerTransactionByBillId(id, bill.getSupplierAmount());
+            customerTransactionService.deleteCustomerTransactionByBillId(bill.getCustomerEntity().getId(), id, bill.getCustomerAmount(), bill.getDate());
+            ownerTransactionService.deleteOwnerTransactionByBillId(bill.getSupplierEntity().getId(), id, bill.getSupplierAmount(), bill.getDate());
             shipmentService.deleteShipmentByBillId(id);
         } else {
             throw new EntityNotFoundException("Bill with ID " + id + " not found");

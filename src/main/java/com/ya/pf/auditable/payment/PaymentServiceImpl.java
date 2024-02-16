@@ -1,5 +1,7 @@
 package com.ya.pf.auditable.payment;
 
+import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentEntity;
+import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
 import com.ya.pf.auditable.payment_method.PaymentMethodEntity;
 import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
@@ -66,6 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentEntity paymentEntity = paymentRepository.findFirstByOrderByIdDesc();
         float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
                                                       : paymentEntity.getTreasury_balance();
+        //TODO: reimplement payment method balance to be tracked by date
         PaymentMethodEntity paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
         float paymentMethodBalance = paymentMethod.getBalance();
         if (paymentType.equals("CUSTOMER_PAYMENT")) {
@@ -117,31 +120,37 @@ public class PaymentServiceImpl implements PaymentService {
             String paymentNumber = payment.getNumber();
             String paymentType = payment.getPaymentType();
             boolean isTransferred = payment.isTransferred();
-            if (!isTransferred) {
+
+            if (isTransferred) {
+                PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
+                if (paymentType.equals("CUSTOMER_PAYMENT")) {
+                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) payment;
+                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) transferredPayment;
+                    customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), paymentId, payment.getAmount(), payment.getDate());
+                    ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), transferredPayment.getId(), payment.getAmount(), payment.getDate());
+                } else {
+                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) transferredPayment;
+                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) payment;
+                    customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), transferredPayment.getId(), payment.getAmount(), payment.getDate());
+                    ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
+                }
+
+                paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
+            } else {
+                if (paymentType.equals("CUSTOMER_PAYMENT")) {
+                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) payment;
+                    customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), paymentId, payment.getAmount(), payment.getDate());
+                } else {
+                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) payment;
+                    ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
+                }
+
                 if (paymentType.equals("CUSTOMER_PAYMENT")) {
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
                 } else if (paymentType.equals("OWNER_PAYMENT")) {
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
                 } else {
                     throw new EntityNotFoundException("This payment type doesn't exists");
-                }
-            }
-
-            if (isTransferred) {
-                PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
-                customerTransactionService.deleteCustomerTransactionByPaymentId(paymentType.equals("CUSTOMER_PAYMENT") ? paymentId
-                                : transferredPayment.getId(),
-                        payment.getAmount());
-                ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentType.equals("OWNER_PAYMENT") ? paymentId
-                                : transferredPayment.getId(),
-                        payment.getAmount());
-
-                paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
-            } else {
-                if (paymentType.equals("CUSTOMER_PAYMENT")) {
-                    customerTransactionService.deleteCustomerTransactionByPaymentId(paymentId, payment.getAmount());
-                } else {
-                    ownerTransactionService.deleteOwnerTransactionByPaymentId(paymentId, payment.getAmount());
                 }
 
                 paymentRepository.deleteById(id);
