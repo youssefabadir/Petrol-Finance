@@ -60,7 +60,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     @Override
     public void deleteCustomerTransactionByBillId(long customerId, long billId, float billAmount, Date date) {
 
-        customerTransactionRepository.updateCustomerBalance(customerId, billAmount, date);
+        customerTransactionRepository.updateCustomerBalanceByBillId(customerId, billId, billAmount, date);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByBillId(billId);
         customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() + billAmount);
         customerTransactionRepository.deleteByBillId(billId);
@@ -69,7 +69,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
     @Override
     public void deleteCustomerTransactionByPaymentId(long customerId, long paymentId, float paymentAmount, Date date) {
 
-        customerTransactionRepository.updateCustomerBalance(customerId, Math.abs(paymentAmount) * -1, date);
+        customerTransactionRepository.updateCustomerBalanceByPaymentId(customerId, paymentId, Math.abs(paymentAmount) * -1, date);
         CustomerTransactionEntity customerTransaction = customerTransactionRepository.findByPaymentId(paymentId);
         if (customerTransaction.getCustomerId() != null) {
             customerService.updateCustomerBalance(customerTransaction.getCustomerId(), customerTransaction.getCustomerBalance() - paymentAmount);
