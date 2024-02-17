@@ -12,8 +12,14 @@ import java.util.Date;
 public interface OwnerTransactionRepository extends JpaRepository<OwnerTransactionEntity, Long> {
 
     @Modifying
-    @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount WHERE t.supplierId = :supplierId AND t.date > :date")
-    void updateSupplierBalance(@Param("supplierId") long supplierId, @Param("amount") float amount, @Param("date") Date date);
+    @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount " +
+            "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.billId > :billId))")
+    void updateSupplierBalanceByBillId(@Param("supplierId") long supplierId, @Param("billId") long billId, @Param("amount") float amount, @Param("date") Date date);
+
+    @Modifying
+    @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount " +
+            "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.paymentId > :paymentId))")
+    void updateSupplierBalanceByPaymentId(@Param("supplierId") long supplierId, @Param("paymentId") long paymentId, @Param("amount") float amount, @Param("date") Date date);
 
     OwnerTransactionEntity findByBillId(long billId);
 
