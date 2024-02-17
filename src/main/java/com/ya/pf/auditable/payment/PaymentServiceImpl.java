@@ -46,8 +46,8 @@ public class PaymentServiceImpl implements PaymentService {
 
         long paymentMethodId = payment.getPaymentMethodId();
         String paymentType = payment.getPaymentType();
-
         String paymentNumber = payment.getNumber().trim();
+        java.util.Date date = payment.getDate();
         if (paymentNumber.isEmpty() && paymentMethodId == 1) {
             paymentNumber = UUID.randomUUID().toString();
         }
@@ -65,20 +65,19 @@ public class PaymentServiceImpl implements PaymentService {
         float amount = Math.abs(payment.getAmount());
         payment.setAmount(amount);
 
-        PaymentEntity paymentEntity = paymentRepository.findFirstByOrderByIdDesc();
+        PaymentEntity paymentEntity = paymentRepository.findFirstByPaymentMethodIdAndDateLessThanEqualOrderByIdDesc(paymentMethodId, date);
         float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
                                                       : paymentEntity.getTreasury_balance();
-        //TODO: reimplement payment method balance to be tracked by date
         PaymentMethodEntity paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
-        float paymentMethodBalance = paymentMethod.getBalance();
-        if (paymentType.equals("CUSTOMER_PAYMENT")) {
+        float paymentMethodBalance = paymentEntity == null ? paymentMethod.getBalance() : paymentEntity.getPaymentMethodBalance();
+        if (paymentType.equals("CUSTOMER_PAYMENT") && !payment.isTransferred()) {
             treasuryBalance = treasuryBalance + amount;
             paymentMethodBalance = paymentMethodBalance + amount;
-        } else if (paymentType.equals("OWNER_PAYMENT")) {
+            paymentRepository.updatePaymentMethodBalance(paymentMethodId, amount, date);
+        } else if (paymentType.equals("OWNER_PAYMENT") && !payment.isTransferred()) {
             treasuryBalance = treasuryBalance - amount;
-            if (!payment.isTransferred()) {
-                paymentMethodBalance = paymentMethodBalance - amount;
-            }
+            paymentMethodBalance = paymentMethodBalance - amount;
+            paymentRepository.updatePaymentMethodBalance(paymentMethodId, amount * -1, date);
         } else {
             throw new EntityNotFoundException("This payment method type doesn't exists");
         }
@@ -134,19 +133,19 @@ public class PaymentServiceImpl implements PaymentService {
                     customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), transferredPayment.getId(), payment.getAmount(), payment.getDate());
                     ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
                 }
-
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
             } else {
                 if (paymentType.equals("CUSTOMER_PAYMENT")) {
                     CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) payment;
                     customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), paymentId, payment.getAmount(), payment.getDate());
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
+                    paymentRepository.updatePaymentMethodBalanceById(payment.getPaymentMethodId(), id, payment.getAmount() * -1, payment.getDate());
                 } else {
                     OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) payment;
                     ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
+                    paymentRepository.updatePaymentMethodBalanceById(payment.getPaymentMethodId(), id, payment.getAmount(), payment.getDate());
                 }
-
                 paymentRepository.deleteById(id);
             }
         } else {
