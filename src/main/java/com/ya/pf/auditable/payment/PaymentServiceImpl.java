@@ -1,7 +1,9 @@
 package com.ya.pf.auditable.payment;
 
 import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentEntity;
+import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentRepository;
 import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
+import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentRepository;
 import com.ya.pf.auditable.payment_method.PaymentMethodEntity;
 import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
@@ -33,6 +35,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final OwnerTransactionService ownerTransactionService;
 
     private final PaymentMethodService paymentMethodService;
+
+    private final CustomerPaymentRepository customerPaymentRepository;
+
+    private final OwnerPaymentRepository ownerPaymentRepository;
 
     private final Config config;
 
@@ -78,8 +84,6 @@ public class PaymentServiceImpl implements PaymentService {
             treasuryBalance = treasuryBalance - amount;
             paymentMethodBalance = paymentMethodBalance - amount;
             paymentRepository.updatePaymentMethodBalance(paymentMethodId, amount * -1, date);
-        } else {
-            throw new EntityNotFoundException("This payment method type doesn't exists");
         }
         payment.setTreasury_balance(treasuryBalance);
         payment.setPaymentMethodBalance(paymentMethodBalance);
@@ -123,25 +127,25 @@ public class PaymentServiceImpl implements PaymentService {
             if (isTransferred) {
                 PaymentEntity transferredPayment = paymentRepository.findByNumberEqualsAndIdNot(paymentNumber, paymentId);
                 if (paymentType.equals("CUSTOMER_PAYMENT")) {
-                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) payment;
-                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) transferredPayment;
+                    CustomerPaymentEntity customerPayment = customerPaymentRepository.getReferenceById(id);
+                    OwnerPaymentEntity ownerPayment = ownerPaymentRepository.getReferenceById(transferredPayment.getId());
                     customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), paymentId, payment.getAmount(), payment.getDate());
                     ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), transferredPayment.getId(), payment.getAmount(), payment.getDate());
                 } else {
-                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) transferredPayment;
-                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) payment;
+                    CustomerPaymentEntity customerPayment = customerPaymentRepository.getReferenceById(transferredPayment.getId());
+                    OwnerPaymentEntity ownerPayment = ownerPaymentRepository.getReferenceById(id);
                     customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), transferredPayment.getId(), payment.getAmount(), payment.getDate());
                     ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
                 }
                 paymentRepository.deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(paymentNumber, payment.getPaymentMethodId());
             } else {
                 if (paymentType.equals("CUSTOMER_PAYMENT")) {
-                    CustomerPaymentEntity customerPayment = (CustomerPaymentEntity) payment;
+                    CustomerPaymentEntity customerPayment = customerPaymentRepository.getReferenceById(id);
                     customerTransactionService.deleteCustomerTransactionByPaymentId(customerPayment.getCustomer().getId(), paymentId, payment.getAmount(), payment.getDate());
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() - payment.getAmount());
                     paymentRepository.updatePaymentMethodBalanceById(payment.getPaymentMethodId(), id, payment.getAmount() * -1, payment.getDate());
                 } else {
-                    OwnerPaymentEntity ownerPayment = (OwnerPaymentEntity) payment;
+                    OwnerPaymentEntity ownerPayment = ownerPaymentRepository.getReferenceById(id);
                     ownerTransactionService.deleteOwnerTransactionByPaymentId(ownerPayment.getSupplier().getId(), paymentId, payment.getAmount(), payment.getDate());
                     paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance() + payment.getAmount());
                     paymentRepository.updatePaymentMethodBalanceById(payment.getPaymentMethodId(), id, payment.getAmount(), payment.getDate());
