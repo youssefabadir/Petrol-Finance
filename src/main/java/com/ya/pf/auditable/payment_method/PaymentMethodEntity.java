@@ -26,4 +26,7 @@ public class PaymentMethodEntity extends Auditable {
     @Column(name = "balance", nullable = false)
     private float balance;
 
+    @Column(name = "start_balance", nullable = false)
+    private float startBalance;
+
 }

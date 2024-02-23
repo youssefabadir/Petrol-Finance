@@ -69,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
         float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
                                                       : paymentEntity.getTreasury_balance();
         PaymentMethodEntity paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
-        float paymentMethodBalance = paymentEntity == null ? paymentMethod.getBalance() : paymentEntity.getPaymentMethodBalance();
+        float paymentMethodBalance = paymentEntity == null ? paymentMethod.getStartBalance() : paymentEntity.getPaymentMethodBalance();
         if (paymentType.equals("CUSTOMER_PAYMENT") && !payment.isTransferred()) {
             treasuryBalance = treasuryBalance + amount;
             paymentMethodBalance = paymentMethodBalance + amount;
