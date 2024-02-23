@@ -36,6 +36,9 @@ public class SupplierEntity extends Auditable {
     @Column(name = "balance", nullable = false)
     private Float balance;
 
+    @Column(name = "start_balance", nullable = false)
+    private Float startBalance;
+
     @JsonIgnore
     @OneToMany(mappedBy = "supplierEntity")
     private Set<BillEntity> bills = new LinkedHashSet<>();

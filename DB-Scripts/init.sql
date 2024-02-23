@@ -2,7 +2,8 @@ CREATE TABLE customer
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) NOT NULL,
-    balance FLOAT NOT NULL DEFAULT 0.00,
+    balance       FLOAT NOT NULL DEFAULT 0.00,
+    start_balance FLOAT NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME
@@ -12,7 +13,8 @@ CREATE TABLE supplier
 (
     id                 INT IDENTITY (1,1) PRIMARY KEY,
     name               NVARCHAR(255) NOT NULL,
-    balance FLOAT NOT NULL DEFAULT 0.00,
+    balance       FLOAT NOT NULL DEFAULT 0.00,
+    start_balance FLOAT NOT NULL,
     deleted            BIT,
     created_date       DATETIME,
     last_modified_date DATETIME

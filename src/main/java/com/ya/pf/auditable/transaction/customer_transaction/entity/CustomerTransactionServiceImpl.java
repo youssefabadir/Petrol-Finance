@@ -39,7 +39,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
         } catch (Exception e) {
             log.warn("Couldn't find previous balance for customer " + customerId + " for date " + date);
             log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
-            newBalance = customerService.getCustomerById(customerId).getBalance() + amount;
+            newBalance = customerService.getCustomerById(customerId).getStartBalance() + amount;
         }
         CustomerTransactionEntity customerTransaction = new CustomerTransactionEntity();
         customerTransaction.setCustomerId(customerId);

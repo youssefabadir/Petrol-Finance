@@ -42,6 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
             supplierEntity.setId(null);
         }
 
+        supplierEntity.setStartBalance(supplierEntity.getBalance());
         return supplierRepository.save(supplierEntity);
     }
 

@@ -41,6 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setId(null);
         }
 
+        customerEntity.setStartBalance(customerEntity.getBalance());
         return customerRepository.save(customerEntity);
     }
 
