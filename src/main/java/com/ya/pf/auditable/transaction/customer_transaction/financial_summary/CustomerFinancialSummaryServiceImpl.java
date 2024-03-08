@@ -13,23 +13,23 @@ import java.time.LocalDate;
 public class CustomerFinancialSummaryServiceImpl implements CustomerFinancialSummaryService {
 
     private final DataSource dataSource;
-    private String SUM_STATEMENT = """
-            SELECT SUM(payment_amount) AS totalPayments, SUM(bill_customer_amount) AS totalBills, SUM(bill_quantity) AS totalLiters
-            FROM customer_transaction_view
-            WHERE customer_id = ? AND date >= ? AND date <= ?
-            """;
 
     @Override
     public CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId, LocalDate start, LocalDate end) throws SQLException {
 
+        String statement = """
+                SELECT SUM(payment_amount) AS totalPayments, SUM(bill_customer_amount) AS totalBills, SUM(bill_quantity) AS totalLiters
+                FROM customer_transaction_view
+                WHERE customer_id = ? AND date >= ? AND date <= ?
+                """;
         if (productId != null) {
-            SUM_STATEMENT += " AND product_id = ?";
+            statement += " AND product_id = ?";
         }
         if (paymentMethodId != null) {
-            SUM_STATEMENT += " AND payment_method_id = ?";
+            statement += " AND payment_method_id = ?";
         }
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SUM_STATEMENT)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.setLong(1, customerId);
             preparedStatement.setDate(2, Date.valueOf(start));
             preparedStatement.setDate(3, Date.valueOf(end));
