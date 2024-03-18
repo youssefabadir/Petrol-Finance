@@ -8,11 +8,23 @@ public class Helper {
 
     public static Pageable preparePageable(int pageNo, int pageSize, String sortBy, String order) {
 
-        if (order.equalsIgnoreCase("asc")) {
-            return PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        } else {
-            return PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        return preparePageable(pageNo, pageSize, sortBy, order, "");
+    }
+
+    public static Pageable preparePageable(int pageNo, int pageSize, String sortBy, String order, String column) {
+
+        Sort sort = Sort.by(sortBy);
+        if (!order.equalsIgnoreCase("asc")) {
+            sort = Sort.by(sortBy).descending();
         }
+        if (!column.isBlank()) {
+            if (order.equalsIgnoreCase("asc")) {
+                sort = Sort.by(Sort.Order.asc(sortBy), Sort.Order.asc(column));
+            } else {
+                sort = Sort.by(Sort.Order.desc(sortBy), Sort.Order.desc(column));
+            }
+        }
+        return PageRequest.of(pageNo, pageSize, sort);
     }
 
 }

@@ -19,7 +19,7 @@ public class OwnerTransactionViewServiceImpl implements OwnerTransactionViewServ
     @Override
     public Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
         if (start == null || end == null) {
             return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
         } else {

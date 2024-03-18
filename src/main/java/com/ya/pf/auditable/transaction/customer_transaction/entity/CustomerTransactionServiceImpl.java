@@ -34,7 +34,7 @@ public class CustomerTransactionServiceImpl implements CustomerTransactionServic
 
         float newBalance;
         try {
-            newBalance = customerTransactionRepository.findFirstByCustomerIdAndDateLessThanEqualOrderByIdDesc(customerId, date)
+            newBalance = customerTransactionRepository.findFirstByCustomerIdAndDateLessThanEqualOrderByDateDescIdDesc(customerId, date)
                     .getCustomerBalance() + amount;
         } catch (Exception e) {
             log.warn("Couldn't find previous balance for customer " + customerId + " for date " + date);

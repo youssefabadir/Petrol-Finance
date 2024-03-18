@@ -20,7 +20,7 @@ public class CustomerTransactionViewServiceImpl implements CustomerTransactionVi
     public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy,
                                                                 String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
         if (start == null || end == null) {
             return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
         } else {

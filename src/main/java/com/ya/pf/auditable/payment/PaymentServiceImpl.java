@@ -71,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
         float amount = Math.abs(payment.getAmount());
         payment.setAmount(amount);
 
-        PaymentEntity paymentEntity = paymentRepository.findFirstByPaymentMethodIdAndDateLessThanEqualOrderByIdDesc(paymentMethodId, date);
+        PaymentEntity paymentEntity = paymentRepository.findFirstByPaymentMethodIdAndDateLessThanEqualOrderByDateDescIdDesc(paymentMethodId, date);
         float treasuryBalance = paymentEntity == null ? config.getTreasuryBalance()
                                                       : paymentEntity.getTreasury_balance();
         PaymentMethodEntity paymentMethod = paymentMethodService.getPaymentMethodById(paymentMethodId);
@@ -96,7 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Page<PaymentEntity> getPayments(long paymentMethodId, int pageNo, int pageSize,
                                            String sortBy, String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "id");
         if (start == null || end == null) {
             if (paymentMethodId == -1) {
                 return paymentRepository.findAll(pageable);

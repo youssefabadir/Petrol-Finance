@@ -15,7 +15,7 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     boolean existsByNumberAndPaymentMethodIdAndPaymentTypeEquals(String number, long paymentMethodId, String paymentType);
 
-    PaymentEntity findFirstByPaymentMethodIdAndDateLessThanEqualOrderByIdDesc(long paymentMethodId, Date date);
+    PaymentEntity findFirstByPaymentMethodIdAndDateLessThanEqualOrderByDateDescIdDesc(long paymentMethodId, Date date);
 
     void deleteByNumberAndPaymentMethodIdAndTransferredIsTrue(String number, long paymentMethodId);
 

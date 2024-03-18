@@ -29,7 +29,7 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     void deleteByPaymentId(long paymentId);
 
-    OwnerTransactionEntity findFirstBySupplierIdAndDateLessThanEqualOrderByIdDesc(long supplierId, Date date);
+    OwnerTransactionEntity findFirstBySupplierIdAndDateLessThanEqualOrderByDateDescIdDesc(long supplierId, Date date);
 
     @Modifying
     @Query("UPDATE OwnerTransactionEntity o SET o.supplierBalance = o.supplierBalance + :amount WHERE o.supplierId = :supplierId AND o.date > :date")

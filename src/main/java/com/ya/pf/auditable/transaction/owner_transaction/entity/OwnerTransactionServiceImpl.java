@@ -31,7 +31,7 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
         float newBalance;
         try {
-            newBalance = ownerTransactionRepository.findFirstBySupplierIdAndDateLessThanEqualOrderByIdDesc(supplierId, date)
+            newBalance = ownerTransactionRepository.findFirstBySupplierIdAndDateLessThanEqualOrderByDateDescIdDesc(supplierId, date)
                     .getSupplierBalance() + amount;
         } catch (Exception e) {
             newBalance = supplierService.getSupplierById(supplierId).getStartBalance() + amount;

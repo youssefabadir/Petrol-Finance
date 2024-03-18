@@ -29,7 +29,7 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 
     void deleteByPaymentId(long paymentId);
 
-    CustomerTransactionEntity findFirstByCustomerIdAndDateLessThanEqualOrderByIdDesc(long customerId, Date date);
+    CustomerTransactionEntity findFirstByCustomerIdAndDateLessThanEqualOrderByDateDescIdDesc(long customerId, Date date);
 
     @Modifying
     @Query("UPDATE CustomerTransactionEntity c SET c.customerBalance = c.customerBalance + :amount WHERE c.customerId = :customerId AND c.date > :date")
