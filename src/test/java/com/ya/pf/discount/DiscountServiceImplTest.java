@@ -69,7 +69,6 @@ public class DiscountServiceImplTest {
 
         discount.setId(1L);
         when(discountRepository.existsById(discount.getId())).thenReturn(false);
-
         assertThrows(EntityNotFoundException.class, () -> discountService.updateDiscount(discount));
     }
 
@@ -78,9 +77,7 @@ public class DiscountServiceImplTest {
 
         long id = 1L;
         when(discountRepository.existsById(id)).thenReturn(true);
-
         discountService.deleteDiscount(id);
-
         verify(discountRepository).deleteById(id);
     }
 
@@ -89,7 +86,6 @@ public class DiscountServiceImplTest {
 
         long id = 1L;
         when(discountRepository.existsById(id)).thenReturn(false);
-
         assertThrows(EntityNotFoundException.class, () -> discountService.deleteDiscount(id));
     }
 
@@ -97,9 +93,7 @@ public class DiscountServiceImplTest {
     public void testGetCustomerDiscountedPrice() {
 
         when(discountRepository.findByCustomerIdAndProductId(1L, 1L)).thenReturn(discount);
-
         float discountedPrice = discountService.getCustomerDiscountedPrice(1L, 1L);
-
         assertThat(discountedPrice).isEqualTo(2f);
     }
 
@@ -107,7 +101,6 @@ public class DiscountServiceImplTest {
     public void testGetCustomerDiscountedPriceNotFound() {
 
         when(discountRepository.findByCustomerIdAndProductId(1L, 1L)).thenReturn(null);
-
         assertThrows(EntityNotFoundException.class, () -> discountService.getCustomerDiscountedPrice(1L, 1L));
     }
 
