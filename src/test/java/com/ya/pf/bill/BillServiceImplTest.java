@@ -60,7 +60,7 @@ public class BillServiceImplTest {
     private final String order = "desc";
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
 
         SupplierEntity supplier = new SupplierEntity();
         supplier.setId(1L);
