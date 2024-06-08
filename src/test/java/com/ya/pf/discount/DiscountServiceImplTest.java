@@ -79,6 +79,7 @@ public class DiscountServiceImplTest {
         when(discountRepository.existsById(id)).thenReturn(true);
         discountService.deleteDiscount(id);
         verify(discountRepository).deleteById(id);
+        verify(discountRepository).existsById(id);
     }
 
     @Test
@@ -87,6 +88,7 @@ public class DiscountServiceImplTest {
         long id = 1L;
         when(discountRepository.existsById(id)).thenReturn(false);
         assertThrows(EntityNotFoundException.class, () -> discountService.deleteDiscount(id));
+        verify(discountRepository).existsById(id);
     }
 
     @Test

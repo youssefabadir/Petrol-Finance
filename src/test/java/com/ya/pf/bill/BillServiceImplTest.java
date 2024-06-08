@@ -182,6 +182,8 @@ public class BillServiceImplTest {
         verify(customerTransactionService).deleteCustomerTransactionByBillId(bill.getCustomerEntity().getId(), id, bill.getCustomerAmount(), bill.getDate());
         verify(ownerTransactionService).deleteOwnerTransactionByBillId(bill.getSupplierEntity().getId(), id, bill.getSupplierAmount(), bill.getDate());
         verify(shipmentService).deleteShipmentByBillId(id);
+        verify(billRepository).existsById(id);
+        verify(billRepository).getReferenceById(id);
         verify(billRepository).deleteById(id);
     }
 
@@ -191,6 +193,7 @@ public class BillServiceImplTest {
         long id = 1L;
         when(billRepository.existsById(id)).thenReturn(false);
         assertThrows(EntityNotFoundException.class, () -> billService.deleteBill(id));
+        verify(billRepository).existsById(id);
     }
 
 }

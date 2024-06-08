@@ -94,6 +94,7 @@ public class CustomerServiceImplTest {
         CustomerEntity updatedCustomer = customerService.updateCustomer(customerEntity);
 
         verify(customerRepository).save(customerEntity);
+        verify(customerRepository).existsById(customerEntity.getId());
         assertThat(updatedCustomer).isEqualTo(customerEntity);
     }
 
@@ -105,6 +106,7 @@ public class CustomerServiceImplTest {
         when(customerRepository.existsById(id)).thenReturn(true);
         customerService.deleteCustomer(id);
         verify(customerRepository).deleteById(id);
+        verify(customerRepository).existsById(id);
     }
 
     @Test
@@ -114,6 +116,7 @@ public class CustomerServiceImplTest {
         long id = 1L;
         when(customerRepository.existsById(id)).thenReturn(false);
         assertThrows(EntityNotFoundException.class, () -> customerService.deleteCustomer(id));
+        verify(customerRepository).existsById(id);
     }
 
     @Test
