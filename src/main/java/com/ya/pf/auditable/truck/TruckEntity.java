@@ -8,7 +8,7 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.SQLDelete;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Setter
 @Getter

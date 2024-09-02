@@ -22,14 +22,14 @@ public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
     @Override
     public PaymentDTO apply(PaymentEntity payment) {
 
-        if (payment instanceof CustomerPaymentEntity) {
+        if (payment instanceof CustomerPaymentEntity entity) {
             return new PaymentDTO(payment.getNumber(),
                                   payment.getAmount(),
                                   payment.getPaymentMethodId(),
                                   payment.getPaymentMethodName(),
                                   payment.getPaymentMethodBalance(),
                                   payment.getTreasury_balance(),
-                                  customerDTOMapper.apply(((CustomerPaymentEntity) payment).getCustomer()),
+                                  customerDTOMapper.apply(entity.getCustomer()),
                                   null,
                                   payment.getNote(),
                                   payment.getDate());

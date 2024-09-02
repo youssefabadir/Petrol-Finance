@@ -2,12 +2,14 @@ package com.ya.pf.auditable.transaction.customer_transaction.financial_summary;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 
+@DependsOnDatabaseInitialization
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerFinancialSummaryServiceImpl implements CustomerFinancialSummaryService {
