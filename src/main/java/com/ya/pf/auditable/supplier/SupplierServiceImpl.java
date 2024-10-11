@@ -94,7 +94,7 @@ public class SupplierServiceImpl implements SupplierService {
     public void enableDeletedSupplierFilter() {
 
         Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedCustomerFilter");
+        session.enableFilter("deletedSupplierFilter");
     }
 
 }
