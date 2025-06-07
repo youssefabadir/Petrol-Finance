@@ -3,7 +3,7 @@ package com.ya.pf.payment_method;
 import com.ya.pf.auditable.payment_method.PaymentMethodEntity;
 import com.ya.pf.auditable.payment_method.PaymentMethodRepository;
 import com.ya.pf.auditable.payment_method.PaymentMethodServiceImpl;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +48,7 @@ public class PaymentMethodServiceImplTest {
     @Test
     public void testGetAllPaymentMethods() {
 
-        Pageable pageable = Helper.preparePageable(0, 5, "id", "desc");
+        Pageable pageable = PageableHelper.preparePageable(0, 5, "id", "desc");
         Page<PaymentMethodEntity> page = new PageImpl<>(Collections.singletonList(paymentMethodEntity));
         when(paymentMethodRepository.findAll(pageable)).thenReturn(page);
 
@@ -61,7 +61,7 @@ public class PaymentMethodServiceImplTest {
     @Test
     public void testGetPaymentMethodWithName() {
 
-        Pageable pageable = Helper.preparePageable(0, 5, "id", "desc");
+        Pageable pageable = PageableHelper.preparePageable(0, 5, "id", "desc");
         Page<PaymentMethodEntity> page = new PageImpl<>(Collections.singletonList(paymentMethodEntity));
         when(paymentMethodRepository.findByNameContaining("Cash", pageable)).thenReturn(page);
 

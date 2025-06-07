@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.transaction.customer_transaction.view;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ public class CustomerTransactionViewServiceImpl implements CustomerTransactionVi
     public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy,
                                                                 String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
         if (start == null || end == null) {
             return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
         } else {

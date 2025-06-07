@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.transaction.owner_transaction.view;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ public class OwnerTransactionViewServiceImpl implements OwnerTransactionViewServ
     @Override
     public Page<OwnerTransactionView> getSupplierTransaction(long supplierId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
         if (start == null || end == null) {
             return ownerTransactionViewRepository.findAllBySupplierId(supplierId, pageable);
         } else {

@@ -6,7 +6,7 @@ import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.supplier.SupplierEntity;
 import com.ya.pf.auditable.supplier.SupplierService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     @Override
     public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (number.isEmpty()) {
             return ownerPaymentRepository.findAll(pageable);

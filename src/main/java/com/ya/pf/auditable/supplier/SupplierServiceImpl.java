@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.supplier;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class SupplierServiceImpl implements SupplierService {
                                              String sortBy, String order) {
 
         enableDeletedSupplierFilter();
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (name.trim().isEmpty()) {
             return supplierRepository.findAll(pageable);

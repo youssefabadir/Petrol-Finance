@@ -35,7 +35,7 @@ public class ShipmentController {
             Page<ShipmentDTO> shipmentDTOS = shipmentEntities.map(shipmentDTOMapper);
             return ResponseEntity.ok(shipmentDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -47,7 +47,7 @@ public class ShipmentController {
             shipmentService.deleteShipment(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -37,7 +37,7 @@ public class OwnerPaymentController {
             Page<OwnerPaymentDTO> ownerPaymentDTOS = ownerPaymentEntities.map(ownerPaymentDTOMapper);
             return ResponseEntity.ok(ownerPaymentDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -50,13 +50,13 @@ public class OwnerPaymentController {
             OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
             return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
         } catch (EntityExistsException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (MissingRequestValueException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -69,13 +69,13 @@ public class OwnerPaymentController {
             OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
             return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
         } catch (EntityExistsException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (MissingRequestValueException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

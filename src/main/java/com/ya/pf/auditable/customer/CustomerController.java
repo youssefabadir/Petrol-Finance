@@ -37,7 +37,7 @@ public class CustomerController {
             Page<CustomerDTO> customerDTOS = customerEntities.map(customerDTOMapper);
             return ResponseEntity.ok(customerDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -51,7 +51,7 @@ public class CustomerController {
             CustomerDTO customerDTO = customerDTOMapper.apply(customerEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(customerDTO);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -64,10 +64,10 @@ public class CustomerController {
             CustomerDTO customerDTO = customerDTOMapper.apply(customerEntity);
             return ResponseEntity.ok(customerDTO);
         } catch (EntityNotFoundException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -81,7 +81,7 @@ public class CustomerController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -97,7 +97,7 @@ public class CustomerController {
             List<CustomerDTO> customerDTOS = customerEntities.stream().map(customerDTOMapper).toList();
             return ResponseEntity.ok(customerDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

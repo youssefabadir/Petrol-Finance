@@ -40,7 +40,7 @@ public class PaymentController {
             Page<PaymentDTO> paymentDTOS = paymentEntities.map(paymentDTOMapper);
             return ResponseEntity.ok(paymentDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -52,10 +52,10 @@ public class PaymentController {
             paymentService.deletePaymentById(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

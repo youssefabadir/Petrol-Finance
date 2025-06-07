@@ -23,7 +23,7 @@ public class HomeController {
             Resource index = new ClassPathResource("static/index.html");
             return ResponseEntity.ok().body(IOUtils.toString(index.getInputStream(), StandardCharsets.UTF_8));
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

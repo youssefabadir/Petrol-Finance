@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.truck;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class TruckServiceImpl implements TruckService {
     public Page<TruckEntity> getTrucks(String number, int pageNo, int pageSize, String sortBy, String order) {
 
         enableDeletedTruckFilter();
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
         if (number.trim().isEmpty()) {
             return truckRepository.findAll(pageable);
         } else {

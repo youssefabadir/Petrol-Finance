@@ -9,7 +9,7 @@ import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.Config;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -96,7 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Page<PaymentEntity> getPayments(long paymentMethodId, int pageNo, int pageSize,
                                            String sortBy, String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order, "id");
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order, "id");
         if (start == null || end == null) {
             if (paymentMethodId == -1) {
                 return paymentRepository.findAll(pageable);

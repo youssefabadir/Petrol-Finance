@@ -4,7 +4,7 @@ import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.expense.ExpenseService;
 import com.ya.pf.auditable.truck.TruckEntity;
 import com.ya.pf.auditable.truck.TruckService;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     @Override
     public Page<ShipmentEntity> getShipments(String billNumber, int pageNo, int pageSize, String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (billNumber.trim().isEmpty()) {
             return shipmentRepository.findAll(pageable);

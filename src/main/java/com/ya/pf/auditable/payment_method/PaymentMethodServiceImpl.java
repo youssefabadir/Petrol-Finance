@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.payment_method;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     @Override
     public Page<PaymentMethodEntity> getPaymentMethods(String name, int pageNo, int pageSize, String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (name.trim().isEmpty()) {
             return paymentMethodRepository.findAll(pageable);

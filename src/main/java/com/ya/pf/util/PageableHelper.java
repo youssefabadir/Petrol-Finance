@@ -4,7 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-public class Helper {
+public class PageableHelper {
 
     public static Pageable preparePageable(int pageNo, int pageSize, String sortBy, String order) {
 

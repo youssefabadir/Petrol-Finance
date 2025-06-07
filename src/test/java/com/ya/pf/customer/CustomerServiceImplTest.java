@@ -3,7 +3,7 @@ package com.ya.pf.customer;
 import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.customer.CustomerRepository;
 import com.ya.pf.auditable.customer.CustomerServiceImpl;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
@@ -123,7 +123,7 @@ public class CustomerServiceImplTest {
     public void testGetAllCustomers() {
 
         enableFilter();
-        Pageable pageable = Helper.preparePageable(0, 5, "id", "desc");
+        Pageable pageable = PageableHelper.preparePageable(0, 5, "id", "desc");
         Page<CustomerEntity> page = new PageImpl<>(Collections.singletonList(customerEntity));
         when(customerRepository.findAll(pageable)).thenReturn(page);
 
@@ -138,7 +138,7 @@ public class CustomerServiceImplTest {
     public void testGetAllCustomersWithName() {
 
         enableFilter();
-        Pageable pageable = Helper.preparePageable(0, 5, "id", "desc");
+        Pageable pageable = PageableHelper.preparePageable(0, 5, "id", "desc");
         Page<CustomerEntity> page = new PageImpl<>(Collections.singletonList(customerEntity));
         when(customerRepository.findByNameContaining("You", pageable)).thenReturn(page);
 

@@ -45,7 +45,7 @@ public class OwnerTransactionController {
             Page<OwnerTransactionViewDTO> ownerTransactionViewDTOS = transactionViews.map(ownerTransactionViewDTOMapper);
             return ResponseEntity.ok(ownerTransactionViewDTOS);
         } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()).replaceAll(", ", ",\n"));
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

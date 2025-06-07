@@ -1,6 +1,6 @@
 package com.ya.pf.auditable.discount.view;
 
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ public class DiscountViewServiceImpl implements DiscountViewService {
     @Override
     public Page<DiscountView> getDiscounts(String customerName, String productName, int pageNo, int pageSize, String sortBy, String order) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
         if (!customerName.isEmpty() && !productName.isEmpty()) {
             return discountViewRepository.findByCustomerNameContainingAndProductNameContaining(customerName, productName, pageable);
         } else if (!customerName.isEmpty()) {

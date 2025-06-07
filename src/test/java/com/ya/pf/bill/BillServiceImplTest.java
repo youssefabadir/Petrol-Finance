@@ -10,7 +10,7 @@ import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.supplier.SupplierEntity;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -86,7 +86,7 @@ public class BillServiceImplTest {
     @Test
     public void testGetAllBills() {
 
-        Pageable pageable = Helper.preparePageable(0, 5, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(0, 5, sortBy, order);
         Page<BillEntity> page = new PageImpl<>(Collections.singletonList(bill));
 
         when(billRepository.findAll(pageable)).thenReturn(page);
@@ -104,7 +104,7 @@ public class BillServiceImplTest {
         LocalDate endLocalDate = LocalDate.now().plusDays(1);
         Date startDate = Date.from(startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Pageable pageable = Helper.preparePageable(0, 5, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(0, 5, sortBy, order);
         Page<BillEntity> page = new PageImpl<>(Collections.singletonList(bill));
 
         when(billRepository.findByNumberContainingAndDateBetween(billNumber, startDate, endDate, pageable)).thenReturn(page);
@@ -118,7 +118,7 @@ public class BillServiceImplTest {
     @Test
     public void testGetBillsWithNumber() {
 
-        Pageable pageable = Helper.preparePageable(0, 5, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(0, 5, sortBy, order);
         Page<BillEntity> page = new PageImpl<>(Collections.singletonList(bill));
 
         when(billRepository.findByNumberContaining(billNumber, pageable)).thenReturn(page);
@@ -136,7 +136,7 @@ public class BillServiceImplTest {
         LocalDate endLocalDate = LocalDate.now().plusDays(1);
         Date startDate = Date.from(startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Pageable pageable = Helper.preparePageable(0, 5, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(0, 5, sortBy, order);
         Page<BillEntity> page = new PageImpl<>(Collections.singletonList(bill));
 
         when(billRepository.findByDateBetween(startDate, endDate, pageable)).thenReturn(page);

@@ -5,7 +5,7 @@ import com.ya.pf.auditable.product.ProductEntity;
 import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
-import com.ya.pf.util.Helper;
+import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,7 @@ public class BillServiceImpl implements BillService {
     public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
                                      String order, LocalDate start, LocalDate end) {
 
-        Pageable pageable = Helper.preparePageable(pageNo, pageSize, sortBy, order);
+        Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (!number.isEmpty() && start != null && end != null) {
             return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start),
