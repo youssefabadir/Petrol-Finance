@@ -8,10 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.persistence.EntityNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -26,64 +33,33 @@ public class SupplierController {
     private final SupplierDTOMapper supplierDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<SupplierDTO>> getSuppliers(@RequestParam(defaultValue = "") String name,
-                                                          @RequestParam(defaultValue = "0") int pageNo,
+    public ResponseEntity<Page<SupplierDTO>> getSuppliers(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo,
                                                           @RequestParam(defaultValue = "10") int pageSize,
                                                           @RequestParam(defaultValue = "id") String sortBy,
                                                           @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<SupplierEntity> supplierEntities = supplierService.getSuppliers(name, pageNo, pageSize, sortBy, order);
-            Page<SupplierDTO> supplierDTOS = supplierEntities.map(supplierDTOMapper);
-            return ResponseEntity.ok(supplierDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<SupplierEntity> supplierEntities = supplierService.getSuppliers(name, pageNo, pageSize, sortBy, order);
+        Page<SupplierDTO> supplierDTOS = supplierEntities.map(supplierDTOMapper);
+        return ResponseEntity.ok(supplierDTOS);
     }
 
     @PostMapping
     public ResponseEntity<SupplierDTO> createSupplier(@RequestBody SupplierEntity supplier) {
-
-        try {
-            SupplierEntity supplierEntity = supplierService.createSupplier(supplier);
-            SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(supplierDTO);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        SupplierEntity supplierEntity = supplierService.createSupplier(supplier);
+        SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(supplierDTO);
     }
 
     @PutMapping
     public ResponseEntity<SupplierDTO> updateSupplier(@RequestBody SupplierEntity supplier) {
-
-        try {
-            SupplierEntity supplierEntity = supplierService.updateSupplier(supplier);
-            SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
-            return ResponseEntity.ok(supplierDTO);
-        } catch (EntityNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        SupplierEntity supplierEntity = supplierService.updateSupplier(supplier);
+        SupplierDTO supplierDTO = supplierDTOMapper.apply(supplierEntity);
+        return ResponseEntity.ok(supplierDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSupplier(@PathVariable long id) {
-
-        try {
-            supplierService.deleteSupplier(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        supplierService.deleteSupplier(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
@@ -92,14 +68,9 @@ public class SupplierController {
         if (name.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        try {
-            List<SupplierEntity> supplierEntities = supplierService.searchSupplier(name);
-            List<SupplierDTO> supplierDTOS = supplierEntities.stream().map(supplierDTOMapper).toList();
-            return ResponseEntity.ok(supplierDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<SupplierEntity> supplierEntities = supplierService.searchSupplier(name);
+        List<SupplierDTO> supplierDTOS = supplierEntities.stream().map(supplierDTOMapper).toList();
+        return ResponseEntity.ok(supplierDTOS);
     }
 
 }

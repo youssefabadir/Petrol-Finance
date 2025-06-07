@@ -8,10 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.persistence.EntityNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -26,64 +33,33 @@ public class ProductController {
     private final ProductDTOMapper productDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> getProducts(@RequestParam(defaultValue = "") String name,
-                                                        @RequestParam(defaultValue = "0") int pageNo,
+    public ResponseEntity<Page<ProductDTO>> getProducts(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo,
                                                         @RequestParam(defaultValue = "10") int pageSize,
                                                         @RequestParam(defaultValue = "id") String sortBy,
                                                         @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
-            Page<ProductDTO> productDTOS = productEntities.map(productDTOMapper);
-            return ResponseEntity.ok(productDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<ProductEntity> productEntities = productService.getProducts(name, pageNo, pageSize, sortBy, order);
+        Page<ProductDTO> productDTOS = productEntities.map(productDTOMapper);
+        return ResponseEntity.ok(productDTOS);
     }
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductEntity product) {
-
-        try {
-            ProductEntity productEntity = productService.createProduct(product);
-            ProductDTO productDTO = productDTOMapper.apply(productEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        ProductEntity productEntity = productService.createProduct(product);
+        ProductDTO productDTO = productDTOMapper.apply(productEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 
     @PutMapping
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductEntity product) {
-
-        try {
-            ProductEntity productEntity = productService.updateProduct(product);
-            ProductDTO productDTO = productDTOMapper.apply(productEntity);
-            return ResponseEntity.ok(productDTO);
-        } catch (EntityNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        ProductEntity productEntity = productService.updateProduct(product);
+        ProductDTO productDTO = productDTOMapper.apply(productEntity);
+        return ResponseEntity.ok(productDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
-
-        try {
-            productService.deleteProduct(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
@@ -92,14 +68,9 @@ public class ProductController {
         if (name.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        try {
-            List<ProductEntity> productEntities = productService.searchProduct(name);
-            List<ProductDTO> productDTOS = productEntities.stream().map(productDTOMapper).toList();
-            return ResponseEntity.ok(productDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<ProductEntity> productEntities = productService.searchProduct(name);
+        List<ProductDTO> productDTOS = productEntities.stream().map(productDTOMapper).toList();
+        return ResponseEntity.ok(productDTOS);
     }
 
 }

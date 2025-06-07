@@ -7,12 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -33,21 +36,10 @@ public class OwnerTransactionController {
                                                                               @RequestParam(defaultValue = "asc") String order,
                                                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
                                                                               @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
-
-        try {
-            Page<OwnerTransactionView> transactionViews = ownerTransactionViewService.getSupplierTransaction(supplierId,
-                                                                                                             pageNo,
-                                                                                                             pageSize,
-                                                                                                             sortBy,
-                                                                                                             order,
-                                                                                                             start,
-                                                                                                             end);
-            Page<OwnerTransactionViewDTO> ownerTransactionViewDTOS = transactionViews.map(ownerTransactionViewDTOMapper);
-            return ResponseEntity.ok(ownerTransactionViewDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<OwnerTransactionView> transactionViews = ownerTransactionViewService.getSupplierTransaction(supplierId, pageNo, pageSize, sortBy, order,
+                                                                                                         start, end);
+        Page<OwnerTransactionViewDTO> ownerTransactionViewDTOS = transactionViews.map(ownerTransactionViewDTOMapper);
+        return ResponseEntity.ok(ownerTransactionViewDTOS);
     }
 
 }

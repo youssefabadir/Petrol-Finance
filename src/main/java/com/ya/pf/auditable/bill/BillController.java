@@ -7,14 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -28,71 +33,34 @@ public class BillController {
     private final BillDTOMapper billDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String number,
-                                                  @RequestParam(defaultValue = "0") int pageNo,
-                                                  @RequestParam(defaultValue = "10") int pageSize,
-                                                  @RequestParam(defaultValue = "id") String sortBy,
+    public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String number, @RequestParam(defaultValue = "0") int pageNo,
+                                                  @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy,
                                                   @RequestParam(defaultValue = "asc") String order,
                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
-
-        try {
-            Page<BillEntity> transactionEntities = billService.getBills(number, pageNo, pageSize, sortBy, order, start, end);
-            Page<BillDTO> transactionDTOS = transactionEntities.map(billDTOMapper);
-            return ResponseEntity.ok(transactionDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<BillEntity> transactionEntities = billService.getBills(number, pageNo, pageSize, sortBy, order, start, end);
+        Page<BillDTO> transactionDTOS = transactionEntities.map(billDTOMapper);
+        return ResponseEntity.ok(transactionDTOS);
     }
 
     @PostMapping
-    public ResponseEntity<BillDTO> createBill(@RequestBody BillEntity bill,
-                                              @RequestParam long truckId) {
-
-        try {
-            BillEntity billEntity = billService.createBill(bill, truckId);
-            BillDTO billDTO = billDTOMapper.apply(billEntity);
-            return ResponseEntity.ok(billDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<BillDTO> createBill(@RequestBody BillEntity bill, @RequestParam long truckId) {
+        BillEntity billEntity = billService.createBill(bill, truckId);
+        BillDTO billDTO = billDTOMapper.apply(billEntity);
+        return ResponseEntity.ok(billDTO);
     }
 
     @PutMapping
-    public ResponseEntity<BillDTO> updateBill(@RequestBody BillEntity bill,
-                                              @RequestParam long truckId) {
-
-        try {
-            BillEntity billEntity = billService.updateBill(bill, truckId);
-            BillDTO billDTO = billDTOMapper.apply(billEntity);
-            return ResponseEntity.ok(billDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<BillDTO> updateBill(@RequestBody BillEntity bill, @RequestParam long truckId) {
+        BillEntity billEntity = billService.updateBill(bill, truckId);
+        BillDTO billDTO = billDTOMapper.apply(billEntity);
+        return ResponseEntity.ok(billDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBill(@PathVariable long id) {
-
-        try {
-            billService.deleteBill(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        billService.deleteBill(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

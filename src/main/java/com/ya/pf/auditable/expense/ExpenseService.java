@@ -1,16 +1,14 @@
 package com.ya.pf.auditable.expense;
 
-import org.springframework.web.bind.MissingRequestValueException;
-
 import java.util.List;
 
 public interface ExpenseService {
 
     List<ExpenseEntity> getExpenses(long shipmentId);
 
-    ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException;
+    ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId);
 
-    ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException;
+    ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId);
 
     void deleteExpense(long id);
 

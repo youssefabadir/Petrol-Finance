@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingRequestValueException;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.persistence.EntityExistsException;
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -30,55 +33,26 @@ public class CustomerPaymentController {
                                                                         @RequestParam(defaultValue = "10") int pageSize,
                                                                         @RequestParam(defaultValue = "id") String sortBy,
                                                                         @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<CustomerPaymentEntity> customerPaymentEntities = customerPaymentService.getCustomerPayments(number.trim(), pageNo, pageSize, sortBy, order);
-            Page<CustomerPaymentDTO> customerPaymentDTOS = customerPaymentEntities.map(customerPaymentDTOMapper);
-            return ResponseEntity.ok(customerPaymentDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<CustomerPaymentEntity> customerPaymentEntities = customerPaymentService.getCustomerPayments(number.trim(), pageNo, pageSize, sortBy,
+                                                                                                         order);
+        Page<CustomerPaymentDTO> customerPaymentDTOS = customerPaymentEntities.map(customerPaymentDTOMapper);
+        return ResponseEntity.ok(customerPaymentDTOS);
     }
 
     @PostMapping
     public ResponseEntity<CustomerPaymentDTO> createCustomerPayment(@RequestBody CustomerPaymentEntity payment,
                                                                     @RequestParam(defaultValue = "-1") long supplierId) {
-
-        try {
-            CustomerPaymentEntity customerPayment = customerPaymentService.createCustomerPayment(payment, supplierId);
-            CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (MissingRequestValueException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        CustomerPaymentEntity customerPayment = customerPaymentService.createCustomerPayment(payment, supplierId);
+        CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
     }
 
     @PutMapping
     public ResponseEntity<CustomerPaymentDTO> updateCustomerPayment(@RequestBody CustomerPaymentEntity payment,
                                                                     @RequestParam(defaultValue = "-1") long supplierId) {
-
-        try {
-            CustomerPaymentEntity customerPayment = customerPaymentService.updateCustomerPayment(payment, supplierId);
-            CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (MissingRequestValueException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        CustomerPaymentEntity customerPayment = customerPaymentService.updateCustomerPayment(payment, supplierId);
+        CustomerPaymentDTO customerPaymentDTO = customerPaymentDTOMapper.apply(customerPayment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerPaymentDTO);
     }
 
 }

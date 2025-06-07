@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingRequestValueException;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.persistence.EntityExistsException;
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -31,53 +34,23 @@ public class OwnerPaymentController {
                                                                   @RequestParam(defaultValue = "10") int pageSize,
                                                                   @RequestParam(defaultValue = "id") String sortBy,
                                                                   @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<OwnerPaymentEntity> ownerPaymentEntities = ownerPaymentService.getOwnerPayments(number.trim(), pageNo, pageSize, sortBy, order);
-            Page<OwnerPaymentDTO> ownerPaymentDTOS = ownerPaymentEntities.map(ownerPaymentDTOMapper);
-            return ResponseEntity.ok(ownerPaymentDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<OwnerPaymentEntity> ownerPaymentEntities = ownerPaymentService.getOwnerPayments(number.trim(), pageNo, pageSize, sortBy, order);
+        Page<OwnerPaymentDTO> ownerPaymentDTOS = ownerPaymentEntities.map(ownerPaymentDTOMapper);
+        return ResponseEntity.ok(ownerPaymentDTOS);
     }
 
     @PostMapping
     public ResponseEntity<OwnerPaymentDTO> createOwnerPayment(@RequestBody OwnerPaymentEntity payment) {
-
-        try {
-            OwnerPaymentEntity ownerPayment = ownerPaymentService.createOwnerPayment(payment);
-            OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (MissingRequestValueException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        OwnerPaymentEntity ownerPayment = ownerPaymentService.createOwnerPayment(payment);
+        OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
     }
 
     @PutMapping
     public ResponseEntity<OwnerPaymentDTO> updateOwnerPayment(@RequestBody OwnerPaymentEntity payment) {
-
-        try {
-            OwnerPaymentEntity ownerPayment = ownerPaymentService.updateOwnerPayment(payment);
-            OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (MissingRequestValueException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        OwnerPaymentEntity ownerPayment = ownerPaymentService.updateOwnerPayment(payment);
+        OwnerPaymentDTO ownerPaymentDTO = ownerPaymentDTOMapper.apply(ownerPayment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ownerPaymentDTO);
     }
 
 }

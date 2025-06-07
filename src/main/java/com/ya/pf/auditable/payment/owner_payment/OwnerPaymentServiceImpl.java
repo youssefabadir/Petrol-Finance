@@ -7,14 +7,13 @@ import com.ya.pf.auditable.supplier.SupplierEntity;
 import com.ya.pf.auditable.supplier.SupplierService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.PageableHelper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MissingRequestValueException;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -32,7 +31,6 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
     @Override
     public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
-
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (number.isEmpty()) {
@@ -43,9 +41,9 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException {
-
+    public OwnerPaymentEntity createOwnerPayment(OwnerPaymentEntity ownerPayment) {
         OwnerPaymentEntity validatedPayment = (OwnerPaymentEntity) paymentService.validatePayment(ownerPayment);
 
         OwnerPaymentEntity payment = ownerPaymentRepository.save(validatedPayment);
@@ -68,18 +66,18 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public OwnerPaymentEntity updateOwnerPayment(OwnerPaymentEntity ownerPayment) throws MissingRequestValueException {
-
+    public OwnerPaymentEntity updateOwnerPayment(OwnerPaymentEntity ownerPayment) {
         long paymentId = ownerPayment.getId();
         paymentService.deletePaymentById(paymentId);
         return createOwnerPayment(ownerPayment);
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) throws MissingRequestValueException {
-
+    public void createOwnerTransferredPayment(PaymentEntity payment, long supplierId) {
         SupplierEntity supplier = supplierService.getSupplierById(supplierId);
         OwnerPaymentEntity ownerPayment = new OwnerPaymentEntity();
         ownerPayment.setPaymentType("OWNER_PAYMENT");

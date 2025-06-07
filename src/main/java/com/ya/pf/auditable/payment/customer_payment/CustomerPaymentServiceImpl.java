@@ -5,14 +5,14 @@ import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentService;
 import com.ya.pf.auditable.payment_method.PaymentMethodService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.util.PageableHelper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -30,7 +30,6 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
     @Override
     public Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
-
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (number.isEmpty()) {
@@ -41,9 +40,9 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException {
-
+    public CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) {
         if (customerPayment.isTransferred() && supplierId == -1) {
             throw new MissingRequestValueException("Supplier Id is missing");
         }
@@ -72,9 +71,9 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public CustomerPaymentEntity updateCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) throws MissingRequestValueException {
-
+    public CustomerPaymentEntity updateCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId) {
         long paymentId = customerPayment.getId();
         paymentService.deletePaymentById(paymentId);
         customerPayment.setId(null);

@@ -6,13 +6,13 @@ import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentService;
 import com.ya.pf.auditable.shipment.ShipmentEntity;
 import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.truck.TruckService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MissingRequestValueException;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +39,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional
-    public ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException {
-
+    public ExpenseEntity createExpense(ExpenseEntity expense, long paymentMethodId) {
         if (expense.getId() != null) {
             expense.setId(null);
         }
@@ -64,8 +64,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
-    public ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId) throws MissingRequestValueException {
-
+    public ExpenseEntity updateExpense(ExpenseEntity expense, long paymentMethodId) {
         if (expenseRepository.existsById(expense.getId())) {
             ExpenseEntity oldExpense = expenseRepository.getReferenceById(expense.getId());
             ShipmentEntity shipment = new ShipmentEntity();
@@ -81,7 +80,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public void deleteExpense(long id) {
-
         if (expenseRepository.existsById(id)) {
             ExpenseEntity expense = expenseRepository.getReferenceById(id);
             long shipmentId = expense.getShipment().getId();
@@ -99,7 +97,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public void deleteExpensesByShipmentId(long shipmentId, long truckId) {
-
         float totalExpenses = Optional.ofNullable(expenseRepository.totalShipmentExpenses(shipmentId)).orElse(0f);
         truckService.updateTruckBalance(truckId, totalExpenses * -1);
         expenseRepository.deleteAllByShipment_Id(shipmentId);

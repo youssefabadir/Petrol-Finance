@@ -1,12 +1,16 @@
 package com.ya.pf.auditable.transaction.customer_transaction.financial_summary;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 
 @DependsOnDatabaseInitialization
@@ -17,7 +21,9 @@ public class CustomerFinancialSummaryServiceImpl implements CustomerFinancialSum
     private final DataSource dataSource;
 
     @Override
-    public CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId, LocalDate start, LocalDate end) throws SQLException {
+    @SneakyThrows
+    public CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId, LocalDate start,
+                                                                LocalDate end) {
 
         String statement = """
                 SELECT SUM(payment_amount) AS totalPayments, SUM(bill_customer_amount) AS totalBills, SUM(bill_quantity) AS totalLiters

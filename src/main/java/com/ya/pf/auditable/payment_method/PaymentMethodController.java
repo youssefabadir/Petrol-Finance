@@ -8,11 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -32,78 +38,39 @@ public class PaymentMethodController {
                                                                     @RequestParam(defaultValue = "10") int pageSize,
                                                                     @RequestParam(defaultValue = "id") String sortBy,
                                                                     @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getPaymentMethods(name, pageNo, pageSize, sortBy, order);
-            Page<PaymentMethodDTO> wayOfPaymentDTOS = wayOfPaymentEntities.map(paymentMethodDTOMapper);
-            return ResponseEntity.ok(wayOfPaymentDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getPaymentMethods(name, pageNo, pageSize, sortBy, order);
+        Page<PaymentMethodDTO> wayOfPaymentDTOS = wayOfPaymentEntities.map(paymentMethodDTOMapper);
+        return ResponseEntity.ok(wayOfPaymentDTOS);
     }
 
     @PostMapping
     public ResponseEntity<PaymentMethodDTO> createPaymentMethod(@RequestBody PaymentMethodEntity wayOfPayment) {
-
-        try {
-            PaymentMethodEntity paymentMethodEntity = paymentMethodService.createPaymentMethod(wayOfPayment);
-            PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(paymentMethodDTO);
-        } catch (EntityExistsException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        PaymentMethodEntity paymentMethodEntity = paymentMethodService.createPaymentMethod(wayOfPayment);
+        PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentMethodDTO);
     }
 
     @PutMapping
     public ResponseEntity<PaymentMethodDTO> updatePaymentMethod(@RequestBody PaymentMethodEntity wayOfPayment) {
-
-        try {
-            PaymentMethodEntity paymentMethodEntity = paymentMethodService.updatePaymentMethod(wayOfPayment);
-            PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
-            return ResponseEntity.ok(paymentMethodDTO);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (EntityExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        PaymentMethodEntity paymentMethodEntity = paymentMethodService.updatePaymentMethod(wayOfPayment);
+        PaymentMethodDTO paymentMethodDTO = paymentMethodDTOMapper.apply(paymentMethodEntity);
+        return ResponseEntity.ok(paymentMethodDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePayment(@PathVariable long id) {
-
-        try {
-            paymentMethodService.deletePaymentMethod(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        paymentMethodService.deletePaymentMethod(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<PaymentMethodDTO>> searchPaymentMethod(@RequestParam(defaultValue = "") String name) {
-
         if (name.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        try {
-            List<PaymentMethodEntity> paymentMethodEntities = paymentMethodService.searchPaymentMethod(name);
-            List<PaymentMethodDTO> paymentMethodDTOS = paymentMethodEntities.stream().map(paymentMethodDTOMapper).toList();
-            return ResponseEntity.ok(paymentMethodDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<PaymentMethodEntity> paymentMethodEntities = paymentMethodService.searchPaymentMethod(name);
+        List<PaymentMethodDTO> paymentMethodDTOS = paymentMethodEntities.stream().map(paymentMethodDTOMapper).toList();
+        return ResponseEntity.ok(paymentMethodDTOS);
     }
 
 }

@@ -6,11 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -29,27 +32,15 @@ public class ShipmentController {
                                                           @RequestParam(defaultValue = "10") int pageSize,
                                                           @RequestParam(defaultValue = "id") String sortBy,
                                                           @RequestParam(defaultValue = "asc") String order) {
-
-        try {
-            Page<ShipmentEntity> shipmentEntities = shipmentService.getShipments(billNumber, pageNo, pageSize, sortBy, order);
-            Page<ShipmentDTO> shipmentDTOS = shipmentEntities.map(shipmentDTOMapper);
-            return ResponseEntity.ok(shipmentDTOS);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Page<ShipmentEntity> shipmentEntities = shipmentService.getShipments(billNumber, pageNo, pageSize, sortBy, order);
+        Page<ShipmentDTO> shipmentDTOS = shipmentEntities.map(shipmentDTOMapper);
+        return ResponseEntity.ok(shipmentDTOS);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShipment(@PathVariable long id) {
-
-        try {
-            shipmentService.deleteShipment(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        shipmentService.deleteShipment(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
