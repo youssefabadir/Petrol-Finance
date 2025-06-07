@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<Object> handleEntityExistsException(EntityExistsException e) {
         log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
