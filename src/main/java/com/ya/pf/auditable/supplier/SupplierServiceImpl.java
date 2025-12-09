@@ -1,20 +1,19 @@
 package com.ya.pf.auditable.supplier;
 
 import com.ya.pf.util.PageableHelper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
@@ -22,8 +21,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final EntityManager entityManager;
 
     @Override
-    public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize,
-                                             String sortBy, String order) {
+    public Page<SupplierEntity> getSuppliers(String name, int pageNo, int pageSize, String sortBy, String order) {
 
         enableDeletedSupplierFilter();
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);

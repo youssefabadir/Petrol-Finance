@@ -10,13 +10,12 @@ import com.ya.pf.util.PageableHelper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
     private final OwnerPaymentRepository ownerPaymentRepository;
@@ -30,7 +29,8 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
     private final SupplierService supplierService;
 
     @Override
-    public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
+    public Page<OwnerPaymentEntity> getOwnerPayments(String number, int pageNo, int pageSize, String sortBy,
+                                                     String order) {
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (number.isEmpty()) {
@@ -91,6 +91,5 @@ public class OwnerPaymentServiceImpl implements OwnerPaymentService {
 
         createOwnerPayment(ownerPayment);
     }
-
 
 }

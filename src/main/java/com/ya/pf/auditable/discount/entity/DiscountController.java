@@ -4,7 +4,6 @@ import com.ya.pf.auditable.discount.view.DiscountView;
 import com.ya.pf.auditable.discount.view.DiscountViewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/discount")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class DiscountController {
 
     private final DiscountService discountService;
@@ -37,7 +36,11 @@ public class DiscountController {
                                                            @RequestParam(defaultValue = "10") int pageSize,
                                                            @RequestParam(defaultValue = "id") String sortBy,
                                                            @RequestParam(defaultValue = "asc") String order) {
-        Page<DiscountView> discountViewPage = discountViewService.getDiscounts(customerName.trim(), productName.trim(), pageNo, pageSize, sortBy,
+        Page<DiscountView> discountViewPage = discountViewService.getDiscounts(customerName.trim(),
+                                                                               productName.trim(),
+                                                                               pageNo,
+                                                                               pageSize,
+                                                                               sortBy,
                                                                                order);
         return ResponseEntity.ok(discountViewPage);
     }

@@ -6,20 +6,19 @@ import com.ya.pf.auditable.shipment.ShipmentService;
 import com.ya.pf.auditable.transaction.customer_transaction.entity.CustomerTransactionService;
 import com.ya.pf.auditable.transaction.owner_transaction.entity.OwnerTransactionService;
 import com.ya.pf.util.PageableHelper;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
     private final BillRepository billRepository;
@@ -33,17 +32,18 @@ public class BillServiceImpl implements BillService {
     private final ShipmentService shipmentService;
 
     @Override
-    public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy,
-                                     String order, LocalDate start, LocalDate end) {
+    public Page<BillEntity> getBills(String number, int pageNo, int pageSize, String sortBy, String order,
+                                     LocalDate start, LocalDate end) {
 
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (!number.isEmpty() && start != null && end != null) {
-            return billRepository.findByNumberContainingAndDateBetween(number, Date.valueOf(start),
-                                                                       Date.valueOf(end.plusDays(1)), pageable);
+            return billRepository.findByNumberContainingAndDateBetween(number,
+                                                                       Date.valueOf(start),
+                                                                       Date.valueOf(end.plusDays(1)),
+                                                                       pageable);
         } else if (number.isEmpty() && start != null && end != null) {
-            return billRepository.findByDateBetween(Date.valueOf(start),
-                                                    Date.valueOf(end.plusDays(1)), pageable);
+            return billRepository.findByDateBetween(Date.valueOf(start), Date.valueOf(end.plusDays(1)), pageable);
         } else if (!number.isEmpty() && start == null && end == null) {
             return billRepository.findByNumberContaining(number, pageable);
         } else {
@@ -59,7 +59,8 @@ public class BillServiceImpl implements BillService {
             billEntity.setId(null);
         }
 
-        boolean exists = billRepository.existsByNumberAndSupplierEntity_Id(billEntity.getNumber(), billEntity.getSupplierEntity().getId());
+        boolean exists = billRepository.existsByNumberAndSupplierEntity_Id(billEntity.getNumber(),
+                                                                           billEntity.getSupplierEntity().getId());
         if (exists) {
             throw new EntityExistsException("This bill number exists for this supplier");
         } else {
@@ -69,7 +70,8 @@ public class BillServiceImpl implements BillService {
             float supplierAmount = Math.abs(billQuantity * product.getSupplierPrice());
             float customerAmount;
             try {
-                customerAmount = Math.abs(billQuantity * discountService.getCustomerDiscountedPrice(customerId, product.getId()));
+                customerAmount = Math.abs(
+                    billQuantity * discountService.getCustomerDiscountedPrice(customerId, product.getId()));
             } catch (EntityNotFoundException e) {
                 customerAmount = Math.abs(billQuantity * product.getCustomerPrice());
             }
@@ -81,7 +83,11 @@ public class BillServiceImpl implements BillService {
             long billId = bill.getId();
             java.util.Date billDate = bill.getDate();
 
-            customerTransactionService.createCustomerTransaction(customerId, customerAmount * -1, null, billId, billDate);
+            customerTransactionService.createCustomerTransaction(customerId,
+                                                                 customerAmount * -1,
+                                                                 null,
+                                                                 billId,
+                                                                 billDate);
 
             ownerTransactionService.createOwnerTransaction(bill.getSupplierEntity().getId(),
                                                            supplierAmount * -1,
@@ -113,8 +119,14 @@ public class BillServiceImpl implements BillService {
             BillEntity bill = billRepository.getReferenceById(id);
 
             billRepository.deleteById(id);
-            customerTransactionService.deleteCustomerTransactionByBillId(bill.getCustomerEntity().getId(), id, bill.getCustomerAmount(), bill.getDate());
-            ownerTransactionService.deleteOwnerTransactionByBillId(bill.getSupplierEntity().getId(), id, bill.getSupplierAmount(), bill.getDate());
+            customerTransactionService.deleteCustomerTransactionByBillId(bill.getCustomerEntity().getId(),
+                                                                         id,
+                                                                         bill.getCustomerAmount(),
+                                                                         bill.getDate());
+            ownerTransactionService.deleteOwnerTransactionByBillId(bill.getSupplierEntity().getId(),
+                                                                   id,
+                                                                   bill.getSupplierAmount(),
+                                                                   bill.getDate());
             shipmentService.deleteShipmentByBillId(id);
         } else {
             throw new EntityNotFoundException("Bill with ID " + id + " not found");

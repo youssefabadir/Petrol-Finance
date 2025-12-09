@@ -7,17 +7,8 @@ import com.ya.pf.auditable.supplier.dto.SupplierDTO;
 
 import java.util.Date;
 
-public record BillDTO(
-        long id,
-        SupplierDTO supplier,
-        CustomerDTO customer,
-        ProductDTO product,
-        String number,
-        float quantity,
-        float supplierAmount,
-        float customerAmount,
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        Date date
-) {
+public record BillDTO(long id, SupplierDTO supplier, CustomerDTO customer, ProductDTO product, String number,
+                      float quantity, float supplierAmount, float customerAmount,
+                      @JsonFormat(pattern = "dd/MM/yyyy") Date date) {
 
 }

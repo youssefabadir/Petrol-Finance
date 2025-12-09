@@ -1,16 +1,15 @@
 package com.ya.pf.auditable.transaction.owner_transaction.entity;
 
 import com.ya.pf.auditable.supplier.SupplierService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
 import java.util.Date;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
     private final OwnerTransactionRepository ownerTransactionRepository;
@@ -31,8 +30,9 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
         float newBalance;
         try {
-            newBalance = ownerTransactionRepository.findFirstBySupplierIdAndDateLessThanEqualOrderByDateDescIdDesc(supplierId, date)
-                    .getSupplierBalance() + amount;
+            newBalance = ownerTransactionRepository.findFirstBySupplierIdAndDateLessThanEqualOrderByDateDescIdDesc(
+                supplierId,
+                date).getSupplierBalance() + amount;
         } catch (Exception e) {
             newBalance = supplierService.getSupplierById(supplierId).getStartBalance() + amount;
         }
@@ -57,17 +57,22 @@ public class OwnerTransactionServiceImpl implements OwnerTransactionService {
 
         ownerTransactionRepository.updateSupplierBalanceByBillId(supplierId, billId, billAmount, date);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByBillId(billId);
-        supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(), ownerTransaction.getSupplierBalance() + billAmount);
+        supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(),
+                                              ownerTransaction.getSupplierBalance() + billAmount);
         ownerTransactionRepository.deleteByBillId(billId);
     }
 
     @Override
     public void deleteOwnerTransactionByPaymentId(long supplierId, long paymentId, float paymentAmount, Date date) {
 
-        ownerTransactionRepository.updateSupplierBalanceByPaymentId(supplierId, paymentId, Math.abs(paymentAmount) * -1, date);
+        ownerTransactionRepository.updateSupplierBalanceByPaymentId(supplierId,
+                                                                    paymentId,
+                                                                    Math.abs(paymentAmount) * -1,
+                                                                    date);
         OwnerTransactionEntity ownerTransaction = ownerTransactionRepository.findByPaymentId(paymentId);
         if (ownerTransaction.getSupplierId() != null) {
-            supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(), ownerTransaction.getSupplierBalance() - paymentAmount);
+            supplierService.updateSupplierBalance(ownerTransaction.getSupplierId(),
+                                                  ownerTransaction.getSupplierBalance() - paymentAmount);
         }
         ownerTransactionRepository.deleteByPaymentId(paymentId);
     }

@@ -5,16 +5,7 @@ import com.ya.pf.auditable.supplier.dto.SupplierDTO;
 
 import java.util.Date;
 
-public record OwnerPaymentDTO(
-        Long id,
-        String number,
-        Float amount,
-        String paymentMethodName,
-        SupplierDTO supplier,
-        Boolean transferred,
-        String note,
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        Date date
-) {
+public record OwnerPaymentDTO(Long id, String number, Float amount, String paymentMethodName, SupplierDTO supplier,
+                              Boolean transferred, String note, @JsonFormat(pattern = "dd/MM/yyyy") Date date) {
 
 }

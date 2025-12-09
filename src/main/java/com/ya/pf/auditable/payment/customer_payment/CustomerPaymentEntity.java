@@ -2,12 +2,15 @@ package com.ya.pf.auditable.payment.customer_payment;
 
 import com.ya.pf.auditable.customer.CustomerEntity;
 import com.ya.pf.auditable.payment.PaymentEntity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import jakarta.persistence.*;
 
 @Getter
 @Setter

@@ -4,7 +4,6 @@ import com.ya.pf.auditable.payment.owner_payment.dto.OwnerPaymentDTO;
 import com.ya.pf.auditable.payment.owner_payment.dto.OwnerPaymentDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/payment/owner")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class OwnerPaymentController {
 
     private final OwnerPaymentService ownerPaymentService;
@@ -34,7 +33,11 @@ public class OwnerPaymentController {
                                                                   @RequestParam(defaultValue = "10") int pageSize,
                                                                   @RequestParam(defaultValue = "id") String sortBy,
                                                                   @RequestParam(defaultValue = "asc") String order) {
-        Page<OwnerPaymentEntity> ownerPaymentEntities = ownerPaymentService.getOwnerPayments(number.trim(), pageNo, pageSize, sortBy, order);
+        Page<OwnerPaymentEntity> ownerPaymentEntities = ownerPaymentService.getOwnerPayments(number.trim(),
+                                                                                             pageNo,
+                                                                                             pageSize,
+                                                                                             sortBy,
+                                                                                             order);
         Page<OwnerPaymentDTO> ownerPaymentDTOS = ownerPaymentEntities.map(ownerPaymentDTOMapper);
         return ResponseEntity.ok(ownerPaymentDTOS);
     }

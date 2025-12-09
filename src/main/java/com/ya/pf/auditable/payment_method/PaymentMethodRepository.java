@@ -19,14 +19,9 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethodEnti
 
     boolean existsByName(String name);
 
-    @Query("SELECT CASE WHEN COUNT(w) = 0 THEN true ELSE false END " +
-            "FROM PaymentMethodEntity w " +
-            "WHERE w.id != :id AND " +
-            "w.name = :name")
-    boolean checkUniquePayment(
-            @Param("id") long id,
-            @Param("name") String name
-    );
+    @Query("SELECT CASE WHEN COUNT(w) = 0 THEN true ELSE false END " + "FROM PaymentMethodEntity w " +
+           "WHERE w.id != :id AND " + "w.name = :name")
+    boolean checkUniquePayment(@Param("id") long id, @Param("name") String name);
 
     @Modifying
     @Query("UPDATE PaymentMethodEntity p SET p.balance = :balance WHERE p.id = :id")

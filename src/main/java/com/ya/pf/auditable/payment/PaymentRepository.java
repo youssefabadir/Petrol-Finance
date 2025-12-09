@@ -13,7 +13,8 @@ import java.util.Date;
 @Repository
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
-    boolean existsByNumberAndPaymentMethodIdAndPaymentTypeEquals(String number, long paymentMethodId, String paymentType);
+    boolean existsByNumberAndPaymentMethodIdAndPaymentTypeEquals(String number, long paymentMethodId,
+                                                                 String paymentType);
 
     PaymentEntity findFirstByPaymentMethodIdAndDateLessThanEqualOrderByDateDescIdDesc(long paymentMethodId, Date date);
 
@@ -25,14 +26,17 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     Page<PaymentEntity> findAllByDateBetween(Date start, Date end, Pageable pageable);
 
-    Page<PaymentEntity> findByPaymentMethodIdAndDateBetween(long paymentMethodId, Date start, Date end, Pageable pageable);
+    Page<PaymentEntity> findByPaymentMethodIdAndDateBetween(long paymentMethodId, Date start, Date end,
+                                                            Pageable pageable);
 
     @Modifying
     @Query("UPDATE PaymentEntity p SET p.paymentMethodBalance = p.paymentMethodBalance + :amount WHERE p.paymentMethodId = :paymentMethodId AND p.date > :date")
-    void updatePaymentMethodBalance(@Param("paymentMethodId") long paymentMethodId, @Param("amount") float amount, @Param("date") Date date);
+    void updatePaymentMethodBalance(@Param("paymentMethodId") long paymentMethodId, @Param("amount") float amount,
+                                    @Param("date") Date date);
 
     @Modifying
     @Query("UPDATE PaymentEntity p SET p.paymentMethodBalance = p.paymentMethodBalance + :amount " +
-            "WHERE p.paymentMethodId = :paymentMethodId AND (p.date > :date OR (p.date = :date AND p.id > :id))")
-    void updatePaymentMethodBalanceById(@Param("paymentMethodId") long paymentMethodId, @Param("id") long id, @Param("amount") float amount, @Param("date") Date date);
+           "WHERE p.paymentMethodId = :paymentMethodId AND (p.date > :date OR (p.date = :date AND p.id > :id))")
+    void updatePaymentMethodBalanceById(@Param("paymentMethodId") long paymentMethodId, @Param("id") long id,
+                                        @Param("amount") float amount, @Param("date") Date date);
 }

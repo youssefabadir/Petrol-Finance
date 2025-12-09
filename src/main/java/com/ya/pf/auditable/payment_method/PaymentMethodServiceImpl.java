@@ -1,25 +1,25 @@
 package com.ya.pf.auditable.payment_method;
 
 import com.ya.pf.util.PageableHelper;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     private final PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public Page<PaymentMethodEntity> getPaymentMethods(String name, int pageNo, int pageSize, String sortBy, String order) {
+    public Page<PaymentMethodEntity> getPaymentMethods(String name, int pageNo, int pageSize, String sortBy,
+                                                       String order) {
 
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 

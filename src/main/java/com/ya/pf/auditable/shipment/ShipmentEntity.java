@@ -5,13 +5,23 @@ import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.expense.ExpenseEntity;
 import com.ya.pf.auditable.truck.TruckEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

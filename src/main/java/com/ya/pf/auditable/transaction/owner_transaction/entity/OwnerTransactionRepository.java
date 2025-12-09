@@ -13,13 +13,15 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     @Modifying
     @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount " +
-            "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.billId > :billId))")
-    void updateSupplierBalanceByBillId(@Param("supplierId") long supplierId, @Param("billId") long billId, @Param("amount") float amount, @Param("date") Date date);
+           "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.billId > :billId))")
+    void updateSupplierBalanceByBillId(@Param("supplierId") long supplierId, @Param("billId") long billId,
+                                       @Param("amount") float amount, @Param("date") Date date);
 
     @Modifying
     @Query("UPDATE OwnerTransactionEntity t SET t.supplierBalance = t.supplierBalance + :amount " +
-            "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.paymentId > :paymentId))")
-    void updateSupplierBalanceByPaymentId(@Param("supplierId") long supplierId, @Param("paymentId") long paymentId, @Param("amount") float amount, @Param("date") Date date);
+           "WHERE t.supplierId = :supplierId AND (t.date > :date OR (t.date = :date AND t.paymentId > :paymentId))")
+    void updateSupplierBalanceByPaymentId(@Param("supplierId") long supplierId, @Param("paymentId") long paymentId,
+                                          @Param("amount") float amount, @Param("date") Date date);
 
     OwnerTransactionEntity findByBillId(long billId);
 
@@ -33,7 +35,8 @@ public interface OwnerTransactionRepository extends JpaRepository<OwnerTransacti
 
     @Modifying
     @Query("UPDATE OwnerTransactionEntity o SET o.supplierBalance = o.supplierBalance + :amount WHERE o.supplierId = :supplierId AND o.date > :date")
-    void updateSupplierBalanceBySupplierIdAfterDate(@Param("amount") float amount, @Param("supplierId") long supplierId, @Param("date") Date date);
+    void updateSupplierBalanceBySupplierIdAfterDate(@Param("amount") float amount, @Param("supplierId") long supplierId,
+                                                    @Param("date") Date date);
 
     OwnerTransactionEntity findFirstByOrderByDateDescIdDesc();
 

@@ -4,7 +4,6 @@ import com.ya.pf.auditable.bill.dto.BillDTO;
 import com.ya.pf.auditable.bill.dto.BillDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ import java.time.LocalDate;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/bill")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class BillController {
 
     private final BillService billService;
@@ -33,12 +32,20 @@ public class BillController {
     private final BillDTOMapper billDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String number, @RequestParam(defaultValue = "0") int pageNo,
-                                                  @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy,
+    public ResponseEntity<Page<BillDTO>> getBills(@RequestParam(defaultValue = "") String number,
+                                                  @RequestParam(defaultValue = "0") int pageNo,
+                                                  @RequestParam(defaultValue = "10") int pageSize,
+                                                  @RequestParam(defaultValue = "id") String sortBy,
                                                   @RequestParam(defaultValue = "asc") String order,
                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
-        Page<BillEntity> transactionEntities = billService.getBills(number, pageNo, pageSize, sortBy, order, start, end);
+        Page<BillEntity> transactionEntities = billService.getBills(number,
+                                                                    pageNo,
+                                                                    pageSize,
+                                                                    sortBy,
+                                                                    order,
+                                                                    start,
+                                                                    end);
         Page<BillDTO> transactionDTOS = transactionEntities.map(billDTOMapper);
         return ResponseEntity.ok(transactionDTOS);
     }

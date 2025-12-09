@@ -4,7 +4,6 @@ import com.ya.pf.auditable.shipment.dto.ShipmentDTO;
 import com.ya.pf.auditable.shipment.dto.ShipmentDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/shipment")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ShipmentController {
 
     private final ShipmentService shipmentService;
@@ -32,7 +31,11 @@ public class ShipmentController {
                                                           @RequestParam(defaultValue = "10") int pageSize,
                                                           @RequestParam(defaultValue = "id") String sortBy,
                                                           @RequestParam(defaultValue = "asc") String order) {
-        Page<ShipmentEntity> shipmentEntities = shipmentService.getShipments(billNumber, pageNo, pageSize, sortBy, order);
+        Page<ShipmentEntity> shipmentEntities = shipmentService.getShipments(billNumber,
+                                                                             pageNo,
+                                                                             pageSize,
+                                                                             sortBy,
+                                                                             order);
         Page<ShipmentDTO> shipmentDTOS = shipmentEntities.map(shipmentDTOMapper);
         return ResponseEntity.ok(shipmentDTOS);
     }

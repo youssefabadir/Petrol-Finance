@@ -4,7 +4,8 @@ import org.springframework.data.domain.Page;
 
 public interface CustomerPaymentService {
 
-    Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy, String order);
+    Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy,
+                                                    String order);
 
     CustomerPaymentEntity createCustomerPayment(CustomerPaymentEntity customerPayment, long supplierId);
 

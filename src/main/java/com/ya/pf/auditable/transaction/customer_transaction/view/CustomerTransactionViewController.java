@@ -4,7 +4,6 @@ import com.ya.pf.auditable.transaction.customer_transaction.view.dto.CustomerTra
 import com.ya.pf.auditable.transaction.customer_transaction.view.dto.CustomerTransactionViewDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import java.time.LocalDate;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/transaction/customer")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CustomerTransactionViewController {
 
     private final CustomerTransactionViewService customerTransactionViewService;
@@ -36,9 +35,16 @@ public class CustomerTransactionViewController {
                                                                                     @RequestParam(defaultValue = "asc") String order,
                                                                                     @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
                                                                                     @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end) {
-        Page<CustomerTransactionView> transactionViews = customerTransactionViewService.getCustomerTransaction(customerId, pageNo, pageSize, sortBy,
-                                                                                                               order, start, end);
-        Page<CustomerTransactionViewDTO> customerTransactionViewDTO = transactionViews.map(customerTransactionViewDTOMapper);
+        Page<CustomerTransactionView> transactionViews = customerTransactionViewService.getCustomerTransaction(
+            customerId,
+            pageNo,
+            pageSize,
+            sortBy,
+            order,
+            start,
+            end);
+        Page<CustomerTransactionViewDTO> customerTransactionViewDTO = transactionViews.map(
+            customerTransactionViewDTOMapper);
         return ResponseEntity.ok(customerTransactionViewDTO);
     }
 

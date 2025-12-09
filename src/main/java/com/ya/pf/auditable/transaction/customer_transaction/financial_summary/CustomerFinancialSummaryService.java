@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public interface CustomerFinancialSummaryService {
 
-    CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId, LocalDate start, LocalDate end);
+    CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId,
+                                                         LocalDate start, LocalDate end);
 
 }

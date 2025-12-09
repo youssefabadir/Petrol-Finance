@@ -2,7 +2,6 @@ package com.ya.pf.auditable.transaction.customer_transaction.view;
 
 import com.ya.pf.util.PageableHelper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,21 +10,24 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CustomerTransactionViewServiceImpl implements CustomerTransactionViewService {
 
     private final CustomerTransactionViewRepository customerTransactionViewRepository;
 
     @Override
-    public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize, String sortBy,
-                                                                String order, LocalDate start, LocalDate end) {
+    public Page<CustomerTransactionView> getCustomerTransaction(long customerId, int pageNo, int pageSize,
+                                                                String sortBy, String order, LocalDate start,
+                                                                LocalDate end) {
 
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order, "transactionId");
         if (start == null || end == null) {
             return customerTransactionViewRepository.findAllByCustomerId(customerId, pageable);
         } else {
-            return customerTransactionViewRepository.findByCustomerIdAndDateBetween(customerId, Date.valueOf(start),
-                                                                                    Date.valueOf(end.plusDays(1)), pageable);
+            return customerTransactionViewRepository.findByCustomerIdAndDateBetween(customerId,
+                                                                                    Date.valueOf(start),
+                                                                                    Date.valueOf(end.plusDays(1)),
+                                                                                    pageable);
         }
     }
 

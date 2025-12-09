@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.expense.ExpenseEntity;
 import com.ya.pf.auditable.payment.PaymentEntity;
 import com.ya.pf.auditable.supplier.SupplierEntity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import jakarta.persistence.*;
 
 @Getter
 @Setter

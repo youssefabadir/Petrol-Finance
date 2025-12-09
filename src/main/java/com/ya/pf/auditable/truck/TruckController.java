@@ -4,7 +4,6 @@ import com.ya.pf.auditable.truck.dto.TruckDTO;
 import com.ya.pf.auditable.truck.dto.TruckDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/truck")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TruckController {
 
     private final TruckService truckService;
@@ -33,8 +32,10 @@ public class TruckController {
     private final TruckDTOMapper truckDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<TruckDTO>> getTrucks(@RequestParam(defaultValue = "") String number, @RequestParam(defaultValue = "0") int pageNo,
-                                                    @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "id") String sortBy,
+    public ResponseEntity<Page<TruckDTO>> getTrucks(@RequestParam(defaultValue = "") String number,
+                                                    @RequestParam(defaultValue = "0") int pageNo,
+                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                    @RequestParam(defaultValue = "id") String sortBy,
                                                     @RequestParam(defaultValue = "asc") String order) {
 
         Page<TruckEntity> truckEntities = truckService.getTrucks(number, pageNo, pageSize, sortBy, order);

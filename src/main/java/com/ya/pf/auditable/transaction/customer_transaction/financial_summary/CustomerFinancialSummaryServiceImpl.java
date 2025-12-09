@@ -2,7 +2,6 @@ package com.ya.pf.auditable.transaction.customer_transaction.financial_summary;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,22 @@ import java.time.LocalDate;
 
 @DependsOnDatabaseInitialization
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CustomerFinancialSummaryServiceImpl implements CustomerFinancialSummaryService {
 
     private final DataSource dataSource;
 
     @Override
     @SneakyThrows
-    public CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId, Integer paymentMethodId, LocalDate start,
+    public CustomerFinancialSummary getCustomerFinancialSummary(long customerId, Integer productId,
+                                                                Integer paymentMethodId, LocalDate start,
                                                                 LocalDate end) {
 
         String statement = """
-                SELECT SUM(payment_amount) AS totalPayments, SUM(bill_customer_amount) AS totalBills, SUM(bill_quantity) AS totalLiters
-                FROM customer_transaction_view
-                WHERE customer_id = ? AND date >= ? AND date <= ?
-                """;
+            SELECT SUM(payment_amount) AS totalPayments, SUM(bill_customer_amount) AS totalBills, SUM(bill_quantity) AS totalLiters
+            FROM customer_transaction_view
+            WHERE customer_id = ? AND date >= ? AND date <= ?
+            """;
         if (productId != null) {
             statement += " AND product_id = ?";
         }

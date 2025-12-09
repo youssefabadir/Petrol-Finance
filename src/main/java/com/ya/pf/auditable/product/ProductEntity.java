@@ -3,6 +3,13 @@ package com.ya.pf.auditable.product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,7 +17,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -61,15 +67,9 @@ public class ProductEntity extends Auditable {
     @Override
     public String toString() {
 
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "supplier price = " + supplierPrice + ", " +
-                "customer price = " + customerPrice + ", " +
-                "deleted = " + deleted + ", " +
-                "createdDate = " + createdDate + ", " +
-                "lastModifiedDate = " + lastModifiedDate +
-                ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "supplier price = " +
+               supplierPrice + ", " + "customer price = " + customerPrice + ", " + "deleted = " + deleted + ", " +
+               "createdDate = " + createdDate + ", " + "lastModifiedDate = " + lastModifiedDate + ")";
     }
 
     @Override

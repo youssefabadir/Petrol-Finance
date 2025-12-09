@@ -9,7 +9,8 @@ public interface PaymentService {
 
     PaymentEntity validatePayment(PaymentEntity payment) throws MissingRequestValueException;
 
-    Page<PaymentEntity> getPayments(long paymentMethodId, int pageNo, int pageSize, String sortBy, String order, LocalDate start, LocalDate end);
+    Page<PaymentEntity> getPayments(long paymentMethodId, int pageNo, int pageSize, String sortBy, String order,
+                                    LocalDate start, LocalDate end);
 
     void deletePaymentById(long id);
 

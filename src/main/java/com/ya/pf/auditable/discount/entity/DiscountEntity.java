@@ -1,6 +1,13 @@
 package com.ya.pf.auditable.discount.entity;
 
 import com.ya.pf.auditable.Auditable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -8,7 +15,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -53,15 +59,9 @@ public class DiscountEntity extends Auditable {
     @Override
     public String toString() {
 
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "discount = " + discountedPrice + ", " +
-                "customer id = " + customerId + ", " +
-                "product id = " + productId + ", " +
-                "deleted = " + deleted + ", " +
-                "createdDate = " + createdDate + ", " +
-                "lastModifiedDate = " + lastModifiedDate +
-                ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "discount = " + discountedPrice + ", " +
+               "customer id = " + customerId + ", " + "product id = " + productId + ", " + "deleted = " + deleted +
+               ", " + "createdDate = " + createdDate + ", " + "lastModifiedDate = " + lastModifiedDate + ")";
     }
 
     @Override

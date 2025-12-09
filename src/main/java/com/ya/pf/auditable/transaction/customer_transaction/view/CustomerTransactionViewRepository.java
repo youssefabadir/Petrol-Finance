@@ -12,6 +12,7 @@ public interface CustomerTransactionViewRepository extends JpaRepository<Custome
 
     Page<CustomerTransactionView> findAllByCustomerId(long customerId, Pageable pageable);
 
-    Page<CustomerTransactionView> findByCustomerIdAndDateBetween(long customerId, Date start, Date end, Pageable pageable);
+    Page<CustomerTransactionView> findByCustomerIdAndDateBetween(long customerId, Date start, Date end,
+                                                                 Pageable pageable);
 
 }

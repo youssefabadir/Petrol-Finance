@@ -1,13 +1,13 @@
 package com.ya.pf.auditable.discount.view;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.Hibernate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.Hibernate;
+
 import java.util.Objects;
 
 @Getter
@@ -54,14 +54,9 @@ public class DiscountView {
     @Override
     public String toString() {
 
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "discount = " + discountedPrice + ", " +
-                "customer id = " + customerId + ", " +
-                "customer name = " + customerName + ", " +
-                "product id = " + productId + ", " +
-                "product name = " + productName + ", " +
-                ')';
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "discount = " + discountedPrice + ", " +
+               "customer id = " + customerId + ", " + "customer name = " + customerName + ", " + "product id = " +
+               productId + ", " + "product name = " + productName + ", " + ')';
     }
 
     @Override

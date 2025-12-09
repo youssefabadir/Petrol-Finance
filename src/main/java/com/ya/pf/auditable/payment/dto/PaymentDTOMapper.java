@@ -6,13 +6,12 @@ import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentEntity;
 import com.ya.pf.auditable.payment.owner_payment.OwnerPaymentEntity;
 import com.ya.pf.auditable.supplier.dto.SupplierDTOMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class PaymentDTOMapper implements Function<PaymentEntity, PaymentDTO> {
 
     private final CustomerDTOMapper customerDTOMapper;

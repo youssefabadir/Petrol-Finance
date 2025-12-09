@@ -14,7 +14,6 @@ public interface SupplierService {
 
     void deleteSupplier(long id);
 
-
     List<SupplierEntity> searchSupplier(String name);
 
     SupplierEntity getSupplierById(long id);

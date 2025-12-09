@@ -4,7 +4,6 @@ import com.ya.pf.auditable.expense.dto.ExpenseDTO;
 import com.ya.pf.auditable.expense.dto.ExpenseDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +22,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/expense")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -38,14 +37,16 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseDTO> createExpense(@RequestBody ExpenseEntity expense, @RequestParam long paymentMethodId) {
+    public ResponseEntity<ExpenseDTO> createExpense(@RequestBody ExpenseEntity expense,
+                                                    @RequestParam long paymentMethodId) {
         ExpenseEntity expenseEntity = expenseService.createExpense(expense, paymentMethodId);
         ExpenseDTO expenseDTO = expenseDTOMapper.apply(expenseEntity);
         return ResponseEntity.ok(expenseDTO);
     }
 
     @PutMapping
-    public ResponseEntity<ExpenseDTO> updateExpense(@RequestBody ExpenseEntity expense, @RequestParam long paymentMethodId) {
+    public ResponseEntity<ExpenseDTO> updateExpense(@RequestBody ExpenseEntity expense,
+                                                    @RequestParam long paymentMethodId) {
         ExpenseEntity expenseEntity = expenseService.updateExpense(expense, paymentMethodId);
         ExpenseDTO expenseDTO = expenseDTOMapper.apply(expenseEntity);
         return ResponseEntity.ok(expenseDTO);

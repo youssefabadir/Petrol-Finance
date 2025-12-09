@@ -4,7 +4,6 @@ import com.ya.pf.auditable.product.dto.ProductDTO;
 import com.ya.pf.auditable.product.dto.ProductDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/product")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
@@ -33,7 +32,8 @@ public class ProductController {
     private final ProductDTOMapper productDTOMapper;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> getProducts(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "0") int pageNo,
+    public ResponseEntity<Page<ProductDTO>> getProducts(@RequestParam(defaultValue = "") String name,
+                                                        @RequestParam(defaultValue = "0") int pageNo,
                                                         @RequestParam(defaultValue = "10") int pageSize,
                                                         @RequestParam(defaultValue = "id") String sortBy,
                                                         @RequestParam(defaultValue = "asc") String order) {

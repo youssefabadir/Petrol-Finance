@@ -1,13 +1,11 @@
 package com.ya.pf.auditable.discount.entity;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
@@ -48,7 +46,8 @@ public class DiscountServiceImpl implements DiscountService {
         if (discountEntity != null) {
             return discountEntity.getDiscountedPrice();
         } else {
-            throw new EntityNotFoundException("There is no discount for this customer id " + customerId + " for this product id " + productId);
+            throw new EntityNotFoundException(
+                "There is no discount for this customer id " + customerId + " for this product id " + productId);
         }
     }
 

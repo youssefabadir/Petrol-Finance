@@ -4,6 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ya.pf.auditable.Auditable;
 import com.ya.pf.auditable.bill.BillEntity;
 import com.ya.pf.auditable.payment.customer_payment.CustomerPaymentEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,7 +18,6 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.SQLDelete;
 
-import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

@@ -4,7 +4,6 @@ import com.ya.pf.auditable.payment_method.dto.PaymentMethodDTO;
 import com.ya.pf.auditable.payment_method.dto.PaymentMethodDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/payment-method")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class PaymentMethodController {
 
     private final PaymentMethodService paymentMethodService;
@@ -38,7 +37,11 @@ public class PaymentMethodController {
                                                                     @RequestParam(defaultValue = "10") int pageSize,
                                                                     @RequestParam(defaultValue = "id") String sortBy,
                                                                     @RequestParam(defaultValue = "asc") String order) {
-        Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getPaymentMethods(name, pageNo, pageSize, sortBy, order);
+        Page<PaymentMethodEntity> wayOfPaymentEntities = paymentMethodService.getPaymentMethods(name,
+                                                                                                pageNo,
+                                                                                                pageSize,
+                                                                                                sortBy,
+                                                                                                order);
         Page<PaymentMethodDTO> wayOfPaymentDTOS = wayOfPaymentEntities.map(paymentMethodDTOMapper);
         return ResponseEntity.ok(wayOfPaymentDTOS);
     }

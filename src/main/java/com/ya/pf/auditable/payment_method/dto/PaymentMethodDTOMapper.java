@@ -11,7 +11,9 @@ public class PaymentMethodDTOMapper implements Function<PaymentMethodEntity, Pay
     @Override
     public PaymentMethodDTO apply(PaymentMethodEntity paymentMethodEntity) {
 
-        return new PaymentMethodDTO(paymentMethodEntity.getId(), paymentMethodEntity.getName(), paymentMethodEntity.getBalance());
+        return new PaymentMethodDTO(paymentMethodEntity.getId(),
+                                    paymentMethodEntity.getName(),
+                                    paymentMethodEntity.getBalance());
     }
 
 }

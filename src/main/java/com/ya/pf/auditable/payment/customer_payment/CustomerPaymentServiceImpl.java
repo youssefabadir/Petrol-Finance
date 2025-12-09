@@ -8,14 +8,13 @@ import com.ya.pf.util.PageableHelper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingRequestValueException;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CustomerPaymentServiceImpl implements CustomerPaymentService {
 
     private final CustomerPaymentRepository customerPaymentRepository;
@@ -29,7 +28,8 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
     private final OwnerPaymentService ownerPaymentService;
 
     @Override
-    public Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy, String order) {
+    public Page<CustomerPaymentEntity> getCustomerPayments(String number, int pageNo, int pageSize, String sortBy,
+                                                           String order) {
         Pageable pageable = PageableHelper.preparePageable(pageNo, pageSize, sortBy, order);
 
         if (number.isEmpty()) {
@@ -61,7 +61,8 @@ public class CustomerPaymentServiceImpl implements CustomerPaymentService {
                                                                  payment.getDate());
         }
 
-        paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(), payment.getPaymentMethodBalance());
+        paymentMethodService.updatePaymentMethodBalance(payment.getPaymentMethodId(),
+                                                        payment.getPaymentMethodBalance());
 
         if (customerPayment.isTransferred()) {
             ownerPaymentService.createOwnerTransferredPayment(customerPayment, supplierId);
